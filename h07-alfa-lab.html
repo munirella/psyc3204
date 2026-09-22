@@ -1,0 +1,1197 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#4a3aa7">
+<title>Cronbach's Alpha Lab</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234a3aa7'/%3E%3Ctext x='32' y='46' font-size='40' text-anchor='middle' fill='white' font-family='serif'%3E%CE%B1%3C/text%3E%3C/svg%3E">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f2f2f6;
+  --surface:#fdfdfe;
+  --surface-2:#ebebf1;
+  --surface-3:#dfdfe8;
+  --ink:#14131b;
+  --ink-2:#4a4957;
+  --muted:#65636f;
+  --line:#e0dfe7;
+  --line-strong:#c3c2ce;
+  --accent:#4a3aa7;
+  --accent-hover:#3c2f8e;
+  --accent-ink:#ffffff;
+  --accent-soft:#e9e6f8;
+  --pos:#2a78d6;
+  --neg:#e34948;
+  --div-pos:#5682bf;
+  --div-neg:#cd5f59;
+  --div-mid:#eeeef2;
+  --cell-ink:#14131b;
+  --bubble:#256abf;
+  --bubble-ink:#ffffff;
+  --dot:#2a78d6;
+  --dot-ring:#fdfdfe;
+  --good:#0ca30c;
+  --warn:#fab219;
+  --serious:#ec835a;
+  --crit:#d03b3b;
+  --glyph-dark:#14131b;
+  --warn-soft:#fdf0cc;
+  --band-low:#f6e0e0;
+  --band-mid:#faedcc;
+  --band-ok:#dcefdc;
+  --band-high:#faedcc;
+  --shadow:0 1px 2px rgba(20,19,27,.05),0 8px 28px rgba(20,19,27,.07);
+  --radius:14px;
+  --font-sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0f0f14;
+    --surface:#18181f;
+    --surface-2:#22222b;
+    --surface-3:#2e2e39;
+    --ink:#f3f3f7;
+    --ink-2:#c4c3cf;
+    --muted:#9896a6;
+    --line:#2b2b35;
+    --line-strong:#41414d;
+    --accent:#9d93ee;
+    --accent-hover:#b3abf3;
+    --accent-ink:#14131b;
+    --accent-soft:#2b2847;
+    --pos:#3987e5;
+    --neg:#e66767;
+    --div-pos:#476ea1;
+    --div-neg:#a55457;
+    --div-mid:#2a2a33;
+    --cell-ink:#f3f3f7;
+    --bubble:#3987e5;
+    --bubble-ink:#0b0b10;
+    --dot:#3987e5;
+    --dot-ring:#18181f;
+    --warn-soft:#3b3119;
+    --band-low:#3d2427;
+    --band-mid:#3b321b;
+    --band-ok:#1e3622;
+    --band-high:#3b321b;
+    --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0f0f14;
+  --surface:#18181f;
+  --surface-2:#22222b;
+  --surface-3:#2e2e39;
+  --ink:#f3f3f7;
+  --ink-2:#c4c3cf;
+  --muted:#9896a6;
+  --line:#2b2b35;
+  --line-strong:#41414d;
+  --accent:#9d93ee;
+  --accent-hover:#b3abf3;
+  --accent-ink:#14131b;
+  --accent-soft:#2b2847;
+  --pos:#3987e5;
+  --neg:#e66767;
+  --div-pos:#476ea1;
+  --div-neg:#a55457;
+  --div-mid:#2a2a33;
+  --cell-ink:#f3f3f7;
+  --bubble:#3987e5;
+  --bubble-ink:#0b0b10;
+  --dot:#3987e5;
+  --dot-ring:#18181f;
+  --warn-soft:#3b3119;
+  --band-low:#3d2427;
+  --band-mid:#3b321b;
+  --band-ok:#1e3622;
+  --band-high:#3b321b;
+  --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.wrap{max-width:1320px;margin:0 auto;padding-inline:16px;padding-block:20px 56px}
+@media (min-width:720px){.wrap{padding-inline:28px;padding-block:28px 64px}}
+
+/* header */
+.back-link{display:inline-flex;align-items:center;gap:4px;color:var(--ink-2);font-weight:600;font-size:14px;text-decoration:none;min-height:36px;width:max-content}
+.back-link:hover{color:var(--ink)}
+.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px 24px;margin-bottom:22px}
+.titles{display:grid;gap:6px;max-width:70ch}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(28px,4.4vw,40px);line-height:1.08;font-weight:700;letter-spacing:-.018em}
+.lead{color:var(--ink-2);font-size:15.5px;max-width:64ch}
+.top-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.sim-badge{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-2);background:var(--surface);border:1px dashed var(--line-strong);border-radius:999px;padding:4px 11px}
+.sim-badge svg{width:14px;height:14px;color:var(--muted)}
+.lang{display:inline-flex;border:1px solid var(--line-strong);border-radius:999px;padding:2px;background:var(--surface)}
+.lang button{border:0;background:transparent;padding:4px 13px;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.05em;cursor:pointer;color:var(--ink-2);min-height:32px}
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+
+/* layout */
+.layout{display:grid;gap:20px;grid-template-columns:minmax(0,1fr)}
+.side,.main{display:grid;gap:20px;align-content:start;min-width:0}
+@media (min-width:980px){
+  .layout{grid-template-columns:minmax(330px,380px) minmax(0,1fr);align-items:start;gap:24px}
+  .side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 14px);max-height:calc(100vh - 28px);max-height:calc(100dvh - 28px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;padding:2px}
+}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.panel h2,.challenges h2{font-size:17px;font-weight:600;letter-spacing:-.005em}
+
+/* alpha card */
+.alpha-card{background:var(--surface);border:1px solid var(--line-strong);border-radius:calc(var(--radius) + 2px);padding:18px 18px 16px;box-shadow:var(--shadow);display:grid;gap:12px}
+.ac-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px 14px;flex-wrap:wrap}
+.ac-label{font-size:13px;font-weight:600;color:var(--ink-2);letter-spacing:.01em}
+.ac-value{font-size:clamp(54px,12vw,70px);line-height:1;font-weight:600;letter-spacing:-.035em;margin-top:6px}
+.ac-right{display:grid;gap:7px;justify-items:end;text-align:right;padding-top:2px}
+.status{display:inline-flex;align-items:center;gap:7px;background:var(--surface-2);border-radius:999px;padding:5px 12px 5px 7px;font-weight:600;font-size:14px;line-height:1.2}
+.status svg,.flag svg,.mb-status svg{flex:none}
+.status svg{width:18px;height:18px}
+.ac-meta{font-size:13px;color:var(--ink-2)}
+.status-note{font-size:13.5px;color:var(--ink-2)}
+.scale{width:100%;min-height:104px}
+.scale svg{display:block;overflow:visible}
+.scale-legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--ink-2)}
+.scale-legend span{display:inline-flex;align-items:center;gap:6px}
+.scale-legend svg{width:14px;height:14px;flex:none}
+.range-text{font-size:13.5px}
+.formula{border-top:1px solid var(--line);padding-top:12px;display:grid;gap:5px}
+.f-title{font-size:12.5px;font-weight:600;color:var(--ink-2)}
+.f-line{font-size:14px;overflow-x:auto;white-space:nowrap;padding-bottom:2px}
+.f-key{font-size:12px;color:var(--muted)}
+
+svg text{font-family:var(--font-mono);fill:var(--muted);font-size:11px}
+svg .v-label{fill:var(--ink);font-size:13px;font-weight:600}
+.band-low{fill:var(--band-low)}
+.band-mid{fill:var(--band-mid)}
+.band-ok{fill:var(--band-ok)}
+.band-high{fill:var(--band-high)}
+.tickline{stroke:var(--line-strong);stroke-width:1}
+.marker{fill:var(--ink)}
+.marker-line{stroke:var(--ink);stroke-width:2}
+.long-line{stroke:var(--ink-2);stroke-width:1.6;stroke-dasharray:3 2.5}
+.sdot{fill:var(--dot);stroke:var(--dot-ring);stroke-width:1.5}
+.sdot,.cur,.long-line{transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+
+/* controls */
+.controls{display:grid;gap:14px;container-type:inline-size}
+.ctrl-grid{display:grid;gap:14px 32px;grid-template-columns:minmax(0,1fr)}
+@container (min-width:600px){.ctrl-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.ctrl-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px}
+.ctrl{display:grid;gap:4px}
+.ctrl-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.ctrl label{font-weight:500;font-size:14px}
+.ctrl output{font-weight:600;font-size:14px}
+input[type="range"]{width:100%;accent-color:var(--accent);margin:0;height:28px;cursor:pointer}
+.ticks{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted)}
+.ticks.abs{position:relative;height:16px;font-family:var(--font-mono)}
+.ticks.abs span{position:absolute;top:0;transform:translateX(-50%)}
+.ctrl-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:-2px}
+.btn-row{display:flex;flex-wrap:wrap;gap:8px}
+.btn{appearance:none;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 14px;min-height:40px;font-weight:600;font-size:14px;cursor:pointer;transition:background-color .15s,border-color .15s}
+.btn:hover{background:var(--surface-2)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--ink-2)}
+.btn.ghost:hover{background:var(--surface-2)}
+.btn.small{min-height:32px;padding:4px 10px;font-size:13px}
+.drawn{font-size:13px;color:var(--ink-2)}
+
+/* items */
+.items{container-type:inline-size;padding-bottom:6px}
+.items-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 16px;margin-bottom:8px}
+.scale-note{font-size:13px;color:var(--ink-2)}
+.item-cols{display:none}
+.item-list{list-style:none;margin:0;padding:0}
+.item{display:grid;grid-template-columns:24px 20px minmax(0,1fr);grid-template-areas:"inc num text" ". . met";column-gap:8px;row-gap:10px;padding:13px 0;border-top:1px solid var(--line);align-items:start}
+.item:first-child{border-top:0}
+.i-inc{grid-area:inc;line-height:0;padding-top:1px}
+.i-inc input{width:20px;height:20px;accent-color:var(--accent);margin:0;cursor:pointer}
+.i-num{grid-area:num;font-family:var(--font-mono);font-weight:600;color:var(--ink-2)}
+.i-text{grid-area:text;font-size:15px;line-height:1.4}
+.tag{display:inline-block;margin-left:6px;font-size:11.5px;font-weight:500;line-height:1.5;color:var(--ink-2);border:1px solid var(--line-strong);border-radius:6px;padding:0 6px;vertical-align:1px;white-space:nowrap}
+.i-met{grid-area:met;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"r r" "rev del";gap:10px 16px;align-items:end}
+.m-rev{grid-area:rev}
+.m-r{grid-area:r;min-width:0}
+.m-del{grid-area:del;text-align:right}
+.m-lbl{display:block;font-size:11.5px;line-height:1.3;color:var(--muted);margin-bottom:4px}
+.item.excluded .i-text,.item.excluded .i-num{color:var(--muted)}
+.switch{display:inline-flex;align-items:center;cursor:pointer;position:relative;min-height:28px}
+.switch input{position:absolute;opacity:0;width:36px;height:20px;margin:0;cursor:pointer}
+.sw{width:38px;height:22px;border-radius:999px;background:var(--surface-3);border:1px solid var(--line-strong);position:relative;transition:background-color .15s,border-color .15s;flex:none}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .15s}
+.switch input:checked + .sw{background:var(--accent);border-color:var(--accent)}
+.switch input:checked + .sw::after{transform:translateX(16px);background:var(--accent-ink)}
+.switch input:focus-visible + .sw{outline:2px solid var(--accent);outline-offset:2px}
+.rbar{display:flex;align-items:center;gap:10px;min-width:0}
+.rtrack{position:relative;flex:1;min-width:60px;height:10px;background:var(--surface-2);border-radius:3px}
+.rtrack .zero{position:absolute;left:50%;top:-4px;bottom:-4px;width:1px;background:var(--line-strong)}
+.rtrack .thr{position:absolute;left:65%;top:-3px;bottom:-3px;border-left:1px dashed var(--muted)}
+.rfill{position:absolute;top:0;bottom:0;left:50%;width:0;border-radius:3px;transition:left .3s,width .3s}
+.rfill.pos{background:var(--pos)}
+.rfill.neg{background:var(--neg)}
+.item.excluded .rfill{background:var(--line-strong)}
+.rval{font-family:var(--font-mono);font-weight:600;font-size:14px;min-width:5ch;text-align:right}
+.flag{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-2);margin-top:6px}
+.flag svg{width:15px;height:15px}
+.adel{display:inline-flex;align-items:center;gap:6px;justify-content:flex-end;white-space:nowrap}
+.aval{font-family:var(--font-mono);font-weight:600;font-size:14px}
+.delta{font-family:var(--font-mono);font-size:12px;border-radius:6px;padding:1px 6px;color:var(--ink-2)}
+.delta.up{background:var(--warn-soft);color:var(--ink);font-weight:600}
+@container (min-width:480px){
+  .i-met{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"rev r del";align-items:start}
+}
+@container (min-width:720px){
+  .item-cols{display:grid;grid-template-columns:24px 20px minmax(0,1fr) 96px 172px 120px;column-gap:12px;font-size:12px;line-height:1.3;color:var(--muted);padding:2px 0 9px;border-bottom:1px solid var(--line);align-items:end}
+  .item-cols .c-in{grid-column:span 2}
+  .item-cols .c-del{text-align:right}
+  .item{grid-template-columns:24px 20px minmax(0,1fr) 96px 172px 120px;grid-template-areas:"inc num text rev r del";column-gap:12px;align-items:center}
+  .item:first-child{border-top:0}
+  .i-inc,.i-num{padding-top:0}
+  .i-met{display:contents}
+  .m-lbl{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+  .item.excluded .m-r .m-lbl,.item.excluded .m-del .m-lbl{position:static;width:auto;height:auto;overflow:visible;clip:auto;white-space:normal;margin-bottom:2px}
+}
+
+/* heatmap */
+.heat{container-type:inline-size;display:grid;gap:14px}
+.heat-head{display:grid;gap:3px}
+.hint{font-size:13.5px;color:var(--ink-2)}
+.heat-grid{display:grid;gap:22px;grid-template-columns:minmax(0,1fr)}
+@container (min-width:700px){.heat-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}}
+.heat-map svg{width:100%;max-width:430px;height:auto;display:block}
+.cell-g{cursor:pointer;outline:none}
+.cell-g:focus-visible .cell{stroke:var(--accent);stroke-width:3}
+.cell-g.dim{opacity:.4}
+.ctext{font-size:11.5px;fill:var(--cell-ink);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.hl-label{font-size:12px;fill:var(--ink-2);font-weight:600}
+.hl-label.dim{fill:var(--muted);opacity:.55}
+.sel-ring{fill:none;stroke:var(--ink);stroke-width:2.5;pointer-events:none}
+.div-legend{display:grid;gap:4px;max-width:300px;margin-top:12px}
+.div-bar{height:10px;border-radius:3px;background:linear-gradient(90deg,var(--div-neg),var(--div-mid),var(--div-pos));background:linear-gradient(in oklab 90deg,var(--div-neg),var(--div-mid),var(--div-pos))}
+.div-ticks{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted)}
+.pair{display:grid;gap:12px;align-content:start}
+.pair-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.pair h3{font-size:15px;font-weight:600}
+.pair-r{font-size:26px;font-weight:600;line-height:1}
+.pair-items{display:grid;gap:5px;font-size:13.5px;color:var(--ink-2);margin:0;padding:0;list-style:none}
+.pair-items b{font-family:var(--font-mono);color:var(--ink);margin-right:6px}
+.pair-plot svg{width:100%;max-width:290px;height:auto;display:block}
+.pgrid{fill:var(--surface-2)}
+.bub{fill:var(--bubble);stroke:var(--surface);stroke-width:1.5}
+.bub-t{font-size:11px;fill:var(--bubble-ink);text-anchor:middle;dominant-baseline:central;pointer-events:none;font-weight:600}
+.ax-title{font-family:var(--font-sans);font-size:12px;fill:var(--ink-2);font-weight:500}
+.hint-box{font-size:13.5px;background:var(--surface-2);border-radius:10px;padding:10px 12px}
+
+/* challenges */
+.challenges{display:grid;gap:10px;padding-top:4px}
+.ch-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.ch{display:grid;grid-template-columns:22px 18px minmax(0,1fr);column-gap:10px;row-gap:4px;padding:12px 2px;border-bottom:1px solid var(--line);align-items:start}
+.ch-ico{line-height:0;padding-top:2px}
+.ch-ico svg{width:20px;height:20px}
+.ch-n{font-family:var(--font-mono);font-weight:600;color:var(--ink-2)}
+.ch-q{font-weight:500}
+.ch-a{grid-column:3;color:var(--ink-2);font-size:14px;max-width:75ch}
+.ch.just-done{animation:flash 1.4s ease-out}
+@keyframes flash{from{background:var(--accent-soft)}to{background:transparent}}
+
+.notes{display:grid;gap:8px;font-size:13px;color:var(--ink-2);max-width:80ch;padding-top:4px}
+
+/* phone mini bar */
+.minibar{position:fixed;top:0;left:0;right:0;z-index:20;padding-top:env(safe-area-inset-top,0px);background:var(--surface);border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
+.minibar-in{max-width:1320px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:6px 12px;flex-wrap:wrap;font-size:14px}
+.mb-val{font-size:20px;font-weight:600}
+.mb-status{display:inline-flex;align-items:center;gap:6px;font-weight:600}
+.mb-status svg{width:16px;height:16px}
+.mb-meta{color:var(--ink-2);font-size:13px;margin-left:auto}
+@media (min-width:980px){.minibar{display:none!important}}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important}
+}
+</style>
+
+<div class="minibar" id="minibar" hidden>
+  <div class="minibar-in">
+    <span class="mono mb-val" id="mbVal"></span>
+    <span class="mb-status" id="mbStatus"></span>
+    <span class="mb-meta" id="mbMeta"></span>
+  </div>
+</div>
+
+<div class="wrap" id="wrap" lang="en">
+  <header class="top">
+    <div class="titles">
+      <a class="back-link" id="backLink" href="index.html">‹ <span id="backText">Tüm haftalar</span></a>
+      <p class="eyebrow" data-i18n="eyebrow">PSYC3204 · Internal consistency reliability</p>
+      <h1 data-i18n="title">Cronbach’s Alpha Lab</h1>
+      <p class="lead" data-i18n="lead">A simulated class answers an 8-item scale on attitudes toward group work. Change the scale and watch what happens to α.</p>
+    </div>
+    <div class="top-tools">
+      <span class="sim-badge"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="1.5" width="13" height="13" rx="3" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="5.3" cy="5.3" r="1.2" fill="currentColor"/><circle cx="10.7" cy="10.7" r="1.2" fill="currentColor"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/></svg><span data-i18n="simBadge">Simulated data</span></span>
+      <div class="lang" role="group" id="langGroup" aria-label="Language">
+        <button type="button" id="langTr" aria-pressed="false" lang="tr">TR</button>
+        <button type="button" id="langEn" aria-pressed="true" lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="side">
+      <section class="alpha-card" id="alphaCard" aria-labelledby="alphaHead">
+        <div class="ac-top" id="acTop">
+          <div>
+            <h2 id="alphaHead" class="ac-label" data-i18n="alphaLabel">Cronbach’s α</h2>
+            <div class="ac-value mono" id="alphaVal" aria-live="polite">–</div>
+          </div>
+          <div class="ac-right">
+            <div class="status" id="alphaStatus"></div>
+            <div class="ac-meta" id="alphaMeta"></div>
+          </div>
+        </div>
+        <p class="status-note" id="statusNote"></p>
+        <div class="scale" id="scale"></div>
+        <div class="scale-legend">
+          <span><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 2h11L7 11z" style="fill:var(--ink)"/></svg><span data-i18n="lgThis">this sample</span></span>
+          <span><svg viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="4" style="fill:var(--dot)"/></svg><span data-i18n="lgOther">other samples</span></span>
+          <span><svg viewBox="0 0 14 14" aria-hidden="true"><line x1="7" y1="1" x2="7" y2="13" style="stroke:var(--ink-2)" stroke-width="1.6" stroke-dasharray="3 2.5"/></svg><span data-i18n="lgLong">population value (approx.)</span></span>
+        </div>
+        <p class="range-text" id="rangeText"></p>
+        <div class="formula">
+          <p class="f-title" data-i18n="fTitle">Where the number comes from</p>
+          <div class="f-line mono" id="formulaLine"></div>
+          <p class="f-key" data-i18n="fKey"></p>
+        </div>
+      </section>
+
+    </aside>
+
+    <main class="main">
+      <section class="panel controls" aria-labelledby="ctrlHead">
+        <div class="ctrl-head"><h2 id="ctrlHead" data-i18n="ctrlTitle">Sample and error</h2><button type="button" class="btn ghost small" id="btnReset" data-i18n="btnReset">Reset</button></div>
+        <div class="ctrl-grid">
+          <div class="ctrl">
+            <div class="ctrl-row"><label for="nRange" data-i18n="nLabel">Sample size (N)</label><output id="nOut" for="nRange" class="mono"></output></div>
+            <input type="range" id="nRange" min="0" max="7" step="1" value="3">
+            <div class="ticks abs" id="nTicks" aria-hidden="true"></div>
+          </div>
+          <div class="ctrl">
+            <div class="ctrl-row"><label for="eRange" data-i18n="eLabel">Random error in answers</label><output id="eOut" for="eRange"></output></div>
+            <input type="range" id="eRange" min="0" max="4" step="1" value="2">
+            <div class="ticks" aria-hidden="true"><span data-i18n="eMore">more error</span><span data-i18n="eLess">less error</span></div>
+          </div>
+        </div>
+        <div class="ctrl-foot">
+          <div class="btn-row">
+            <button type="button" class="btn primary" id="btnNew" data-i18n="btnNew">New sample</button>
+            <button type="button" class="btn" id="btn20" data-i18n="btn20">Draw 20 samples</button>
+          </div>
+          <p class="drawn" id="drawnText" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section class="panel items" aria-labelledby="itemsHead">
+        <div class="items-head">
+          <h2 id="itemsHead" data-i18n="itemsTitle">Items</h2>
+          <p class="scale-note" data-i18n="scaleNote">Answers: 1 = Strongly disagree … 5 = Strongly agree</p>
+        </div>
+        <div class="item-cols" aria-hidden="true">
+          <span class="c-in" data-i18n="colIn">In scale</span><span data-i18n="colItem">Item</span><span data-i18n="colRev">Reverse-score</span><span data-i18n="colR">Corrected item–total r</span><span class="c-del" data-i18n="colDel">α if deleted</span>
+        </div>
+        <ol class="item-list" id="itemList"></ol>
+      </section>
+
+      <section class="panel heat" aria-labelledby="heatHead">
+        <div class="heat-head">
+          <h2 id="heatHead" data-i18n="heatTitle">Inter-item correlations</h2>
+          <p class="hint" data-i18n="heatHint">Tap a cell to see how the answers to two items go together.</p>
+        </div>
+        <div class="heat-grid">
+          <div class="heat-map">
+            <div id="heatmap"></div>
+            <div class="div-legend" aria-hidden="true">
+              <div class="div-bar"></div>
+              <div class="div-ticks"><span id="lgNeg">−1 negative</span><span>0</span><span id="lgPos">+1 positive</span></div>
+            </div>
+          </div>
+          <div class="pair" id="pair" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="challenges" aria-labelledby="chHead">
+        <h2 id="chHead" data-i18n="chTitle">Try this</h2>
+        <ol class="ch-list" id="chList"></ol>
+      </section>
+
+      <section class="notes">
+        <p data-i18n="noteModel"></p>
+        <p data-i18n="noteRules"></p>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+(() => {
+'use strict';
+const $ = s => document.querySelector(s);
+const NS = 'http://www.w3.org/2000/svg';
+
+/* ---------- scale content (8 items; parameters match the calibration) ---------- */
+const ITEMS = [
+  { l: .75, rw: false, d: .30, en: 'I enjoy working on projects with other students.', tr: 'Diğer öğrencilerle proje yapmaktan keyif alırım.' },
+  { l: .65, rw: true,  d: -.20, en: 'Group projects are a waste of time.', tr: 'Grup projeleri zaman kaybıdır.' },
+  { l: .70, rw: false, d: .20, en: 'I learn more when I work in a group.', tr: 'Grupla çalıştığımda daha çok şey öğrenirim.' },
+  { l: .60, rw: false, d: .10, en: 'I feel comfortable sharing my ideas in a group.', tr: 'Grupta fikirlerimi paylaşırken kendimi rahat hissederim.' },
+  { l: .15, rw: false, d: .40, en: 'Group work is fun and the library is a good place to study.', tr: 'Grup çalışması eğlencelidir ve kütüphane ders çalışmak için iyi bir yerdir.' },
+  { l: .55, rw: true,  d: -.30, en: 'I avoid courses that include group assignments.', tr: 'Grup ödevi olan derslerden kaçınırım.' },
+  { l: .35, rw: true,  d: .20, en: 'In groups, I usually end up doing most of the work.', tr: 'Gruplarda işin çoğu genellikle bana kalır.' },
+  { l: .60, rw: false, d: .00, en: 'I look forward to meeting with my project group.', tr: 'Proje grubumla buluşmayı dört gözle beklerim.' }
+];
+const K = ITEMS.length;
+const N_STEPS = [10, 20, 30, 40, 60, 100, 200, 500];
+const ERR_M = [0.5, 0.75, 1, 1.3, 1.8];      // slider left = more error ... right = less error
+const CAP = 0.98;
+const TAU = [-1.4, -0.5, 0.4, 1.3];          // cut points for the 1-5 answer scale
+const START_SEEDS = [211, 307, 419, 523, 617, 733, 829, 919, 1021, 1109, 1201, 1654];
+const LONG_N = 20000, LONG_SEED = 99991, MAX_SEEDS = 60;
+
+/* ---------- text ---------- */
+const T = {
+  en: {
+    docTitle: "Cronbach's Alpha Lab · PSYC3204",
+    eyebrow: 'PSYC3204 · Internal consistency reliability',
+    title: 'Cronbach’s Alpha Lab',
+    lead: 'A simulated class answers an 8-item scale on attitudes toward group work. Change the scale and watch what happens to α.',
+    simBadge: 'Simulated data',
+    langGroup: 'Language',
+    alphaLabel: 'Cronbach’s α',
+    meta: (k, n) => `${k} ${k === 1 ? 'item' : 'items'} · N = ${n}`,
+    st: { neg: 'Negative', low: 'Low', mid: 'Borderline', ok: 'Acceptable', high: 'Very high', none: 'Not defined' },
+    stNote: {
+      neg: 'An α below 0 almost always means a scoring problem. Check the reverse-worded items.',
+      low: 'Below .60: the items do not hang together well yet.',
+      mid: 'Between .60 and .70: borderline for a new research scale.',
+      ok: 'About .70 or higher is commonly treated as acceptable for a new research scale.',
+      high: 'Above about .95, some items may be saying the same thing (redundancy).',
+      none: 'α needs at least 2 items in the scale.'
+    },
+    lgThis: 'this sample', lgOther: 'other samples', lgLong: 'population value (approx.)',
+    range: (n, a, b) => `Across ${n} samples, α ranges from ${a} to ${b}.`,
+    rangeOne: 'Draw more samples to see how much α changes from one sample to the next.',
+    fTitle: 'Where the number comes from',
+    fKey: 'k = number of items · Σs²ᵢ = sum of the item variances · s²ₓ = variance of the total scores',
+    ctrlTitle: 'Sample and error',
+    nLabel: 'Sample size (N)',
+    eLabel: 'Random error in answers',
+    eLevels: ['Very high', 'High', 'Medium', 'Low', 'Very low'],
+    eMore: 'more error', eLess: 'less error',
+    btnNew: 'New sample', btn20: 'Draw 20 samples', btnReset: 'Reset',
+    drawn: n => `Samples drawn: ${n}`,
+    itemsTitle: 'Items',
+    scaleNote: 'Answers: 1 = Strongly disagree … 5 = Strongly agree',
+    colIn: 'In scale', colItem: 'Item', colRev: 'Reverse-score', colR: 'Corrected item–total r', colDel: 'α if deleted',
+    colRx: 'r with the scale total', colAdd: 'α if added back',
+    rw: 'reverse-worded', revScored: 'reverse-scored',
+    flagLow: 'below .30: review this item',
+    flagNegWrong: 'negative: check the scoring',
+    flagNeg: 'negative: works against the other items',
+    incLabel: i => `Include item ${i} in the scale`,
+    revLabel: i => `Reverse-score item ${i}`,
+    heatTitle: 'Inter-item correlations',
+    heatHint: 'Tap a cell to see how the answers to two items go together.',
+    lgNeg: '−1 negative', lgPos: '+1 positive',
+    pairTitle: (a, b) => `Item ${a} × Item ${b}`,
+    axis: i => `Item ${i}`,
+    cellLabel: (a, b, r) => `Item ${a} and item ${b}: r = ${r}`,
+    countTip: (c, a, x, b, y) => `${c} ${c === 1 ? 'student' : 'students'}: item ${a} = ${x}, item ${b} = ${y}`,
+    pairHint: {
+      forgot: 'Negative r: one of these items is scored in the wrong direction. Check “Reverse-score”.',
+      neg: 'Negative r: students who agree with one item tend to disagree with the other.',
+      zero: 'Almost no relationship: the answer to one item tells you little about the answer to the other.',
+      weak: 'Weak positive r: the two items go together only a little.',
+      pos: 'Positive r: students who agree with one item tend to agree with the other.',
+      na: 'r cannot be computed: everyone in this sample gave the same answer to one of the items.'
+    },
+    chTitle: 'Try this',
+    ch: [
+      { q: 'Switch off “Reverse-score” for item 2. What happens to its item–total r and to α?',
+        a: 'A reverse-worded item that is not reverse-scored correlates negatively with the other items and pulls α down. With several such items, α can even fall below 0.' },
+      { q: 'One item makes α lower. Find it and take it out of the scale.',
+        a: 'Item 5 asks about two things at once (a double-barreled item). Its item–total r is close to 0, so α goes up when it is removed.' },
+      { q: 'Keep only 3 items in the scale. What happens to α?',
+        a: 'With fewer items, α usually drops even when each item is good. α depends on how many items there are as well as on how strongly they correlate.' },
+      { q: 'Set N to 10 or 20 and draw 20 samples. How much does α jump around?',
+        a: 'In small samples, α can change a lot from one sample to the next. Interpret α from a small pilot with caution.' },
+      { q: 'Set random error to “Very low” and get α above .95. Is that always good news?',
+        a: 'A very high α can mean that the items repeat the same content. High consistency does not show that the scale measures the right thing (validity).' }
+    ],
+    done: 'Done', todo: 'Not done yet',
+    noteModel: 'How the data are made: each simulated student has a hidden level of the attitude (the true score). Each answer = true score × item strength + random error, rounded to the 1–5 scale. Reverse-worded items are answered in the opposite direction. The dashed line on the α scale is the population value, estimated from a very large simulated sample (N = 20,000). The numbers are simulated; they are not real student data.',
+    noteRules: 'Rules of thumb used in this course: an α of about .70 or higher is commonly treated as acceptable for a new research scale; above about .95, some items may be redundant; a corrected item–total r below about .30 suggests that the item does not fit well with the rest. If α goes up when an item is deleted, that item is a candidate for removal, as long as removing it does not leave an important part of the construct uncovered.'
+  },
+  tr: {
+    docTitle: 'Cronbach Alfa Laboratuvarı · PSKO3204',
+    eyebrow: 'PSKO3204 · İç tutarlılık güvenirliği',
+    title: 'Cronbach Alfa Laboratuvarı',
+    lead: 'Simüle edilmiş bir sınıf, grup çalışmasına yönelik tutumu ölçen 8 maddelik bir ölçeği yanıtlıyor. Ölçeği değiştirin, α’nın nasıl değiştiğini izleyin.',
+    simBadge: 'Simülasyon verisi',
+    langGroup: 'Dil',
+    alphaLabel: 'Cronbach α',
+    meta: (k, n) => `${k} madde · N = ${n}`,
+    st: { neg: 'Negatif', low: 'Düşük', mid: 'Sınırda', ok: 'Kabul edilebilir', high: 'Çok yüksek', none: 'Hesaplanamaz' },
+    stNote: {
+      neg: 'α’nın 0’ın altında çıkması neredeyse her zaman bir puanlama sorununa işaret eder. Ters ifadeli maddeleri kontrol edin.',
+      low: '0,60’ın altı: maddeler henüz birbiriyle yeterince tutarlı değil.',
+      mid: '0,60 ile 0,70 arası: yeni bir araştırma ölçeği için sınırda.',
+      ok: 'Yeni bir araştırma ölçeği için yaklaşık 0,70 ve üzeri genellikle kabul edilebilir sayılır.',
+      high: 'Yaklaşık 0,95’in üzeri: bazı maddeler aynı şeyi tekrar ediyor olabilir.',
+      none: 'α için ölçekte en az 2 madde olmalı.'
+    },
+    lgThis: 'bu örneklem', lgOther: 'diğer örneklemler', lgLong: 'evren değeri (yaklaşık)',
+    range: (n, a, b) => `${n} örneklemde α, ${a} ile ${b} arasında değişiyor.`,
+    rangeOne: 'α’nın bir örneklemden diğerine ne kadar değiştiğini görmek için daha fazla örneklem çekin.',
+    fTitle: 'Bu sayı nereden geliyor?',
+    fKey: 'k = madde sayısı · Σs²ᵢ = madde varyanslarının toplamı · s²ₓ = toplam puanların varyansı',
+    ctrlTitle: 'Örneklem ve hata',
+    nLabel: 'Örneklem büyüklüğü (N)',
+    eLabel: 'Yanıtlardaki rastgele hata',
+    eLevels: ['Çok yüksek', 'Yüksek', 'Orta', 'Düşük', 'Çok düşük'],
+    eMore: 'daha çok hata', eLess: 'daha az hata',
+    btnNew: 'Yeni örneklem', btn20: '20 örneklem çek', btnReset: 'Sıfırla',
+    drawn: n => `Çekilen örneklem sayısı: ${n}`,
+    itemsTitle: 'Maddeler',
+    scaleNote: 'Yanıtlar: 1 = Kesinlikle katılmıyorum … 5 = Kesinlikle katılıyorum',
+    colIn: 'Ölçekte', colItem: 'Madde', colRev: 'Ters puanla', colR: 'Düzeltilmiş madde–toplam r', colDel: 'Madde silinirse α',
+    colRx: 'Ölçek toplamıyla r', colAdd: 'Madde geri eklenirse α',
+    rw: 'ters ifadeli', revScored: 'ters puanlandı',
+    flagLow: '0,30’un altında: maddeyi gözden geçirin',
+    flagNegWrong: 'negatif: puanlamayı kontrol edin',
+    flagNeg: 'negatif: diğer maddelerle ters yönde çalışıyor',
+    incLabel: i => `${i}. maddeyi ölçeğe dahil et`,
+    revLabel: i => `${i}. maddeyi ters puanla`,
+    heatTitle: 'Maddeler arası korelasyonlar',
+    heatHint: 'İki maddenin yanıtlarının birlikte nasıl değiştiğini görmek için bir hücreye dokunun.',
+    lgNeg: '−1 negatif', lgPos: '+1 pozitif',
+    pairTitle: (a, b) => `Madde ${a} × Madde ${b}`,
+    axis: i => `Madde ${i}`,
+    cellLabel: (a, b, r) => `${a}. ve ${b}. madde: r = ${r}`,
+    countTip: (c, a, x, b, y) => `${c} öğrenci: ${a}. madde = ${x}, ${b}. madde = ${y}`,
+    pairHint: {
+      forgot: 'Negatif r: bu maddelerden biri yanlış yönde puanlanmış. “Ters puanla” seçeneğini kontrol edin.',
+      neg: 'Negatif r: bir maddeye katılan öğrenciler diğerine katılmama eğiliminde.',
+      zero: 'Neredeyse ilişki yok: bir maddeye verilen yanıt, diğerine verilen yanıt hakkında pek bir şey söylemiyor.',
+      weak: 'Zayıf pozitif r: iki madde birlikte çok az değişiyor.',
+      pos: 'Pozitif r: bir maddeye katılan öğrenciler diğerine de katılma eğiliminde.',
+      na: 'r hesaplanamıyor: bu örneklemde maddelerden birine herkes aynı yanıtı vermiş.'
+    },
+    chTitle: 'Deneyin',
+    ch: [
+      { q: '2. madde için “Ters puanla” seçeneğini kapatın. Maddenin madde–toplam korelasyonuna ve α’ya ne oluyor?',
+        a: 'Ters puanlanmayan ters ifadeli bir madde, diğer maddelerle negatif ilişki gösterir ve α’yı düşürür. Böyle birkaç madde varsa α 0’ın altına bile inebilir.' },
+      { q: 'Bir madde α’yı düşürüyor. Bu maddeyi bulun ve ölçekten çıkarın.',
+        a: '5. madde aynı anda iki şey soruyor (çift yönlü madde). Madde–toplam korelasyonu 0’a yakın olduğu için madde çıkarılınca α yükseliyor.' },
+      { q: 'Ölçekte yalnızca 3 madde bırakın. α’ya ne oluyor?',
+        a: 'Madde sayısı azalınca, maddeler iyi olsa bile α genellikle düşer. α, maddeler arasındaki ilişkinin gücüne olduğu kadar madde sayısına da bağlıdır.' },
+      { q: 'N’yi 10 ya da 20 yapın ve 20 örneklem çekin. α ne kadar oynuyor?',
+        a: 'Küçük örneklemlerde α bir örneklemden diğerine çok değişebilir. Küçük bir pilot uygulamadan gelen α’yı temkinli yorumlayın.' },
+      { q: 'Rastgele hatayı “Çok düşük” yapın ve α’yı 0,95’in üzerine çıkarın. Bu her zaman iyi haber mi?',
+        a: 'Çok yüksek bir α, maddelerin aynı içeriği tekrar ettiğini gösterebilir. Yüksek tutarlılık, ölçeğin doğru şeyi ölçtüğünü (geçerliği) göstermez.' }
+    ],
+    done: 'Tamamlandı', todo: 'Henüz yapılmadı',
+    noteModel: 'Veri nasıl üretiliyor: Her simüle öğrencinin gizli bir tutum düzeyi (gerçek puanı) var. Her yanıt = gerçek puan × madde gücü + rastgele hata; sonuç 1–5 ölçeğine yuvarlanır. Ters ifadeli maddeler ters yönde yanıtlanır. α ölçeğindeki kesik çizgi evren değerini gösterir; bu değer çok büyük bir simüle örneklemden (N = 20.000) hesaplanır. Sayılar simülasyondur; gerçek öğrenci verisi değildir.',
+    noteRules: 'Bu derste kullanılan pratik kurallar: Yeni bir araştırma ölçeği için yaklaşık 0,70 ve üzeri α genellikle kabul edilebilir sayılır; yaklaşık 0,95’in üzeri bazı maddelerin birbirini tekrar ettiğine işaret edebilir; düzeltilmiş madde–toplam korelasyonunun yaklaşık 0,30’un altında olması, maddenin diğer maddelerle iyi uyuşmadığını düşündürür. Bir madde silindiğinde α yükseliyorsa o madde çıkarılmaya adaydır; ancak madde çıkarıldığında yapının önemli bir yönü kapsam dışında kalmamalıdır.'
+  }
+};
+
+/* ---------- state ---------- */
+let lang = 'en';
+const LANG_KEY = 'psyc3204.lang';
+const navTr = () => { try { return (navigator.language || '').toLowerCase().startsWith('tr'); } catch (e) { return false; } };
+(() => {
+  try { const p = new URLSearchParams(location.search).get('lang'); if (p === 'en' || p === 'tr') { lang = p; return; } } catch (e) { /* ignore */ }
+  try { const saved = localStorage.getItem(LANG_KEY); lang = (saved === 'en' || saved === 'tr') ? saved : (navTr() ? 'tr' : 'en'); }
+  catch (e) { lang = navTr() ? 'tr' : 'en'; }
+})();
+const t = () => T[lang];
+
+const defaults = () => ({
+  nIdx: 3, err: 2,
+  inc: ITEMS.map(() => true),
+  rev: ITEMS.map(it => it.rw),
+  seeds: START_SEEDS.slice(),
+  sel: [2, 0]
+});
+const state = Object.assign(defaults(), { done: [false, false, false, false, false] });
+const justDone = new Set();
+let last = null;
+
+/* ---------- simulation ---------- */
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let q = Math.imul(a ^ a >>> 15, 1 | a);
+    q = q + Math.imul(q ^ q >>> 7, 61 | q) ^ q;
+    return ((q ^ q >>> 14) >>> 0) / 4294967296;
+  };
+}
+function makeNormal(rng) {
+  return function () {
+    let u = 0;
+    while (u === 0) u = rng();
+    const v = rng();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  };
+}
+function generate(seed, N, m) {
+  const z = makeNormal(mulberry32(seed));
+  const X = new Uint8Array(N * K);
+  for (let n = 0; n < N; n++) {
+    const th = z();
+    for (let i = 0; i < K; i++) {
+      const it = ITEMS[i];
+      const l = Math.min(CAP, it.l * m);
+      const y = (it.rw ? -1 : 1) * l * th + Math.sqrt(1 - l * l) * z() + it.d;
+      let c = 1;
+      for (let q = 0; q < 4; q++) if (y > TAU[q]) c++;
+      X[n * K + i] = c;
+    }
+  }
+  return { X, N };
+}
+function covMatrix(d) {
+  const { X, N } = d;
+  const mu = new Float64Array(K);
+  for (let n = 0; n < N; n++) for (let i = 0; i < K; i++) mu[i] += X[n * K + i];
+  for (let i = 0; i < K; i++) mu[i] /= N;
+  const C = Array.from({ length: K }, () => new Float64Array(K));
+  for (let n = 0; n < N; n++) {
+    const o = n * K;
+    for (let i = 0; i < K; i++) {
+      const di = X[o + i] - mu[i];
+      for (let j = i; j < K; j++) C[i][j] += di * (X[o + j] - mu[j]);
+    }
+  }
+  const den = Math.max(1, N - 1);
+  for (let i = 0; i < K; i++) for (let j = i; j < K; j++) { C[i][j] /= den; C[j][i] = C[i][j]; }
+  return C;
+}
+// Reverse scoring (6 - x) keeps a variance and flips the sign of the covariances.
+function flipped(C, rev) {
+  return C.map((row, i) => Array.from(row, (v, j) => (rev[i] !== rev[j] ? -v : v)));
+}
+function alphaOf(C, S) {
+  const k = S.length;
+  if (k < 2) return NaN;
+  let sv = 0, tv = 0;
+  for (const i of S) { sv += C[i][i]; for (const j of S) tv += C[i][j]; }
+  if (!(tv > 1e-12)) return NaN;
+  return k / (k - 1) * (1 - sv / tv);
+}
+// Correlation between item i and the sum of the items in S (S must not contain i).
+function corrWith(C, i, S) {
+  if (!S.length) return NaN;
+  let cv = 0, vv = 0;
+  for (const j of S) { cv += C[i][j]; for (const l of S) vv += C[j][l]; }
+  const den = Math.sqrt(C[i][i] * vv);
+  return den > 1e-12 ? cv / den : NaN;
+}
+
+const cache = new Map();
+function sampleFor(seed) {
+  const N = N_STEPS[state.nIdx], m = ERR_M[state.err];
+  const key = seed + '|' + N + '|' + m;
+  let s = cache.get(key);
+  if (!s) {
+    const d = generate(seed, N, m);
+    s = { d, C: covMatrix(d) };
+    cache.set(key, s);
+    if (cache.size > 400) cache.delete(cache.keys().next().value);
+  }
+  return s;
+}
+const longCache = new Map();
+function longCov() {
+  const m = ERR_M[state.err];
+  if (!longCache.has(m)) longCache.set(m, covMatrix(generate(LONG_SEED, LONG_N, m)));
+  return longCache.get(m);
+}
+
+function compute() {
+  const S = [];
+  state.inc.forEach((v, i) => { if (v) S.push(i); });
+  const cur = sampleFor(state.seeds[state.seeds.length - 1]);
+  const C = flipped(cur.C, state.rev);
+  const a = alphaOf(C, S);
+  let sv = 0, tv = 0;
+  for (const i of S) { sv += C[i][i]; for (const j of S) tv += C[i][j]; }
+  const rows = ITEMS.map((_, i) => {
+    if (state.inc[i]) {
+      const rest = S.filter(j => j !== i);
+      return { r: corrWith(C, i, rest), alt: alphaOf(C, rest) };
+    }
+    return { r: corrWith(C, i, S), alt: alphaOf(C, S.concat([i])) };
+  });
+  const R = C.map((row, i) => row.map((v, j) => {
+    const den = Math.sqrt(C[i][i] * C[j][j]);
+    return den > 1e-12 ? v / den : NaN;
+  }));
+  const others = state.seeds.slice(0, -1).map(seed => ({ seed, a: alphaOf(flipped(sampleFor(seed).C, state.rev), S) }));
+  const longA = alphaOf(flipped(longCov(), state.rev), S);
+  return { S, k: S.length, N: cur.d.N, a, sv, tv, rows, R, cur, others, longA };
+}
+
+/* ---------- formatting ---------- */
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function fmt(v) {
+  if (v == null || !isFinite(v)) return '—';
+  let s = Math.abs(v).toFixed(2);
+  const zero = /^[0.]+$/.test(s);
+  if (lang === 'en') { if (s.startsWith('0.')) s = s.slice(1); }
+  else s = s.replace('.', ',');
+  return (v < 0 && !zero ? '−' : '') + s;
+}
+const fmtNum = v => (isFinite(v) ? (lang === 'tr' ? v.toFixed(2).replace('.', ',') : v.toFixed(2)) : '—');
+const tickLbl = k => (k === 0 ? '0' : k === 10 ? '1' : (lang === 'en' ? '.' + k : '0,' + k));
+const round2 = v => Math.round(v * 100) / 100;
+function statusOf(a) {
+  if (!isFinite(a)) return 'none';
+  const r = round2(a);
+  if (r < 0) return 'neg';
+  if (r < 0.6) return 'low';
+  if (r < 0.7) return 'mid';
+  if (r <= 0.95) return 'ok';
+  return 'high';
+}
+const hash = n => (Math.imul(n ^ (n >>> 16), 0x45d9f3b) >>> 0);
+
+/* ---------- icons ---------- */
+const TRI = c => `<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" style="color:var(${c})"><path d="M8 1.2c.42 0 .8.22 1 .58l6.2 11.1c.42.75-.12 1.67-.98 1.67H1.78c-.86 0-1.4-.92-.98-1.67L7 1.78c.2-.36.58-.58 1-.58z" fill="currentColor"/><path d="M8 5.4v4" style="stroke:var(--glyph-dark)" stroke-width="1.7" stroke-linecap="round"/><circle cx="8" cy="12" r="1" style="fill:var(--glyph-dark)"/></svg>`;
+const ICON = {
+  ok: '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" style="color:var(--good)"><circle cx="8" cy="8" r="7.3" fill="currentColor"/><path d="M4.6 8.2l2.3 2.3 4.5-4.8" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  mid: TRI('--warn'),
+  high: TRI('--warn'),
+  low: TRI('--serious'),
+  neg: '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" style="color:var(--crit)"><circle cx="8" cy="8" r="7.3" fill="currentColor"/><path d="M5.4 5.4l5.2 5.2M10.6 5.4l-5.2 5.2" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  none: '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" style="color:var(--muted)"><circle cx="8" cy="8" r="6.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 7.3v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="8" cy="4.9" r="1" fill="currentColor"/></svg>',
+  todo: '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" style="color:var(--line-strong)"><circle cx="8" cy="8" r="6.6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>'
+};
+ICON.done = ICON.ok;
+
+/* ---------- alpha card + scale ---------- */
+let scaleKey = '';
+const dotEls = new Map();
+function scaleGeo(W) {
+  const G = 30, padL = G + 16, padR = 14, yT = 34, hT = 12;
+  const inner = W - padL - padR;
+  const x = v => padL + Math.max(0, Math.min(1, v)) * inner;
+  return { W, G, padL, padR, yT, hT, inner, x, pos: v => (v < 0 ? G / 2 : x(v)) };
+}
+function scaleStatic(g) {
+  let s = `<svg width="${g.W}" height="104" viewBox="0 0 ${g.W} 104" role="img">`;
+  s += `<defs><clipPath id="trkClip"><rect x="${g.padL}" y="${g.yT}" width="${g.inner}" height="${g.hT}" rx="4"/></clipPath></defs>`;
+  s += `<rect class="band-low" x="0" y="${g.yT}" width="${g.G}" height="${g.hT}" rx="4"/>`;
+  s += `<g clip-path="url(#trkClip)">`;
+  [[0, .6, 'band-low'], [.6, .7, 'band-mid'], [.7, .95, 'band-ok'], [.95, 1, 'band-high']].forEach(([a0, a1, c], i) => {
+    const x0 = g.x(a0) + (i ? 1 : 0), x1 = g.x(a1) - (i < 3 ? 1 : 0);
+    s += `<rect class="${c}" x="${x0.toFixed(1)}" y="${g.yT}" width="${Math.max(0, x1 - x0).toFixed(1)}" height="${g.hT}"/>`;
+  });
+  s += `</g>`;
+  const span = g.inner / 10;
+  const show = span >= 24 ? () => true : k => k % 2 === 0;
+  for (let k = 0; k <= 10; k++) {
+    const xx = g.x(k / 10).toFixed(1);
+    s += `<line class="tickline" x1="${xx}" x2="${xx}" y1="${g.yT + g.hT + 2}" y2="${g.yT + g.hT + 6}"/>`;
+    if (show(k)) s += `<text x="${xx}" y="${g.yT + g.hT + 19}" text-anchor="middle">${tickLbl(k)}</text>`;
+  }
+  s += `<text x="${g.G / 2}" y="${g.yT + g.hT + 19}" text-anchor="middle">&lt;0</text>`;
+  s += `<line class="long-line" x1="0" x2="0" y1="${g.yT - 6}" y2="${g.yT + g.hT + 6}"/>`;
+  s += `<g class="dots"></g>`;
+  s += `<g class="cur"><line class="marker-line" x1="0" x2="0" y1="${g.yT - 4}" y2="${g.yT + g.hT + 4}"/><path class="marker" d="M-6.5 ${g.yT - 16}h13l-6.5 10z"/><text class="v-label" x="0" y="${g.yT - 21}" text-anchor="middle"></text></g>`;
+  return s + `</svg>`;
+}
+function drawScale(st) {
+  const box = $('#scale');
+  const W = Math.max(240, Math.round(box.clientWidth || 320));
+  const g = scaleGeo(W);
+  const key = W + '|' + lang;
+  if (key !== scaleKey) { box.innerHTML = scaleStatic(g); scaleKey = key; dotEls.clear(); }
+  const L = t();
+  const svg = box.querySelector('svg');
+  svg.setAttribute('aria-label', `${L.alphaLabel}: ${fmt(st.a)}. ${L.lgLong}: ${fmt(st.longA)}. ${rangeSentence(st)}`);
+  const longEl = svg.querySelector('.long-line');
+  if (isFinite(st.longA)) { longEl.style.display = ''; longEl.style.transform = `translateX(${g.pos(st.longA).toFixed(1)}px)`; }
+  else longEl.style.display = 'none';
+  const layer = svg.querySelector('.dots');
+  const keep = new Set();
+  st.others.forEach(o => {
+    if (!isFinite(o.a)) return;
+    keep.add(o.seed);
+    const h = hash(o.seed);
+    const cy = 72 + (h % 24);
+    const cx = g.pos(o.a) + (o.a < 0 ? ((h >>> 8) % 13) - 6 : 0);
+    const tf = `translate(${cx.toFixed(1)}px, ${cy}px)`;
+    let c = dotEls.get(o.seed);
+    if (!c) {
+      c = document.createElementNS(NS, 'circle');
+      c.setAttribute('class', 'sdot'); c.setAttribute('r', '3.6'); c.setAttribute('cx', '0'); c.setAttribute('cy', '0');
+      c.style.transition = 'none'; c.style.transform = tf;
+      layer.appendChild(c); dotEls.set(o.seed, c);
+      c.getBoundingClientRect();
+      c.style.transition = '';
+    } else c.style.transform = tf;
+  });
+  for (const [seed, c] of dotEls) if (!keep.has(seed)) { c.remove(); dotEls.delete(seed); }
+  const cur = svg.querySelector('.cur');
+  if (isFinite(st.a)) {
+    const cx = g.pos(st.a);
+    cur.style.display = '';
+    cur.style.transform = `translateX(${cx.toFixed(1)}px)`;
+    const txt = cur.querySelector('text');
+    txt.setAttribute('x', (Math.max(18, Math.min(W - 18, cx)) - cx).toFixed(1));
+    txt.textContent = fmt(st.a);
+  } else cur.style.display = 'none';
+}
+function rangeSentence(st) {
+  const L = t();
+  const vals = st.others.map(o => o.a).concat([st.a]).filter(v => isFinite(v));
+  if (st.others.length === 0 || vals.length < 2) return L.rangeOne;
+  return L.range(state.seeds.length, fmt(Math.min(...vals)), fmt(Math.max(...vals)));
+}
+function renderAlpha(st) {
+  const L = t();
+  const s = statusOf(st.a);
+  $('#alphaVal').textContent = fmt(st.a);
+  $('#alphaStatus').innerHTML = ICON[s] + `<span>${esc(L.st[s])}</span>`;
+  $('#alphaMeta').textContent = L.meta(st.k, st.N);
+  $('#statusNote').textContent = L.stNote[s];
+  $('#rangeText').textContent = rangeSentence(st);
+  $('#formulaLine').textContent = st.k >= 2
+    ? `α = ${st.k}/${st.k - 1} × (1 − ${fmtNum(st.sv)} / ${fmtNum(st.tv)}) = ${fmt(st.a)}`
+    : 'α = —';
+  drawScale(st);
+}
+function renderMini(st) {
+  const L = t();
+  const s = statusOf(st.a);
+  $('#mbVal').textContent = 'α = ' + fmt(st.a);
+  $('#mbStatus').innerHTML = ICON[s] + `<span>${esc(L.st[s])}</span>`;
+  $('#mbMeta').textContent = L.meta(st.k, st.N);
+}
+
+/* ---------- items ---------- */
+function buildItems() {
+  const ol = $('#itemList');
+  ol.innerHTML = ITEMS.map((it, i) => {
+    const n = i + 1;
+    return `<li class="item" id="item-${n}">
+      <div class="i-inc"><input type="checkbox" id="inc-${n}" checked></div>
+      <div class="i-num" aria-hidden="true">${n}</div>
+      <div class="i-text"><span class="i-stmt"></span>${it.rw ? '<span class="tag"></span>' : ''}</div>
+      <div class="i-met">
+        <div class="m-rev"><span class="m-lbl"></span><label class="switch"><input type="checkbox" role="switch" id="rev-${n}"><span class="sw" aria-hidden="true"></span></label></div>
+        <div class="m-r"><span class="m-lbl"></span><div class="rbar"><div class="rtrack" aria-hidden="true"><span class="zero"></span><span class="thr"></span><span class="rfill"></span></div><span class="rval"></span></div><div class="flag" hidden></div></div>
+        <div class="m-del"><span class="m-lbl"></span><div class="adel"><span class="aval"></span><span class="delta"></span></div></div>
+      </div>
+    </li>`;
+  }).join('');
+  ITEMS.forEach((_, i) => {
+    $('#inc-' + (i + 1)).addEventListener('change', e => { state.inc[i] = e.target.checked; render(); });
+    $('#rev-' + (i + 1)).addEventListener('change', e => { state.rev[i] = e.target.checked; render(); });
+  });
+}
+function renderItems(st) {
+  const L = t();
+  ITEMS.forEach((it, i) => {
+    const n = i + 1;
+    const li = $('#item-' + n);
+    const inc = state.inc[i];
+    const row = st.rows[i];
+    li.classList.toggle('excluded', !inc);
+    const cb = $('#inc-' + n); cb.checked = inc; cb.setAttribute('aria-label', L.incLabel(n));
+    const sw = $('#rev-' + n); sw.checked = state.rev[i]; sw.setAttribute('aria-label', L.revLabel(n));
+    li.querySelector('.i-stmt').textContent = it[lang];
+    const tag = li.querySelector('.tag');
+    if (tag) tag.textContent = L.rw;
+    const lbls = li.querySelectorAll('.m-lbl');
+    lbls[0].textContent = L.colRev;
+    lbls[1].textContent = inc ? L.colR : L.colRx;
+    lbls[2].textContent = inc ? L.colDel : L.colAdd;
+    const r = row.r;
+    const fill = li.querySelector('.rfill');
+    if (isFinite(r)) {
+      const w = Math.min(1, Math.abs(r)) * 50;
+      fill.style.left = (r >= 0 ? 50 : 50 - w) + '%';
+      fill.style.width = w + '%';
+      fill.className = 'rfill ' + (r >= 0 ? 'pos' : 'neg');
+    } else { fill.style.left = '50%'; fill.style.width = '0%'; }
+    li.querySelector('.rval').textContent = fmt(r);
+    const flag = li.querySelector('.flag');
+    const rr = isFinite(r) ? round2(r) : NaN;
+    if (inc && isFinite(rr) && rr < 0) { flag.hidden = false; flag.innerHTML = ICON.neg + `<span>${esc(it.rw !== state.rev[i] ? L.flagNegWrong : L.flagNeg)}</span>`; }
+    else if (inc && isFinite(rr) && rr < 0.30) { flag.hidden = false; flag.innerHTML = ICON.mid + `<span>${esc(L.flagLow)}</span>`; }
+    else { flag.hidden = true; flag.innerHTML = ''; }
+    li.querySelector('.aval').textContent = fmt(row.alt);
+    const dEl = li.querySelector('.delta');
+    const d = round2(row.alt) - round2(st.a);
+    if (isFinite(d)) {
+      const dr = round2(d);
+      dEl.hidden = false;
+      dEl.textContent = dr === 0 ? '±0' : (dr > 0 ? '▲ +' : '▼ −') + fmt(Math.abs(dr));
+      dEl.className = 'delta' + (inc && dr > 0 ? ' up' : '');
+    } else { dEl.hidden = true; }
+  });
+}
+
+/* ---------- heatmap ---------- */
+const HAS_MIX = !!(window.CSS && CSS.supports && CSS.supports('color', 'color-mix(in oklab, red 50%, blue)'));
+function hexRgb(h) {
+  h = String(h).trim().replace('#', '');
+  if (h.length === 3) h = h.split('').map(c => c + c).join('');
+  return [0, 2, 4].map(k => parseInt(h.slice(k, k + 2), 16) || 0);
+}
+function cellFill(r) {
+  if (!isFinite(r)) return 'var(--surface-2)';
+  const p = Math.round(Math.min(1, Math.abs(r)) * 100);
+  const pole = r >= 0 ? '--div-pos' : '--div-neg';
+  if (HAS_MIX) return `color-mix(in oklab, var(${pole}) ${p}%, var(--div-mid))`;
+  const cs = getComputedStyle(document.documentElement);
+  const A = hexRgb(cs.getPropertyValue(pole)), B = hexRgb(cs.getPropertyValue('--div-mid'));
+  return `rgb(${A.map((v, k) => Math.round(v * p / 100 + B[k] * (1 - p / 100))).join(',')})`;
+}
+function renderHeat(st) {
+  const L = t();
+  const cs = 48, lab = 24, n = K - 1;
+  const W = lab + n * cs + 2, H = n * cs + 24;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="group" aria-label="${esc(L.heatTitle)}">`;
+  for (let i = 1; i < K; i++) {
+    const y = (i - 1) * cs;
+    s += `<text class="hl-label${state.inc[i] ? '' : ' dim'}" x="${lab - 7}" y="${y + cs / 2}" text-anchor="end" dominant-baseline="central">${i + 1}</text>`;
+    for (let j = 0; j < i; j++) {
+      const x = lab + j * cs;
+      const r = st.R[i][j];
+      const dim = !(state.inc[i] && state.inc[j]);
+      const sel = state.sel[0] === i && state.sel[1] === j;
+      const lbl = L.cellLabel(j + 1, i + 1, fmt(r));
+      s += `<g class="cell-g${dim ? ' dim' : ''}" data-i="${i}" data-j="${j}" tabindex="0" role="button" aria-pressed="${sel}" aria-label="${esc(lbl)}"><title>${esc(lbl)}</title>`
+        + `<rect class="cell" x="${x + 1}" y="${y + 1}" width="${cs - 2}" height="${cs - 2}" rx="3" style="fill:${cellFill(r)}"/>`
+        + `<text class="ctext" x="${x + cs / 2}" y="${y + cs / 2}">${fmt(r)}</text></g>`;
+    }
+  }
+  for (let j = 0; j < n; j++) {
+    s += `<text class="hl-label${state.inc[j] ? '' : ' dim'}" x="${lab + j * cs + cs / 2}" y="${n * cs + 16}" text-anchor="middle">${j + 1}</text>`;
+  }
+  const [si, sj] = state.sel;
+  s += `<rect class="sel-ring" x="${lab + sj * cs + 1}" y="${(si - 1) * cs + 1}" width="${cs - 2}" height="${cs - 2}" rx="3"/>`;
+  $('#heatmap').innerHTML = s + `</svg>`;
+}
+function renderPair(st) {
+  const L = t();
+  const [i, j] = state.sel;
+  const r = st.R[i][j];
+  const { X, N } = st.cur.d;
+  const cnt = Array.from({ length: 5 }, () => new Array(5).fill(0));
+  for (let q = 0; q < N; q++) {
+    let xv = X[q * K + j], yv = X[q * K + i];
+    if (state.rev[j]) xv = 6 - xv;
+    if (state.rev[i]) yv = 6 - yv;
+    cnt[yv - 1][xv - 1]++;
+  }
+  const max = Math.max(1, ...cnt.flat());
+  const c = 38, ml = 40, mt = 6, mr = 6, mb = 40;
+  const W = ml + 5 * c + mr, H = mt + 5 * c + mb;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(L.pairTitle(j + 1, i + 1))}">`;
+  for (let a = 0; a < 5; a++) for (let b = 0; b < 5; b++) {
+    s += `<rect class="pgrid" x="${ml + a * c + 1}" y="${mt + b * c + 1}" width="${c - 2}" height="${c - 2}" rx="3"/>`;
+  }
+  for (let yv = 1; yv <= 5; yv++) for (let xv = 1; xv <= 5; xv++) {
+    const k = cnt[yv - 1][xv - 1];
+    if (!k) continue;
+    const rad = Math.max(2.5, Math.sqrt(k / max) * (c / 2 - 2));
+    const cx = ml + (xv - 1) * c + c / 2, cy = mt + (5 - yv) * c + c / 2;
+    s += `<g><title>${esc(L.countTip(k, j + 1, xv, i + 1, yv))}</title><circle class="bub" cx="${cx}" cy="${cy}" r="${rad.toFixed(1)}"/>`
+      + (rad >= 9.5 ? `<text class="bub-t" x="${cx}" y="${cy}">${k}</text>` : '') + `</g>`;
+  }
+  for (let v = 1; v <= 5; v++) {
+    s += `<text x="${ml + (v - 1) * c + c / 2}" y="${mt + 5 * c + 14}" text-anchor="middle">${v}</text>`;
+    s += `<text x="${ml - 8}" y="${mt + (5 - v) * c + c / 2}" text-anchor="end" dominant-baseline="central">${v}</text>`;
+  }
+  s += `<text class="ax-title" x="${ml + 2.5 * c}" y="${H - 5}" text-anchor="middle">${esc(L.axis(j + 1))}</text>`;
+  s += `<text class="ax-title" transform="translate(12 ${mt + 2.5 * c}) rotate(-90)" text-anchor="middle">${esc(L.axis(i + 1))}</text>`;
+  s += `</svg>`;
+  const wrong = x => ITEMS[x].rw !== state.rev[x];
+  let hint;
+  if (!isFinite(r)) hint = L.pairHint.na;
+  else if (r < -0.1 && (wrong(i) || wrong(j))) hint = L.pairHint.forgot;
+  else if (r < -0.1) hint = L.pairHint.neg;
+  else if (Math.abs(r) < 0.1) hint = L.pairHint.zero;
+  else if (r < 0.3) hint = L.pairHint.weak;
+  else hint = L.pairHint.pos;
+  const note = x => (state.rev[x] ? ` <span class="tag">${esc(L.revScored)}</span>` : '');
+  $('#pair').innerHTML = `<div class="pair-head"><h3>${esc(L.pairTitle(j + 1, i + 1))}</h3><div class="pair-r mono">r = ${fmt(r)}</div></div>`
+    + `<ul class="pair-items"><li><b>${j + 1}</b>${esc(ITEMS[j][lang])}${note(j)}</li><li><b>${i + 1}</b>${esc(ITEMS[i][lang])}${note(i)}</li></ul>`
+    + `<div class="pair-plot">${s}</div><p class="hint-box">${esc(hint)}</p>`;
+}
+function focusCell(i, j) {
+  const el = document.querySelector(`#heatmap .cell-g[data-i="${i}"][data-j="${j}"]`);
+  if (el) el.focus();
+}
+function selectCell(i, j, refocus) {
+  state.sel = [i, j];
+  renderHeat(last);
+  renderPair(last);
+  if (refocus) focusCell(i, j);
+}
+
+/* ---------- challenges ---------- */
+function checkChallenges(st) {
+  const conds = [
+    state.inc[1] && !state.rev[1],
+    !state.inc[4] && state.inc.every((v, i) => i === 4 || v),
+    st.k === 3,
+    N_STEPS[state.nIdx] <= 20 && state.seeds.length >= 20,
+    isFinite(st.a) && st.a > 0.95
+  ];
+  conds.forEach((ok, k) => { if (ok && !state.done[k]) { state.done[k] = true; justDone.add(k); } });
+}
+function renderChallenges() {
+  const L = t();
+  $('#chList').innerHTML = L.ch.map((c, k) => {
+    const d = state.done[k];
+    return `<li class="ch${d ? ' done' : ''}${justDone.has(k) ? ' just-done' : ''}">`
+      + `<span class="ch-ico">${d ? ICON.done : ICON.todo}<span class="sr-only">${esc(d ? L.done : L.todo)}</span></span>`
+      + `<span class="ch-n">${k + 1}</span><span class="ch-q">${esc(c.q)}</span>`
+      + (d ? `<p class="ch-a">${esc(c.a)}</p>` : '') + `</li>`;
+  }).join('');
+  justDone.clear();
+}
+
+/* ---------- main render ---------- */
+function render() {
+  const st = compute();
+  last = st;
+  checkChallenges(st);
+  renderAlpha(st);
+  renderMini(st);
+  renderItems(st);
+  renderHeat(st);
+  renderPair(st);
+  renderChallenges();
+  const L = t();
+  $('#nOut').textContent = N_STEPS[state.nIdx];
+  $('#eOut').textContent = L.eLevels[state.err];
+  $('#drawnText').textContent = L.drawn(state.seeds.length);
+}
+function applyStatic() {
+  const L = t();
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = L[el.dataset.i18n];
+    if (typeof v === 'string') el.textContent = v;
+  });
+  $('#wrap').lang = lang;
+  $('#minibar').lang = lang;
+  $('#langGroup').setAttribute('aria-label', L.langGroup);
+  $('#langEn').setAttribute('aria-pressed', String(lang === 'en'));
+  $('#langTr').setAttribute('aria-pressed', String(lang === 'tr'));
+  $('#lgNeg').textContent = L.lgNeg;
+  $('#backText').textContent = lang === 'tr' ? 'Tüm haftalar' : 'All weeks';
+  $('#backLink').setAttribute('href', 'index.html?lang=' + lang);
+  document.documentElement.lang = lang;
+  if (L.docTitle) document.title = L.docTitle;
+  $('#lgPos').textContent = L.lgPos;
+}
+function setLang(l) {
+  if (l === lang) return;
+  lang = l;
+  try { localStorage.setItem(LANG_KEY, l); } catch (e) { /* storage unavailable */ }
+  try { const u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u.toString()); } catch (e) { /* file:// */ }
+  applyStatic();
+  render();
+}
+function newSeed() { return 1 + Math.floor(Math.random() * 2147483000); }
+function pushSeeds(n) {
+  for (let q = 0; q < n; q++) state.seeds.push(newSeed());
+  if (state.seeds.length > MAX_SEEDS) state.seeds.splice(0, state.seeds.length - MAX_SEEDS);
+  render();
+}
+
+/* ---------- wiring ---------- */
+function init() {
+  $('#nTicks').innerHTML = N_STEPS.map((v, k) => `<span style="left:calc(10px + (100% - 20px) * ${k} / ${N_STEPS.length - 1})">${v}</span>`).join('');
+  buildItems();
+  applyStatic();
+  $('#nRange').value = state.nIdx;
+  $('#eRange').value = state.err;
+  $('#nRange').addEventListener('input', e => { state.nIdx = +e.target.value; render(); });
+  $('#eRange').addEventListener('input', e => { state.err = +e.target.value; render(); });
+  $('#btnNew').addEventListener('click', () => pushSeeds(1));
+  $('#btn20').addEventListener('click', () => pushSeeds(20));
+  $('#btnReset').addEventListener('click', () => {
+    Object.assign(state, defaults());
+    $('#nRange').value = state.nIdx;
+    $('#eRange').value = state.err;
+    render();
+  });
+  $('#langEn').addEventListener('click', () => setLang('en'));
+  $('#langTr').addEventListener('click', () => setLang('tr'));
+  const hm = $('#heatmap');
+  hm.addEventListener('click', e => {
+    const g = e.target.closest('.cell-g');
+    if (g) selectCell(+g.dataset.i, +g.dataset.j, false);
+  });
+  hm.addEventListener('keydown', e => {
+    const g = e.target.closest('.cell-g');
+    if (!g) return;
+    const i = +g.dataset.i, j = +g.dataset.j;
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectCell(i, j, true); return; }
+    const mv = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] }[e.key];
+    if (!mv) return;
+    e.preventDefault();
+    const ni = i + mv[0], nj = j + mv[1];
+    if (ni >= 1 && ni < K && nj >= 0 && nj < ni) focusCell(ni, nj);
+  });
+  render();
+  if ('ResizeObserver' in window) {
+    let w = 0;
+    new ResizeObserver(entries => {
+      const nw = Math.round(entries[0].contentRect.width);
+      if (nw !== w) { w = nw; if (last) drawScale(last); }
+    }).observe($('#scale'));
+  }
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([en]) => {
+      $('#minibar').hidden = en.isIntersecting || en.boundingClientRect.top > 0;
+    }, { threshold: 0 }).observe($('#acTop'));
+  }
+  if (!HAS_MIX) {
+    const redo = () => { if (last) renderHeat(last); };
+    try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', redo); } catch (e) { /* older browsers */ }
+    new MutationObserver(redo).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  }
+  window.__alphaLab = { state, compute, generate, covMatrix, render, setLang };
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+else init();
+})();
+</script>
+
+</body>
+</html>

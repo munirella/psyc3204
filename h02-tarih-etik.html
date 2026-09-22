@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#4a3aa7">
+<title>Tarih ve Etik</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%234a3aa7%22%2F%3E%3Cpath%20d%3D%22M18%2044h28M22%2044V26M32%2044V18M42%2044V32%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f2f2f6;
+  --surface:#fdfdfe;
+  --surface-2:#ebebf1;
+  --surface-3:#dfdfe8;
+  --ink:#14131b;
+  --ink-2:#4a4957;
+  --muted:#65636f;
+  --line:#e0dfe7;
+  --line-strong:#c3c2ce;
+  --accent:#4a3aa7;
+  --accent-hover:#3c2f8e;
+  --accent-ink:#ffffff;
+  --accent-soft:#e9e6f8;
+  --good:#0ca30c;
+  --good-text:#006300;
+  --good-soft:#e1f3e1;
+  --crit:#d03b3b;
+  --crit-text:#a82626;
+  --crit-soft:#fbe5e5;
+  --warn:#fab219;
+  --warn-soft:#fdf0cc;
+  --series-1:#2a78d6;
+  --series-2:#eb6834;
+  --stage:#15141c;
+  --stage-ink:#f3f3f7;
+  --shadow:0 1px 2px rgba(20,19,27,.05),0 8px 24px rgba(20,19,27,.07);
+  --radius:16px;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Roboto Mono",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0f0f14;
+    --surface:#18181f;
+    --surface-2:#22222b;
+    --surface-3:#2e2e39;
+    --ink:#f3f3f7;
+    --ink-2:#c4c3cf;
+    --muted:#9896a6;
+    --line:#2b2b35;
+    --line-strong:#41414d;
+    --accent:#9d93ee;
+    --accent-hover:#b3abf3;
+    --accent-ink:#14131b;
+    --accent-soft:#2b2847;
+    --good-text:#5fd35f;
+    --good-soft:#17301a;
+    --crit-text:#ff8f8f;
+    --crit-soft:#3a1d20;
+    --warn-soft:#3b3119;
+    --series-1:#3987e5;
+    --series-2:#d95926;
+    --stage:#0b0b10;
+    --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0f0f14;
+  --surface:#18181f;
+  --surface-2:#22222b;
+  --surface-3:#2e2e39;
+  --ink:#f3f3f7;
+  --ink-2:#c4c3cf;
+  --muted:#9896a6;
+  --line:#2b2b35;
+  --line-strong:#41414d;
+  --accent:#9d93ee;
+  --accent-hover:#b3abf3;
+  --accent-ink:#14131b;
+  --accent-soft:#2b2847;
+  --good-text:#5fd35f;
+  --good-soft:#17301a;
+  --crit-text:#ff8f8f;
+  --crit-soft:#3a1d20;
+  --warn-soft:#3b3119;
+  --series-1:#3987e5;
+  --series-2:#d95926;
+  --stage:#0b0b10;
+  --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top,0px)}
+[hidden]{display:none!important}
+h1,h2,h3{margin:0;text-wrap:balance;line-height:1.2}
+p{margin:0}
+ul,ol{margin:0}
+button,input,select{font:inherit;color:inherit}
+button{touch-action:manipulation}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:680px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);text-decoration:none;font-weight:600;font-size:14px;min-height:40px;padding:0 4px;border-radius:8px}
+.back:hover{color:var(--ink)}
+.back svg{width:18px;height:18px}
+.lang{display:inline-flex;border:1px solid var(--line-strong);border-radius:999px;padding:2px;background:var(--surface)}
+.lang button{border:0;background:transparent;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.05em;cursor:pointer;color:var(--ink-2);min-height:34px;min-width:44px}
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+
+/* page */
+.app{max-width:680px;margin:0 auto;padding-inline:16px;padding-block:18px 48px;display:grid;gap:18px}
+.head{display:grid;gap:6px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(26px,7vw,34px);font-weight:750;letter-spacing:-.015em}
+.lead{color:var(--ink-2);font-size:16px}
+.card,[id^="quiz"]{scroll-margin-top:72px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:grid;gap:14px}
+.card h2{font-size:19px;font-weight:700}
+.card h3{font-size:16px;font-weight:700}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.note{font-size:14px;color:var(--ink-2);background:var(--surface-2);border-radius:12px;padding:10px 12px}
+.foot{max-width:680px;margin:0 auto;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 28px);font-size:13px;color:var(--muted)}
+.list{padding-left:20px;display:grid;gap:6px}
+
+/* buttons */
+.btn{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:12px;padding:10px 16px;min-height:48px;font-weight:650;font-size:16px;cursor:pointer;text-decoration:none;transition:background-color .15s,border-color .15s}
+.btn:hover{background:var(--surface-2)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--ink-2)}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.row.end{justify-content:flex-end}
+.row.between{justify-content:space-between}
+
+/* segmented tabs */
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;background:var(--surface-2);border-radius:14px;padding:4px}
+.seg button{border:0;background:transparent;border-radius:10px;padding:8px 6px;min-height:48px;font-size:14px;font-weight:650;color:var(--ink-2);cursor:pointer;line-height:1.2}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.seg .n{display:block;font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+/* quiz */
+.progress{display:grid;gap:6px}
+.progress-top{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);font-weight:600}
+.bar{height:6px;background:var(--surface-2);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .3s}
+.q-text{font-size:18px;font-weight:600;line-height:1.4}
+.q-sub{font-size:15px;color:var(--ink-2)}
+.choices{display:grid;gap:10px}
+.choice{appearance:none;text-align:left;width:100%;display:flex;align-items:center;gap:12px;border:1.5px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:14px;padding:12px 14px;min-height:56px;font-size:16px;font-weight:550;cursor:pointer;line-height:1.35}
+.choice:hover{border-color:var(--accent)}
+.choice .mark{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line-strong);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--muted)}
+.choice[disabled]{cursor:default}
+.choice.correct{border-color:var(--good);background:var(--good-soft)}
+.choice.correct .mark{background:var(--good);border-color:var(--good);color:#fff}
+.choice.wrong{border-color:var(--crit);background:var(--crit-soft)}
+.choice.wrong .mark{background:var(--crit);border-color:var(--crit);color:#fff}
+.choice.dim{opacity:.6}
+.feedback{border-radius:14px;padding:12px 14px;display:grid;gap:4px;font-size:15px}
+.feedback.ok{background:var(--good-soft)}
+.feedback.no{background:var(--crit-soft)}
+.feedback.info{background:var(--surface-2)}
+.feedback b{font-size:16px}
+.feedback.ok b{color:var(--good-text)}
+.feedback.no b{color:var(--crit-text)}
+.score{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.score .big{font-family:var(--mono);font-size:44px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.review{list-style:none;padding:0;display:grid;border-top:1px solid var(--line)}
+.review li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.review .ans{color:var(--ink-2);font-size:14px}
+.ico{width:20px;height:20px;flex:none}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
+
+.tl-picked{list-style:none;margin:0;padding:0;display:grid;gap:8px;counter-reset:tl}
+.tl-picked:empty{display:none}
+.tl-item{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:center;background:var(--accent-soft);border-radius:12px;padding:10px 12px;font-weight:600}
+.tl-item .pos{font-family:var(--mono);font-weight:700;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);font-size:14px}
+.tl-item.good{background:var(--good-soft)}
+.tl-item.good .pos{background:var(--good);color:#fff}
+.tl-item.bad{background:var(--crit-soft)}
+.tl-item.bad .pos{background:var(--crit);color:#fff}
+.tl-item .yr{display:block;font-family:var(--mono);font-size:13px;font-weight:600;color:var(--ink-2)}
+.tl-pool{display:grid;gap:8px}
+.tl-pool:empty{display:none}
+.tl-opt{appearance:none;text-align:left;border:1.5px dashed var(--line-strong);background:var(--surface);color:var(--ink);border-radius:12px;padding:12px 14px;min-height:52px;font-size:16px;font-weight:550;cursor:pointer}
+.tl-opt:hover{border-color:var(--accent)}
+.answer-list{list-style:none;margin:0;padding:0;display:grid;border-top:1px solid var(--line)}
+.answer-list li{display:grid;grid-template-columns:86px minmax(0,1fr);gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.answer-list .yr{font-family:var(--mono);font-weight:700}
+.answer-list .nt{display:block;font-size:14px;color:var(--ink-2)}
+.rights{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.rights li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;align-items:center;background:var(--surface-2);border-radius:12px;padding:10px 12px}
+.rights .k{font-family:var(--mono);font-weight:700;color:var(--accent)}
+.sep{border:0;border-top:1px solid var(--line);margin:4px 0}
+
+</style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-in"><a class="back" href="index.html" data-keep-lang><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5L7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="back">Tüm haftalar</span></a><div class="lang" role="group" aria-label="Language / Dil"><button type="button" data-lang-btn="tr" lang="tr" aria-pressed="false">TR</button><button type="button" data-lang-btn="en" lang="en" aria-pressed="false">EN</button></div></div></div>
+<main class="app">
+  <header class="head">
+    <p class="eyebrow" data-t="eyebrow"></p>
+    <h1 data-t="h1"></h1>
+    <p class="lead" data-t="lead"></p>
+  </header>
+  <nav class="seg" role="tablist" aria-label="Parts">
+    <button type="button" role="tab" id="tab-p1" data-panel="p1" aria-controls="p1"><span class="n">1</span><span data-t="tab1"></span></button>
+    <button type="button" role="tab" id="tab-p2" data-panel="p2" aria-controls="p2"><span class="n">2</span><span data-t="tab2"></span></button>
+    <button type="button" role="tab" id="tab-p3" data-panel="p3" aria-controls="p3"><span class="n">3</span><span data-t="tab3"></span></button>
+  </nav>
+
+  <section id="p1" role="tabpanel" aria-labelledby="tab-p1" class="card">
+    <h2 data-t="tlTitle"></h2>
+    <p data-t="tlHow"></p>
+    <ol class="tl-picked" id="tlPicked"></ol>
+    <div class="tl-pool" id="tlPool"></div>
+    <div class="row">
+      <button type="button" class="btn" id="tlUndo" data-t="undo"></button>
+      <button type="button" class="btn ghost" id="tlReset" data-t="reset"></button>
+      <button type="button" class="btn primary" id="tlCheck" data-t="check"></button>
+    </div>
+    <div id="tlResult" aria-live="polite"></div>
+  </section>
+
+  <section id="p2" role="tabpanel" aria-labelledby="tab-p2" class="card">
+    <h2 data-t="rightsTitle"></h2>
+    <p data-t="rightsLead"></p>
+    <ul class="rights" id="rights"></ul>
+    <p class="small muted" data-t="rightsSource"></p>
+    <hr class="sep">
+    <div id="quizEthics"></div>
+  </section>
+
+  <section id="p3" role="tabpanel" aria-labelledby="tab-p3" class="card">
+    <h2 data-t="biasTitle"></h2>
+    <p data-t="biasLead"></p>
+    <div id="quizBias"></div>
+  </section>
+</main>
+<footer class="foot"><p data-t="privacy"></p></footer>
+
+<script>
+/* PSYC3204 phone-app kit: language, helpers, tabs, quiz */
+const Kit = (() => {
+  'use strict';
+  const KEY = 'psyc3204.lang';
+  const subs = [];
+  let lang = 'tr';
+  try {
+    const p = new URLSearchParams(location.search).get('lang');
+    if (p === 'tr' || p === 'en') lang = p;
+    else {
+      let s = null;
+      try { s = localStorage.getItem(KEY); } catch (e) { s = null; }
+      if (s === 'tr' || s === 'en') lang = s;
+      else lang = (navigator.language || '').toLowerCase().startsWith('tr') ? 'tr' : 'en';
+    }
+  } catch (e) { lang = 'tr'; }
+
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const t = v => (v == null ? '' : typeof v === 'string' ? v : (v[lang] != null ? v[lang] : (v.en || '')));
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+
+  function apply() {
+    document.documentElement.lang = lang;
+    const S = (window.STR && window.STR[lang]) || {};
+    $$('[data-t]').forEach(el => { const v = S[el.dataset.t]; if (typeof v === 'string') el.textContent = v; });
+    $$('[data-lang-btn]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.langBtn === lang)));
+    $$('a[data-keep-lang]').forEach(a => {
+      const href = a.getAttribute('href') || '';
+      const [base, hash] = href.split('#');
+      a.setAttribute('href', base.split('?')[0] + '?lang=' + lang + (hash ? '#' + hash : ''));
+    });
+    if (S.docTitle) document.title = S.docTitle;
+  }
+  function setLang(l) {
+    if (l === lang) return;
+    lang = l;
+    try { localStorage.setItem(KEY, l); } catch (e) { /* storage unavailable */ }
+    try { const u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u.toString()); } catch (e) { /* file:// or sandbox */ }
+    apply();
+    subs.forEach(f => { try { f(l); } catch (e) { console.error(e); } });
+  }
+  function onLang(f) { subs.push(f); }
+
+  function shuffle(a, rnd) {
+    const r = rnd || Math.random;
+    const b = a.slice();
+    for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; }
+    return b;
+  }
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      let q = Math.imul(a ^ a >>> 15, 1 | a);
+      q = q + Math.imul(q ^ q >>> 7, 61 | q) ^ q;
+      return ((q ^ q >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+  };
+
+  const ICON = {
+    ok: '<svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" style="fill:var(--good)"/><path d="M5.8 10.3l2.8 2.8 5.6-6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    no: '<svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" style="fill:var(--crit)"/><path d="M6.8 6.8l6.4 6.4M13.2 6.8l-6.4 6.4" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>',
+    info: '<svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2" fill="none" style="stroke:var(--muted)" stroke-width="1.6"/><path d="M10 9v5" style="stroke:var(--muted)" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="6.3" r="1.2" style="fill:var(--muted)"/></svg>'
+  };
+
+  /* Tabs: buttons [role=tab][data-panel]; remembers the part in the URL hash (#p1, #p2...) */
+  function tabs(nav, onChange) {
+    const btns = $$('[role="tab"]', nav);
+    function select(id, push) {
+      btns.forEach(b => {
+        const on = b.dataset.panel === id;
+        b.setAttribute('aria-selected', String(on));
+        b.tabIndex = on ? 0 : -1;
+        const p = document.getElementById(b.dataset.panel);
+        if (p) p.hidden = !on;
+      });
+      if (push) { try { history.replaceState(null, '', '#' + id); } catch (e) { /* ignore */ } }
+      if (onChange) onChange(id);
+    }
+    btns.forEach((b, k) => {
+      b.addEventListener('click', () => { select(b.dataset.panel, true); });
+      b.addEventListener('keydown', e => {
+        const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        const nb = btns[(k + d + btns.length) % btns.length];
+        nb.focus(); select(nb.dataset.panel, true);
+      });
+    });
+    const h = (location.hash || '').slice(1);
+    select(btns.some(b => b.dataset.panel === h) ? h : btns[0].dataset.panel, false);
+    return { select };
+  }
+
+  /* Quiz: one question at a time, instant feedback, summary with review */
+  function quiz(root, cfg) {
+    const items = cfg.items;
+    const L = cfg.labels;
+    const st = { i: 0, picks: new Array(items.length).fill(null) };
+    function score() { return st.picks.reduce((s, p, k) => s + (p === items[k].answer ? 1 : 0), 0); }
+    function render(focusFirst) {
+      if (st.i >= items.length) return renderSummary();
+      const it = items[st.i];
+      const pick = st.picks[st.i];
+      const answered = pick !== null;
+      const opts = it.options || cfg.options;
+      let h = `<div class="progress"><div class="progress-top"><span>${esc(t(L.question))} ${st.i + 1} / ${items.length}</span><span>${esc(t(L.correctSoFar))}: ${score()}</span></div><div class="bar"><i style="width:${(st.i / items.length) * 100}%"></i></div></div>`;
+      if (it.pre) h += `<p class="q-sub">${esc(t(it.pre))}</p>`;
+      h += `<p class="q-text" tabindex="-1">${esc(t(it.q))}</p>`;
+      if (cfg.prompt) h += `<p class="q-sub">${esc(t(cfg.prompt))}</p>`;
+      h += `<div class="choices">`;
+      opts.forEach((o, k) => {
+        let cls = 'choice', mark = String.fromCharCode(65 + k);
+        if (answered) {
+          if (k === it.answer) { cls += ' correct'; mark = '✓'; }
+          else if (k === pick) { cls += ' wrong'; mark = '✗'; }
+          else cls += ' dim';
+        }
+        h += `<button type="button" class="${cls}" data-k="${k}"${answered ? ' disabled' : ''}><span class="mark" aria-hidden="true">${mark}</span><span>${esc(t(o))}</span></button>`;
+      });
+      h += `</div>`;
+      if (answered) {
+        const ok = pick === it.answer;
+        const head = ok ? t(L.right) : t(L.notQuite) + ' ' + t(L.bestAnswer) + ': ' + t(opts[it.answer]) + '.';
+        h += `<div class="feedback ${ok ? 'ok' : 'no'}" role="status"><b>${esc(head)}</b><span>${esc(t(it.explain))}</span></div>`;
+        h += `<div class="row end"><button type="button" class="btn primary" data-next>${esc(t(st.i === items.length - 1 ? L.finish : L.next))}</button></div>`;
+      }
+      root.innerHTML = h;
+      root.querySelectorAll('.choice:not([disabled])').forEach(b => b.addEventListener('click', () => {
+        st.picks[st.i] = +b.dataset.k;
+        render();
+        const fb = root.querySelector('.feedback');
+        if (fb && fb.scrollIntoView) fb.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        if (cfg.onAnswer) cfg.onAnswer(st.i, st.picks[st.i] === it.answer);
+      }));
+      const nx = root.querySelector('[data-next]');
+      if (nx) nx.addEventListener('click', () => { st.i++; render(true); root.scrollIntoView({ block: 'start', behavior: 'smooth' }); });
+      if (focusFirst) { const q = root.querySelector('.q-text'); if (q) q.focus({ preventScroll: true }); }
+    }
+    function renderSummary() {
+      const s = score();
+      let h = `<div class="score"><span class="big">${s} / ${items.length}</span><span class="muted">${esc(t(L.correctTotal))}</span></div>`;
+      if (cfg.summaryNote) h += `<p class="note">${esc(t(cfg.summaryNote))}</p>`;
+      h += `<ul class="review">`;
+      items.forEach((it, k) => {
+        const opts = it.options || cfg.options;
+        const ok = st.picks[k] === it.answer;
+        h += `<li>${ok ? ICON.ok : ICON.no}<div><div>${esc(t(it.short || it.q))}</div><div class="ans">${esc(t(L.bestAnswer))}: ${esc(t(opts[it.answer]))}</div></div></li>`;
+      });
+      h += `</ul><div class="row"><button type="button" class="btn" data-restart>${esc(t(L.restart))}</button></div>`;
+      root.innerHTML = h;
+      root.querySelector('[data-restart]').addEventListener('click', () => { st.i = 0; st.picks.fill(null); render(true); });
+      if (cfg.onFinish) cfg.onFinish(s, items.length);
+    }
+    onLang(() => render());
+    render();
+    return { restart() { st.i = 0; st.picks.fill(null); render(); } };
+  }
+
+  const QUIZ_LABELS = {
+    question: { en: 'Question', tr: 'Soru' },
+    correctSoFar: { en: 'Correct', tr: 'Doğru' },
+    right: { en: 'Correct!', tr: 'Doğru!' },
+    notQuite: { en: 'Not quite.', tr: 'Tam değil.' },
+    bestAnswer: { en: 'Best answer', tr: 'En iyi yanıt' },
+    next: { en: 'Next', tr: 'Sonraki' },
+    finish: { en: 'See results', tr: 'Sonucu gör' },
+    correctTotal: { en: 'correct', tr: 'doğru' },
+    restart: { en: 'Start again', tr: 'Baştan başla' }
+  };
+
+  const COMMON = {
+    en: { back: 'All weeks', privacy: 'Your answers stay on this phone. Nothing is sent anywhere.' },
+    tr: { back: 'Tüm haftalar', privacy: 'Yanıtların bu telefonda kalır, hiçbir yere gönderilmez.' }
+  };
+  function withCommon(s) { return { en: Object.assign({}, COMMON.en, s.en), tr: Object.assign({}, COMMON.tr, s.tr) }; }
+
+  function init() {
+    $$('[data-lang-btn]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.langBtn)));
+    apply();
+  }
+  return { get lang() { return lang; }, withCommon, t, esc, $, $$, apply, setLang, onLang, shuffle, mulberry32, store, ICON, tabs, quiz, QUIZ_LABELS, init };
+})();
+
+</script>
+<script>
+(() => {
+'use strict';
+const { t, esc, $ } = Kit;
+window.STR = Kit.withCommon({
+  en: {
+    docTitle: 'History and Ethics · PSYC3204',
+    eyebrow: 'PSYC3204 · Week 2',
+    h1: 'History and ethics',
+    lead: 'Three short rounds: a timeline, the rights of test takers, and a bias hunt.',
+    tab1: 'Timeline', tab2: 'Rights and ethics', tab3: 'Bias hunt',
+    tlTitle: 'Put the events in order',
+    tlHow: 'Tap the events from the oldest to the most recent.',
+    undo: 'Undo', reset: 'Start over', check: 'Check',
+    rightsTitle: 'The rights of test takers',
+    rightsLead: 'Your textbook lists four rights that test users grant to test takers. Keep them in mind for the scenarios below.',
+    rightsSource: 'Cohen, Schneider, & Tobin (2022), Chapter 2.',
+    biasTitle: 'Bias hunt',
+    biasLead: 'Each item below is made up. Decide who could struggle with it for a reason that has nothing to do with what the test is meant to measure.'
+  },
+  tr: {
+    docTitle: 'Tarih ve Etik · PSKO3204',
+    eyebrow: 'PSKO3204 · 2. hafta',
+    h1: 'Tarih ve etik',
+    lead: 'Üç kısa tur: zaman tüneli, test alanın hakları ve yanlılık avı.',
+    tab1: 'Zaman tüneli', tab2: 'Haklar ve etik', tab3: 'Yanlılık avı',
+    tlTitle: 'Olayları sıraya koy',
+    tlHow: 'Olaylara en eskiden en yeniye doğru sırayla dokun.',
+    undo: 'Geri al', reset: 'Baştan başla', check: 'Kontrol et',
+    rightsTitle: 'Test alanın hakları',
+    rightsLead: 'Ders kitabın, test kullananların test alanlara tanıdığı dört hakkı sayıyor. Aşağıdaki durumları yanıtlarken bunları aklında tut.',
+    rightsSource: 'Cohen, Schneider ve Tobin (2022), 2. bölüm.',
+    biasTitle: 'Yanlılık avı',
+    biasLead: 'Aşağıdaki maddelerin hepsi uydurmadır. Her birinde, testin ölçmek istediği beceriyle ilgisi olmayan bir nedenle kimin zorlanabileceğine karar ver.'
+  }
+});
+const TXT = {
+  en: { correctPos: (c, n) => `${c} of ${n} in the right place.`, rightOrder: 'The right order', talk: 'Talk about it: which of these events shaped today’s tests the most, and why?' },
+  tr: { correctPos: (c, n) => `${n} olayın ${c} tanesi doğru yerde.`, rightOrder: 'Doğru sıra', talk: 'Tartışalım: Bu olaylardan hangisi bugünkü testleri en çok etkiledi? Neden?' }
+};
+const X = () => TXT[Kit.lang];
+
+/* ---------- 1. timeline ---------- */
+const EVENTS = [
+  { y: -2200, yr: { en: 'c. 2200 BCE', tr: 'MÖ 2200 dolayı' },
+    name: { en: 'Proficiency testing of officials in China', tr: 'Çin’de kamu görevlilerinin yeterlik sınavları' },
+    note: { en: 'Cohen et al. report that testing programs in China go back this far, although officials were still chosen mostly through political and family ties.', tr: 'Cohen ve arkadaşlarına göre Çin’de sınav programlarının geçmişi bu kadar eskiye uzanıyor; yine de görevliler o dönemde çoğunlukla siyasi ve ailevi bağlarla seçiliyordu.' } },
+  { y: 1884, yr: { en: '1884', tr: '1884' },
+    name: { en: 'Galton’s Anthropometric Laboratory at an exhibition in London', tr: 'Galton’un Antropometri Laboratuvarı (Londra’da bir sergide)' },
+    note: { en: 'For a few pence, visitors could be measured on height, strength of squeeze, keenness of sight, and more.', tr: 'Birkaç peni karşılığında boy, kavrama gücü ve görme keskinliği gibi özellikler ölçülüyordu.' } },
+  { y: 1905, yr: { en: '1905', tr: '1905' },
+    name: { en: 'Binet and Simon publish their intelligence test', tr: 'Binet ve Simon zekâ testlerini yayımlıyor' },
+    note: { en: 'It was designed to help place Paris schoolchildren in appropriate classes.', tr: 'Paris’teki okul çocuklarını uygun sınıflara yerleştirmeye yardım etmek için geliştirildi.' } },
+  { y: 1917, yr: { en: '1917', tr: '1917' },
+    name: { en: 'Army Alpha and Army Beta tests in the U.S. Army', tr: 'ABD ordusunda Army Alpha ve Army Beta testleri' },
+    note: { en: 'Group tests; Beta was for recruits who could not read or had poor knowledge of English.', tr: 'Grup hâlinde uygulanan testler; Beta, okuma bilmeyen ya da İngilizcesi zayıf askerler içindi.' } },
+  { y: 1939, yr: { en: '1939', tr: '1939' },
+    name: { en: 'Wechsler-Bellevue Intelligence Scale', tr: 'Wechsler-Bellevue Zekâ Ölçeği' },
+    note: { en: 'David Wechsler’s test of adult intelligence, later revised and renamed the WAIS.', tr: 'David Wechsler’in yetişkin zekâsını ölçmek için geliştirdiği test; sonradan gözden geçirilip WAIS adını aldı.' } },
+  { y: 1943, yr: { en: '1943', tr: '1943' },
+    name: { en: 'The MMPI is published', tr: 'MMPI yayımlanıyor' },
+    note: { en: 'The Minnesota Multiphasic Personality Inventory was published by the University of Minnesota Press.', tr: 'Minnesota Çok Yönlü Kişilik Envanteri, Minnesota Üniversitesi Yayınevi tarafından yayımlandı.' } }
+];
+const CORRECT = EVENTS.map((e, k) => k).sort((a, b) => EVENTS[a].y - EVENTS[b].y);
+const TL = { pool: [], picked: [], checked: false };
+function tlReset() {
+  let p;
+  do { p = Kit.shuffle(EVENTS.map((e, k) => k)); } while (p.every((v, k) => v === CORRECT[k]));
+  TL.pool = p; TL.picked = []; TL.checked = false;
+  tlRender();
+}
+function tlRender() {
+  const picked = $('#tlPicked');
+  picked.innerHTML = TL.picked.map((ev, pos) => {
+    const ok = TL.checked ? (ev === CORRECT[pos] ? ' good' : ' bad') : '';
+    const yr = TL.checked ? `<span class="yr">${esc(t(EVENTS[ev].yr))}</span>` : '';
+    return `<li class="tl-item${ok}"><span class="pos" aria-hidden="true">${TL.checked ? (ev === CORRECT[pos] ? '✓' : '✗') : pos + 1}</span><span>${esc(t(EVENTS[ev].name))}${yr}</span></li>`;
+  }).join('');
+  const remaining = TL.pool.filter(k => !TL.picked.includes(k));
+  $('#tlPool').innerHTML = TL.checked ? '' : remaining.map(k => `<button type="button" class="tl-opt" data-k="${k}">${esc(t(EVENTS[k].name))}</button>`).join('');
+  $('#tlPool').querySelectorAll('.tl-opt').forEach(b => b.addEventListener('click', () => { TL.picked.push(+b.dataset.k); tlRender(); }));
+  $('#tlUndo').disabled = TL.checked || !TL.picked.length;
+  $('#tlCheck').disabled = TL.checked || TL.picked.length !== EVENTS.length;
+  const res = $('#tlResult');
+  if (!TL.checked) { res.innerHTML = ''; return; }
+  const c = TL.picked.filter((ev, pos) => ev === CORRECT[pos]).length;
+  res.innerHTML = `<div class="feedback ${c === EVENTS.length ? 'ok' : 'info'}"><b>${esc(X().correctPos(c, EVENTS.length))}</b></div>`
+    + `<h3 style="margin-top:14px">${esc(X().rightOrder)}</h3>`
+    + `<ol class="answer-list">${CORRECT.map(k => `<li><span class="yr">${esc(t(EVENTS[k].yr))}</span><span>${esc(t(EVENTS[k].name))}<span class="nt">${esc(t(EVENTS[k].note))}</span></span></li>`).join('')}</ol>`
+    + `<p class="note" style="margin-top:12px">${esc(X().talk)}</p>`;
+}
+$('#tlUndo').addEventListener('click', () => { TL.picked.pop(); tlRender(); });
+$('#tlReset').addEventListener('click', tlReset);
+$('#tlCheck').addEventListener('click', () => { TL.checked = true; tlRender(); });
+
+/* ---------- 2. rights and ethics ---------- */
+const RIGHTS = [
+  { en: 'Informed consent', tr: 'Bilgilendirilmiş onam' },
+  { en: 'To be informed of test findings', tr: 'Test bulguları hakkında bilgilendirilme' },
+  { en: 'Privacy and confidentiality', tr: 'Mahremiyet ve gizlilik' },
+  { en: 'The least stigmatizing label', tr: 'En az damgalayıcı etiket' }
+];
+function renderRights() {
+  $('#rights').innerHTML = RIGHTS.map((r, k) => `<li><span class="k">${k + 1}</span><span>${esc(t(r))}</span></li>`).join('');
+}
+const ETH = [{ en: 'Ethical', tr: 'Etik' }, { en: 'Not ethical', tr: 'Etik değil' }, { en: 'It depends', tr: 'Duruma bağlı' }];
+const ethics = [
+  { q: { en: 'Before an exam, a student posts the questions of an intelligence test on social media.', tr: 'Bir öğrenci, sınavdan önce bir zekâ testinin sorularını sosyal medyada paylaşıyor.' }, answer: 1,
+    explain: { en: 'Test security is broken. Someone who has seen the items in advance gets a score that reflects memory of the items, not ability. Test items are also usually protected by copyright.', tr: 'Test güvenliği bozulur. Maddeleri önceden gören birinin puanı yeteneğini değil, maddeleri hatırlamasını yansıtır. Test maddeleri çoğu zaman telif hakkıyla da korunur.' } },
+  { q: { en: 'An employer asks for all employees’ personality test scores to use in promotion decisions.', tr: 'Bir işveren, terfi kararlarında kullanmak üzere tüm çalışanların kişilik testi puanlarını istiyor.' }, answer: 2,
+    explain: { en: 'It can be defensible only if employees know why they are tested and how the scores will be used, agree to it, the test is relevant to the job, and the scores are kept confidential. Otherwise it violates consent and privacy.', tr: 'Ancak çalışanlar neden test edildiklerini ve puanların nasıl kullanılacağını bilip onay verdiyse, test işle ilgiliyse ve puanlar gizli tutuluyorsa savunulabilir. Aksi hâlde onam ve mahremiyet hakları çiğnenir.' } },
+  { q: { en: 'During testing, an interpreter hints at the right answer to the test taker.', tr: 'Uygulama sırasında çevirmen, test alana doğru cevabı ima ediyor.' }, answer: 1,
+    explain: { en: 'Standard administration is broken, so the score no longer reflects the person’s own performance and cannot be compared with the norms.', tr: 'Standart uygulama bozulur; puan artık kişinin kendi performansını yansıtmaz ve normlarla karşılaştırılamaz.' } },
+  { q: { en: 'A psychologist explains a client’s test results in language the client can understand.', tr: 'Bir psikolog, danışanın test sonuçlarını onun anlayabileceği bir dille açıklıyor.' }, answer: 0,
+    explain: { en: 'Test takers have the right to be informed of test findings, in language they can understand.', tr: 'Test alanın, test bulguları hakkında anlayabileceği bir dille bilgilendirilme hakkı vardır.' } },
+  { q: { en: 'A researcher gives a questionnaire without saying what it is for or how the answers will be used.', tr: 'Bir araştırmacı, amacını ve yanıtların nasıl kullanılacağını söylemeden bir anket uyguluyor.' }, answer: 1,
+    explain: { en: 'Informed consent requires that people know why they are being evaluated, how the data will be used, and what will be released to whom.', tr: 'Bilgilendirilmiş onam; kişinin neden değerlendirildiğini, verilerin nasıl kullanılacağını ve hangi bilginin kime verileceğini bilmesini gerektirir.' } },
+  { q: { en: 'Among several accurate ways to describe a result, the report writer chooses the least stigmatizing one.', tr: 'Rapor yazan psikolog, bir sonucu doğru biçimde anlatan seçenekler arasından en az damgalayıcı olanı seçiyor.' }, answer: 0,
+    explain: { en: 'This follows the right to the least stigmatizing label when test results are reported.', tr: 'Bu, sonuçlar raporlanırken en az damgalayıcı etiketin kullanılması hakkına uygundur.' } },
+  { q: { en: 'A psychologist makes a decision about a child using a free online “IQ test” that has no evidence of reliability or validity.', tr: 'Bir psikolog, güvenirlik ve geçerlik kanıtı olmayan ücretsiz bir çevrim içi “IQ testi” ile bir çocuk hakkında karar veriyor.' }, answer: 1,
+    explain: { en: 'Decisions about people should rest on tools with evidence behind them. A tool without that evidence can lead to a harmful decision.', tr: 'Kişiler hakkındaki kararlar kanıtı olan araçlara dayanmalıdır. Bu kanıta sahip olmayan bir araç, kişiye zarar veren bir karara yol açabilir.' } }
+];
+
+/* ---------- 3. bias hunt ---------- */
+const bias = [
+  { pre: { en: 'In a general ability test:', tr: 'Genel yetenek testinde:' },
+    q: { en: '“Which of the following is a golf term?”', tr: '“Aşağıdakilerden hangisi bir golf terimidir?”' },
+    options: [
+      { en: 'Students who have never come across golf', tr: 'Golfle hiç karşılaşmamış öğrenciler' },
+      { en: 'Students with weaker math skills', tr: 'Matematiği zayıf öğrenciler' },
+      { en: 'Students who read quickly', tr: 'Hızlı okuyan öğrenciler' },
+      { en: 'No one; it is equally hard for everyone', tr: 'Kimse; herkes için eşit derecede zor' }], answer: 0,
+    explain: { en: 'The item measures exposure to golf, which often depends on money and opportunity, instead of general ability. This is variance unrelated to the construct.', tr: 'Madde genel yetenek yerine golfle karşılaşmış olmayı ölçüyor; bu da çoğu zaman maddi olanaklara bağlıdır. Bu, yapıyla ilgisi olmayan bir varyanstır.' } },
+  { pre: { en: 'In a math test:', tr: 'Matematik testinde:' },
+    q: { en: 'A simple calculation hidden in long sentences full of idioms.', tr: 'Deyimlerle dolu uzun cümlelerin içine gizlenmiş basit bir hesaplama sorusu.' },
+    options: [
+      { en: 'Students who are good at geometry', tr: 'Geometride iyi olan öğrenciler' },
+      { en: 'Students who are still learning the language of the test', tr: 'Testin dilini henüz öğrenmekte olan öğrenciler' },
+      { en: 'Students who work slowly but carefully', tr: 'Yavaş ama dikkatli çalışan öğrenciler' },
+      { en: 'Students who dislike math', tr: 'Matematiği sevmeyen öğrenciler' }], answer: 1,
+    explain: { en: 'The item starts to measure reading and language skills instead of math.', tr: 'Madde matematik yerine okuma ve dil becerisini ölçmeye başlar.' } },
+  { pre: { en: 'In a picture vocabulary test:', tr: 'Resimli kelime testinde:' },
+    q: { en: 'The picture shows a cooking tool that is common in only one region of the country.', tr: 'Resimde, ülkenin yalnızca bir bölgesinde yaygın olan bir mutfak aleti var.' },
+    options: [
+      { en: 'Students with a small vocabulary', tr: 'Kelime dağarcığı dar olan öğrenciler' },
+      { en: 'Students who do not like cooking', tr: 'Yemek yapmayı sevmeyen öğrenciler' },
+      { en: 'Students from other regions', tr: 'Başka bölgelerden gelen öğrenciler' },
+      { en: 'Students with poor eyesight', tr: 'Görme sorunu olan öğrenciler' }], answer: 2,
+    explain: { en: 'Not knowing a region-specific object reflects different experience, not a smaller vocabulary.', tr: 'Bölgeye özgü bir nesneyi bilmemek dar bir kelime dağarcığını değil, farklı bir deneyimi yansıtır.' } },
+  { pre: { en: 'In a timed test on a phone:', tr: 'Telefonda uygulanan hızlı bir testte:' },
+    q: { en: 'The answer buttons are very small and close together.', tr: 'Yanıt düğmeleri çok küçük ve birbirine çok yakın.' },
+    options: [
+      { en: 'Students with fine-motor or vision difficulties', tr: 'İnce motor becerisi ya da görmesiyle ilgili güçlüğü olan öğrenciler' },
+      { en: 'Students who are slow thinkers', tr: 'Yavaş düşünen öğrenciler' },
+      { en: 'Students who use phones a lot', tr: 'Telefonu çok kullanan öğrenciler' },
+      { en: 'No one; speed is what the test measures', tr: 'Kimse; test zaten hızı ölçüyor' }], answer: 0,
+    explain: { en: 'Tiny buttons add a difficulty that has nothing to do with the processing speed the test is meant to measure. Think back to the Stroop task on your phone.', tr: 'Küçük düğmeler, testin ölçmek istediği işlem hızıyla ilgisi olmayan bir zorluk ekler. Telefonda yaptığın Stroop görevini düşün.' } },
+  { pre: { en: 'In a nonverbal reasoning test:', tr: 'Sözel olmayan akıl yürütme testinde:' },
+    q: { en: 'Find the shape that completes a pattern of shapes.', tr: 'Şekillerden oluşan bir örüntüyü tamamlayan şekli bul.' },
+    options: [
+      { en: 'No one; nonverbal items are completely culture-free', tr: 'Kimse; sözel olmayan maddeler kültürden tamamen bağımsızdır' },
+      { en: 'Only students who cannot read', tr: 'Yalnızca okuma bilmeyen öğrenciler' },
+      { en: 'Students who have never seen puzzles like this, although the gap is smaller', tr: 'Bu tür bulmacaları hiç görmemiş öğrenciler (fark daha küçük olsa da)' },
+      { en: 'Students with a large vocabulary', tr: 'Kelime dağarcığı geniş olan öğrenciler' }], answer: 2,
+    explain: { en: 'Nonverbal items reduce the load of language and culture but do not remove it: familiarity with this kind of task still affects performance.', tr: 'Sözel olmayan maddeler dil ve kültür yükünü azaltır ama ortadan kaldırmaz: bu tür görevlere aşinalık performansı yine etkiler.' } }
+];
+
+Kit.init();
+Kit.tabs($('.seg'));
+tlReset();
+renderRights();
+Kit.onLang(() => { tlRender(); renderRights(); });
+Kit.quiz($('#quizEthics'), {
+  items: ethics, options: ETH, labels: Kit.QUIZ_LABELS,
+  prompt: { en: 'Is this ethical?', tr: 'Bu davranış etik mi?' },
+  summaryNote: { en: 'Which right was at stake in each scenario? Discuss with the person next to you.', tr: 'Her durumda hangi hak söz konusuydu? Yanındaki kişiyle tartış.' }
+});
+Kit.quiz($('#quizBias'), {
+  items: bias, labels: Kit.QUIZ_LABELS,
+  prompt: { en: 'Who could struggle for a reason unrelated to the skill being tested?', tr: 'Ölçülen beceriyle ilgisi olmayan bir nedenle kim zorlanabilir?' },
+  summaryNote: { en: 'Can you rewrite one of these items so that the problem disappears?', tr: 'Bu maddelerden birini sorun ortadan kalkacak şekilde yeniden yazabilir misin?' }
+});
+})();
+
+</script>
+</body>
+</html>

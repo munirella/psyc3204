@@ -1,0 +1,868 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#4a3aa7">
+<title>Stroop Görevi</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%234a3aa7%22%2F%3E%3Cpath%20d%3D%22M18%2044h28M22%2044V26M32%2044V18M42%2044V32%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f2f2f6;
+  --surface:#fdfdfe;
+  --surface-2:#ebebf1;
+  --surface-3:#dfdfe8;
+  --ink:#14131b;
+  --ink-2:#4a4957;
+  --muted:#65636f;
+  --line:#e0dfe7;
+  --line-strong:#c3c2ce;
+  --accent:#4a3aa7;
+  --accent-hover:#3c2f8e;
+  --accent-ink:#ffffff;
+  --accent-soft:#e9e6f8;
+  --good:#0ca30c;
+  --good-text:#006300;
+  --good-soft:#e1f3e1;
+  --crit:#d03b3b;
+  --crit-text:#a82626;
+  --crit-soft:#fbe5e5;
+  --warn:#fab219;
+  --warn-soft:#fdf0cc;
+  --series-1:#2a78d6;
+  --series-2:#eb6834;
+  --stage:#15141c;
+  --stage-ink:#f3f3f7;
+  --shadow:0 1px 2px rgba(20,19,27,.05),0 8px 24px rgba(20,19,27,.07);
+  --radius:16px;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Roboto Mono",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0f0f14;
+    --surface:#18181f;
+    --surface-2:#22222b;
+    --surface-3:#2e2e39;
+    --ink:#f3f3f7;
+    --ink-2:#c4c3cf;
+    --muted:#9896a6;
+    --line:#2b2b35;
+    --line-strong:#41414d;
+    --accent:#9d93ee;
+    --accent-hover:#b3abf3;
+    --accent-ink:#14131b;
+    --accent-soft:#2b2847;
+    --good-text:#5fd35f;
+    --good-soft:#17301a;
+    --crit-text:#ff8f8f;
+    --crit-soft:#3a1d20;
+    --warn-soft:#3b3119;
+    --series-1:#3987e5;
+    --series-2:#d95926;
+    --stage:#0b0b10;
+    --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0f0f14;
+  --surface:#18181f;
+  --surface-2:#22222b;
+  --surface-3:#2e2e39;
+  --ink:#f3f3f7;
+  --ink-2:#c4c3cf;
+  --muted:#9896a6;
+  --line:#2b2b35;
+  --line-strong:#41414d;
+  --accent:#9d93ee;
+  --accent-hover:#b3abf3;
+  --accent-ink:#14131b;
+  --accent-soft:#2b2847;
+  --good-text:#5fd35f;
+  --good-soft:#17301a;
+  --crit-text:#ff8f8f;
+  --crit-soft:#3a1d20;
+  --warn-soft:#3b3119;
+  --series-1:#3987e5;
+  --series-2:#d95926;
+  --stage:#0b0b10;
+  --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top,0px)}
+[hidden]{display:none!important}
+h1,h2,h3{margin:0;text-wrap:balance;line-height:1.2}
+p{margin:0}
+ul,ol{margin:0}
+button,input,select{font:inherit;color:inherit}
+button{touch-action:manipulation}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:680px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);text-decoration:none;font-weight:600;font-size:14px;min-height:40px;padding:0 4px;border-radius:8px}
+.back:hover{color:var(--ink)}
+.back svg{width:18px;height:18px}
+.lang{display:inline-flex;border:1px solid var(--line-strong);border-radius:999px;padding:2px;background:var(--surface)}
+.lang button{border:0;background:transparent;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.05em;cursor:pointer;color:var(--ink-2);min-height:34px;min-width:44px}
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+
+/* page */
+.app{max-width:680px;margin:0 auto;padding-inline:16px;padding-block:18px 48px;display:grid;gap:18px}
+.head{display:grid;gap:6px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(26px,7vw,34px);font-weight:750;letter-spacing:-.015em}
+.lead{color:var(--ink-2);font-size:16px}
+.card,[id^="quiz"]{scroll-margin-top:72px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:grid;gap:14px}
+.card h2{font-size:19px;font-weight:700}
+.card h3{font-size:16px;font-weight:700}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.note{font-size:14px;color:var(--ink-2);background:var(--surface-2);border-radius:12px;padding:10px 12px}
+.foot{max-width:680px;margin:0 auto;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 28px);font-size:13px;color:var(--muted)}
+.list{padding-left:20px;display:grid;gap:6px}
+
+/* buttons */
+.btn{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:12px;padding:10px 16px;min-height:48px;font-weight:650;font-size:16px;cursor:pointer;text-decoration:none;transition:background-color .15s,border-color .15s}
+.btn:hover{background:var(--surface-2)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--ink-2)}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.row.end{justify-content:flex-end}
+.row.between{justify-content:space-between}
+
+/* segmented tabs */
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;background:var(--surface-2);border-radius:14px;padding:4px}
+.seg button{border:0;background:transparent;border-radius:10px;padding:8px 6px;min-height:48px;font-size:14px;font-weight:650;color:var(--ink-2);cursor:pointer;line-height:1.2}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.seg .n{display:block;font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+/* quiz */
+.progress{display:grid;gap:6px}
+.progress-top{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);font-weight:600}
+.bar{height:6px;background:var(--surface-2);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .3s}
+.q-text{font-size:18px;font-weight:600;line-height:1.4}
+.q-sub{font-size:15px;color:var(--ink-2)}
+.choices{display:grid;gap:10px}
+.choice{appearance:none;text-align:left;width:100%;display:flex;align-items:center;gap:12px;border:1.5px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:14px;padding:12px 14px;min-height:56px;font-size:16px;font-weight:550;cursor:pointer;line-height:1.35}
+.choice:hover{border-color:var(--accent)}
+.choice .mark{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line-strong);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--muted)}
+.choice[disabled]{cursor:default}
+.choice.correct{border-color:var(--good);background:var(--good-soft)}
+.choice.correct .mark{background:var(--good);border-color:var(--good);color:#fff}
+.choice.wrong{border-color:var(--crit);background:var(--crit-soft)}
+.choice.wrong .mark{background:var(--crit);border-color:var(--crit);color:#fff}
+.choice.dim{opacity:.6}
+.feedback{border-radius:14px;padding:12px 14px;display:grid;gap:4px;font-size:15px}
+.feedback.ok{background:var(--good-soft)}
+.feedback.no{background:var(--crit-soft)}
+.feedback.info{background:var(--surface-2)}
+.feedback b{font-size:16px}
+.feedback.ok b{color:var(--good-text)}
+.feedback.no b{color:var(--crit-text)}
+.score{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.score .big{font-family:var(--mono);font-size:44px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.review{list-style:none;padding:0;display:grid;border-top:1px solid var(--line)}
+.review li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.review .ans{color:var(--ink-2);font-size:14px}
+.ico{width:20px;height:20px;flex:none}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
+
+.example{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ex-stage{background:var(--stage);border-radius:14px;padding:14px 18px;min-width:130px;text-align:center}
+.ex-stage span{font-size:24px;font-weight:800;letter-spacing:.02em}
+.ex-arrow{width:26px;height:26px;color:var(--muted)}
+.ex-key{border-radius:14px;padding:14px 18px;font-weight:800;color:#111;min-width:120px;text-align:center}
+.task{display:grid;gap:14px}
+.task-top{display:flex;justify-content:space-between;font-size:15px;font-weight:650;color:var(--ink-2)}
+.stage{position:relative;background:var(--stage);border-radius:20px;height:min(34vh,300px);min-height:170px;display:grid;place-items:center;user-select:none;-webkit-user-select:none;overflow:hidden}
+#stim{font-size:clamp(40px,12vw,66px);font-weight:800;letter-spacing:.02em;color:var(--stage-ink);line-height:1}
+.fbk{position:absolute;left:12px;right:12px;bottom:14px;text-align:center;font-weight:700;font-size:16px;min-height:22px;color:var(--stage-ink)}
+.fbk.ok{color:#5fd35f}
+.fbk.no{color:#ff8f8f}
+.keys{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.key{appearance:none;border:0;border-radius:18px;min-height:clamp(76px,13vh,104px);font-size:17px;font-weight:800;letter-spacing:.03em;color:#111;cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;box-shadow:inset 0 -4px 0 rgba(0,0,0,.18)}
+.key:active{transform:scale(.97)}
+body.in-task .topbar,body.in-task .head,body.in-task .foot{display:none}
+body.in-task .app{padding-block:12px 16px}
+.results{display:grid;gap:18px}
+.eff{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.eff .big{font-family:var(--mono);font-size:48px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--surface-2);border-radius:12px;padding:10px 12px;display:grid;gap:2px}
+.stat .lbl{font-size:13px;color:var(--ink-2);display:flex;align-items:center;gap:6px}
+.stat .lbl i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.stat .val{font-family:var(--mono);font-size:20px;font-weight:700}
+.stat .sub{font-size:13px;color:var(--muted)}
+.menti{border:1.5px dashed var(--accent);border-radius:12px;padding:10px 12px;display:grid;gap:2px}
+.menti b{font-family:var(--mono);font-size:22px;color:var(--accent)}
+.strip svg{width:100%;max-width:560px;height:auto;display:block}
+.strip text{font-family:var(--font);font-size:11px;fill:var(--muted)}
+.strip .rowlbl{fill:var(--ink-2);font-weight:650;font-size:12px}
+.strip .medlbl{fill:var(--ink);font-weight:700;font-family:var(--mono);font-size:11px}
+.strip .grid{stroke:var(--line);stroke-width:1}
+.strip .med{stroke:var(--ink);stroke-width:2}
+.hist{list-style:none;padding:0;display:grid;border-top:1px solid var(--line)}
+.hist li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
+.hist .mono{font-weight:700}
+
+</style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-in"><a class="back" href="index.html" data-keep-lang><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5L7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="back">Tüm haftalar</span></a><div class="lang" role="group" aria-label="Language / Dil"><button type="button" data-lang-btn="tr" lang="tr" aria-pressed="false">TR</button><button type="button" data-lang-btn="en" lang="en" aria-pressed="false">EN</button></div></div></div>
+<main class="app">
+  <header class="head">
+    <p class="eyebrow" data-t="eyebrow"></p>
+    <h1 data-t="h1"></h1>
+    <p class="lead" data-t="lead"></p>
+  </header>
+
+  <section class="card" id="scrIntro">
+    <h2 data-t="howTitle"></h2>
+    <p data-t="how1"></p>
+    <div class="example" aria-hidden="true">
+      <div class="ex-stage"><span id="exWord"></span></div>
+      <svg class="ex-arrow" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="ex-key" id="exKey"></div>
+    </div>
+    <p class="small" id="exCaption"></p>
+    <ul class="list small">
+      <li data-t="rule1"></li>
+      <li data-t="rule2"></li>
+      <li data-t="rule3"></li>
+    </ul>
+    <p class="note" data-t="cvNote"></p>
+    <p class="note" id="abortNote" hidden data-t="aborted"></p>
+    <button type="button" class="btn primary block" id="btnPractice" data-t="startPractice"></button>
+  </section>
+
+  <section class="task" id="scrTask" hidden aria-label="Stroop">
+    <div class="task-top"><span id="taskLabel"></span><span class="mono" id="taskCount"></span></div>
+    <div class="stage"><span id="stim">+</span><span class="fbk" id="fbk"></span></div>
+    <div class="keys" id="keys"></div>
+    <button type="button" class="btn ghost" id="btnQuit" data-t="quit"></button>
+  </section>
+
+  <section class="card" id="scrBetween" hidden>
+    <h2 data-t="pracDoneTitle"></h2>
+    <p id="pracDoneText"></p>
+    <p data-t="pracDoneNext"></p>
+    <div class="row">
+      <button type="button" class="btn primary" id="btnMain" data-t="startMain"></button>
+      <button type="button" class="btn" id="btnPracticeAgain" data-t="practiceAgain"></button>
+    </div>
+  </section>
+
+  <section id="scrResults" hidden>
+    <div class="results">
+      <section class="card" id="resMain"></section>
+      <section class="card" id="resDiscuss">
+        <h2 data-t="discussTitle"></h2>
+        <ol class="list" id="discussList"></ol>
+      </section>
+      <section class="card" id="resHistory"></section>
+    </div>
+  </section>
+</main>
+<footer class="foot"><p data-t="privacy"></p></footer>
+
+<script>
+/* PSYC3204 phone-app kit: language, helpers, tabs, quiz */
+const Kit = (() => {
+  'use strict';
+  const KEY = 'psyc3204.lang';
+  const subs = [];
+  let lang = 'tr';
+  try {
+    const p = new URLSearchParams(location.search).get('lang');
+    if (p === 'tr' || p === 'en') lang = p;
+    else {
+      let s = null;
+      try { s = localStorage.getItem(KEY); } catch (e) { s = null; }
+      if (s === 'tr' || s === 'en') lang = s;
+      else lang = (navigator.language || '').toLowerCase().startsWith('tr') ? 'tr' : 'en';
+    }
+  } catch (e) { lang = 'tr'; }
+
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const t = v => (v == null ? '' : typeof v === 'string' ? v : (v[lang] != null ? v[lang] : (v.en || '')));
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+
+  function apply() {
+    document.documentElement.lang = lang;
+    const S = (window.STR && window.STR[lang]) || {};
+    $$('[data-t]').forEach(el => { const v = S[el.dataset.t]; if (typeof v === 'string') el.textContent = v; });
+    $$('[data-lang-btn]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.langBtn === lang)));
+    $$('a[data-keep-lang]').forEach(a => {
+      const href = a.getAttribute('href') || '';
+      const [base, hash] = href.split('#');
+      a.setAttribute('href', base.split('?')[0] + '?lang=' + lang + (hash ? '#' + hash : ''));
+    });
+    if (S.docTitle) document.title = S.docTitle;
+  }
+  function setLang(l) {
+    if (l === lang) return;
+    lang = l;
+    try { localStorage.setItem(KEY, l); } catch (e) { /* storage unavailable */ }
+    try { const u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u.toString()); } catch (e) { /* file:// or sandbox */ }
+    apply();
+    subs.forEach(f => { try { f(l); } catch (e) { console.error(e); } });
+  }
+  function onLang(f) { subs.push(f); }
+
+  function shuffle(a, rnd) {
+    const r = rnd || Math.random;
+    const b = a.slice();
+    for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; }
+    return b;
+  }
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      let q = Math.imul(a ^ a >>> 15, 1 | a);
+      q = q + Math.imul(q ^ q >>> 7, 61 | q) ^ q;
+      return ((q ^ q >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+  };
+
+  const ICON = {
+    ok: '<svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" style="fill:var(--good)"/><path d="M5.8 10.3l2.8 2.8 5.6-6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    no: '<svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" style="fill:var(--crit)"/><path d="M6.8 6.8l6.4 6.4M13.2 6.8l-6.4 6.4" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>',
+    info: '<svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2" fill="none" style="stroke:var(--muted)" stroke-width="1.6"/><path d="M10 9v5" style="stroke:var(--muted)" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="6.3" r="1.2" style="fill:var(--muted)"/></svg>'
+  };
+
+  /* Tabs: buttons [role=tab][data-panel]; remembers the part in the URL hash (#p1, #p2...) */
+  function tabs(nav, onChange) {
+    const btns = $$('[role="tab"]', nav);
+    function select(id, push) {
+      btns.forEach(b => {
+        const on = b.dataset.panel === id;
+        b.setAttribute('aria-selected', String(on));
+        b.tabIndex = on ? 0 : -1;
+        const p = document.getElementById(b.dataset.panel);
+        if (p) p.hidden = !on;
+      });
+      if (push) { try { history.replaceState(null, '', '#' + id); } catch (e) { /* ignore */ } }
+      if (onChange) onChange(id);
+    }
+    btns.forEach((b, k) => {
+      b.addEventListener('click', () => { select(b.dataset.panel, true); });
+      b.addEventListener('keydown', e => {
+        const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        const nb = btns[(k + d + btns.length) % btns.length];
+        nb.focus(); select(nb.dataset.panel, true);
+      });
+    });
+    const h = (location.hash || '').slice(1);
+    select(btns.some(b => b.dataset.panel === h) ? h : btns[0].dataset.panel, false);
+    return { select };
+  }
+
+  /* Quiz: one question at a time, instant feedback, summary with review */
+  function quiz(root, cfg) {
+    const items = cfg.items;
+    const L = cfg.labels;
+    const st = { i: 0, picks: new Array(items.length).fill(null) };
+    function score() { return st.picks.reduce((s, p, k) => s + (p === items[k].answer ? 1 : 0), 0); }
+    function render(focusFirst) {
+      if (st.i >= items.length) return renderSummary();
+      const it = items[st.i];
+      const pick = st.picks[st.i];
+      const answered = pick !== null;
+      const opts = it.options || cfg.options;
+      let h = `<div class="progress"><div class="progress-top"><span>${esc(t(L.question))} ${st.i + 1} / ${items.length}</span><span>${esc(t(L.correctSoFar))}: ${score()}</span></div><div class="bar"><i style="width:${(st.i / items.length) * 100}%"></i></div></div>`;
+      if (it.pre) h += `<p class="q-sub">${esc(t(it.pre))}</p>`;
+      h += `<p class="q-text" tabindex="-1">${esc(t(it.q))}</p>`;
+      if (cfg.prompt) h += `<p class="q-sub">${esc(t(cfg.prompt))}</p>`;
+      h += `<div class="choices">`;
+      opts.forEach((o, k) => {
+        let cls = 'choice', mark = String.fromCharCode(65 + k);
+        if (answered) {
+          if (k === it.answer) { cls += ' correct'; mark = '✓'; }
+          else if (k === pick) { cls += ' wrong'; mark = '✗'; }
+          else cls += ' dim';
+        }
+        h += `<button type="button" class="${cls}" data-k="${k}"${answered ? ' disabled' : ''}><span class="mark" aria-hidden="true">${mark}</span><span>${esc(t(o))}</span></button>`;
+      });
+      h += `</div>`;
+      if (answered) {
+        const ok = pick === it.answer;
+        const head = ok ? t(L.right) : t(L.notQuite) + ' ' + t(L.bestAnswer) + ': ' + t(opts[it.answer]) + '.';
+        h += `<div class="feedback ${ok ? 'ok' : 'no'}" role="status"><b>${esc(head)}</b><span>${esc(t(it.explain))}</span></div>`;
+        h += `<div class="row end"><button type="button" class="btn primary" data-next>${esc(t(st.i === items.length - 1 ? L.finish : L.next))}</button></div>`;
+      }
+      root.innerHTML = h;
+      root.querySelectorAll('.choice:not([disabled])').forEach(b => b.addEventListener('click', () => {
+        st.picks[st.i] = +b.dataset.k;
+        render();
+        const fb = root.querySelector('.feedback');
+        if (fb && fb.scrollIntoView) fb.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        if (cfg.onAnswer) cfg.onAnswer(st.i, st.picks[st.i] === it.answer);
+      }));
+      const nx = root.querySelector('[data-next]');
+      if (nx) nx.addEventListener('click', () => { st.i++; render(true); root.scrollIntoView({ block: 'start', behavior: 'smooth' }); });
+      if (focusFirst) { const q = root.querySelector('.q-text'); if (q) q.focus({ preventScroll: true }); }
+    }
+    function renderSummary() {
+      const s = score();
+      let h = `<div class="score"><span class="big">${s} / ${items.length}</span><span class="muted">${esc(t(L.correctTotal))}</span></div>`;
+      if (cfg.summaryNote) h += `<p class="note">${esc(t(cfg.summaryNote))}</p>`;
+      h += `<ul class="review">`;
+      items.forEach((it, k) => {
+        const opts = it.options || cfg.options;
+        const ok = st.picks[k] === it.answer;
+        h += `<li>${ok ? ICON.ok : ICON.no}<div><div>${esc(t(it.short || it.q))}</div><div class="ans">${esc(t(L.bestAnswer))}: ${esc(t(opts[it.answer]))}</div></div></li>`;
+      });
+      h += `</ul><div class="row"><button type="button" class="btn" data-restart>${esc(t(L.restart))}</button></div>`;
+      root.innerHTML = h;
+      root.querySelector('[data-restart]').addEventListener('click', () => { st.i = 0; st.picks.fill(null); render(true); });
+      if (cfg.onFinish) cfg.onFinish(s, items.length);
+    }
+    onLang(() => render());
+    render();
+    return { restart() { st.i = 0; st.picks.fill(null); render(); } };
+  }
+
+  const QUIZ_LABELS = {
+    question: { en: 'Question', tr: 'Soru' },
+    correctSoFar: { en: 'Correct', tr: 'Doğru' },
+    right: { en: 'Correct!', tr: 'Doğru!' },
+    notQuite: { en: 'Not quite.', tr: 'Tam değil.' },
+    bestAnswer: { en: 'Best answer', tr: 'En iyi yanıt' },
+    next: { en: 'Next', tr: 'Sonraki' },
+    finish: { en: 'See results', tr: 'Sonucu gör' },
+    correctTotal: { en: 'correct', tr: 'doğru' },
+    restart: { en: 'Start again', tr: 'Baştan başla' }
+  };
+
+  const COMMON = {
+    en: { back: 'All weeks', privacy: 'Your answers stay on this phone. Nothing is sent anywhere.' },
+    tr: { back: 'Tüm haftalar', privacy: 'Yanıtların bu telefonda kalır, hiçbir yere gönderilmez.' }
+  };
+  function withCommon(s) { return { en: Object.assign({}, COMMON.en, s.en), tr: Object.assign({}, COMMON.tr, s.tr) }; }
+
+  function init() {
+    $$('[data-lang-btn]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.langBtn)));
+    apply();
+  }
+  return { get lang() { return lang; }, withCommon, t, esc, $, $$, apply, setLang, onLang, shuffle, mulberry32, store, ICON, tabs, quiz, QUIZ_LABELS, init };
+})();
+
+</script>
+<script>
+(() => {
+'use strict';
+const { t, esc, $ } = Kit;
+
+window.STR = Kit.withCommon({
+  en: {
+    docTitle: 'Stroop Task · PSYC3204',
+    eyebrow: 'PSYC3204 · Week 1',
+    h1: 'Stroop task',
+    lead: 'A short reaction-time task. Your result is a score from a sample of your behavior, which is exactly what a psychological test produces.',
+    howTitle: 'How it works',
+    how1: 'You will see color words. Ignore what the word says. Tap the button for the color the word is printed in, as fast and as accurately as you can.',
+    rule1: 'First, 8 practice trials with feedback. Then the real task: 40 words (about 2 minutes).',
+    rule2: 'Let’s all do it the same way: hold the phone upright and tap with your index finger.',
+    rule3: 'Stay in this page until you finish. If you leave the page, the task starts over.',
+    cvNote: 'If you have trouble telling colors apart, team up with a classmate and discuss their result together.',
+    aborted: 'The task stopped because the page was left. Please start again.',
+    startPractice: 'Start practice',
+    practice: 'Practice',
+    main: 'Task',
+    quit: 'Stop the task',
+    fbRight: 'Correct',
+    fbWrong: 'Wrong. The ink was',
+    fbSlow: 'Too slow',
+    pracDoneTitle: 'Practice finished',
+    pracDoneNext: 'The real task has 40 words and no feedback, except a short mark when you make an error.',
+    startMain: 'Start the task',
+    practiceAgain: 'Practice again',
+    exCaption: w => `The word says ${w}, but it is printed in red, so you tap RED.`,
+    pracCorrect: (c, n) => `You got ${c} of ${n} practice trials right.`,
+    resultEyebrow: 'Your result',
+    effectLbl: 'Stroop effect',
+    effectPos: e => `When the word and the ink did not match, your typical response was ${e} ms slower.`,
+    effectNeg: e => `In this run you were not slower on mismatched words (effect: ${e} ms). That is unusual; attention, practice, and chance can all play a part.`,
+    notEnough: 'Not enough correct answers to compute a result. Please try again.',
+    con: 'Match', inc: 'Mismatch',
+    conLong: 'Word and ink match', incLong: 'Word and ink do not match',
+    medianRT: 'typical (median) response time',
+    accuracy: p => `${p}% correct`,
+    menti: 'Range to pick in the class poll:',
+    lowAcc: p => `You made many errors (${p}% correct overall). This result may not reflect what the task is meant to measure.`,
+    stripCap: 'Each dot is one correct answer; the vertical line marks your median. Errors are not shown.',
+    discussTitle: 'Talk about it',
+    discuss: [
+      'Which mental process could this task be measuring?',
+      'What could have changed your score that has nothing to do with that process (your phone’s screen, your finger, noise, tiredness)?',
+      'Did everyone do the task with the same instructions and under the same conditions? Why does that matter?',
+      'If you did the task again now, would you get the same result? Try it and compare.'
+    ],
+    histTitle: 'Your runs on this phone',
+    histEmpty: 'No saved runs yet.',
+    again: 'Do the task again',
+    clear: 'Delete saved runs',
+    run: 'Run',
+    words: ['RED', 'BLUE', 'GREEN', 'YELLOW']
+  },
+  tr: {
+    docTitle: 'Stroop Görevi · PSKO3204',
+    eyebrow: 'PSKO3204 · 1. hafta',
+    h1: 'Stroop görevi',
+    lead: 'Kısa bir tepki süresi görevi. Sonucun, davranışından alınmış bir örneğe dayanan bir puan; psikolojik bir testin ürettiği şey de tam olarak bu.',
+    howTitle: 'Nasıl yapılır?',
+    how1: 'Ekranda renk adları göreceksin. Kelimenin ne yazdığına bakma. Kelimenin hangi renkle yazıldığını bul ve o rengin düğmesine olabildiğince hızlı ve doğru dokun.',
+    rule1: 'Önce geri bildirimli 8 deneme. Sonra asıl görev: 40 kelime (yaklaşık 2 dakika).',
+    rule2: 'Hepimiz aynı şekilde yapalım: telefonu dik tut ve işaret parmağınla dokun.',
+    rule3: 'Bitirene kadar bu sayfada kal. Sayfadan çıkarsan görev baştan başlar.',
+    cvNote: 'Renkleri ayırt etmekte zorlanıyorsan bir arkadaşınla eşleş ve onun sonucunu birlikte yorumlayın.',
+    aborted: 'Sayfadan çıkıldığı için görev durdu. Lütfen yeniden başla.',
+    startPractice: 'Denemeye başla',
+    practice: 'Deneme',
+    main: 'Görev',
+    quit: 'Görevi durdur',
+    fbRight: 'Doğru',
+    fbWrong: 'Yanlış. Yazının rengi:',
+    fbSlow: 'Çok yavaş',
+    pracDoneTitle: 'Deneme bitti',
+    pracDoneNext: 'Asıl görevde 40 kelime var. Geri bildirim yok; yalnızca hata yaptığında kısa bir işaret görünür.',
+    startMain: 'Göreve başla',
+    practiceAgain: 'Denemeyi tekrarla',
+    exCaption: w => `Kelime ${w} yazıyor ama kırmızı renkte, bu yüzden KIRMIZI düğmesine dokunursun.`,
+    pracCorrect: (c, n) => `${n} denemenin ${c} tanesini doğru yaptın.`,
+    resultEyebrow: 'Sonucun',
+    effectLbl: 'Stroop etkisi',
+    effectPos: e => `Kelime ile renk uyuşmadığında tipik yanıtın ${e} ms daha yavaştı.`,
+    effectNeg: e => `Bu denemede uyuşmayan kelimelerde yavaşlamadın (etki: ${e} ms). Bu alışılmadık bir sonuç; dikkat, alıştırma ve şans rol oynamış olabilir.`,
+    notEnough: 'Sonuç hesaplamak için yeterli doğru yanıt yok. Lütfen tekrar dene.',
+    con: 'Uyumlu', inc: 'Uyumsuz',
+    conLong: 'Kelime ve renk aynı', incLong: 'Kelime ve renk farklı',
+    medianRT: 'tipik (ortanca) tepki süresi',
+    accuracy: p => `%${p} doğru`,
+    menti: 'Sınıf oylamasında seçeceğin aralık:',
+    lowAcc: p => `Hata sayın yüksek (genel doğruluk %${p}). Bu sonuç, görevin ölçmek istediği şeyi iyi yansıtmıyor olabilir.`,
+    stripCap: 'Her nokta doğru bir yanıtı gösteriyor; dikey çizgi ortanca değerini işaretliyor. Hatalı yanıtlar gösterilmiyor.',
+    discussTitle: 'Tartışalım',
+    discuss: [
+      'Bu görev hangi zihinsel süreci ölçüyor olabilir?',
+      'Puanını, bu süreçle ilgisi olmayan hangi şeyler etkilemiş olabilir? (telefonunun ekranı, parmağın, gürültü, yorgunluk…)',
+      'Herkes görevi aynı yönergeyle ve aynı koşullarda mı yaptı? Bu neden önemli?',
+      'Görevi şimdi tekrar yapsan aynı sonucu alır mıydın? Dene ve karşılaştır.'
+    ],
+    histTitle: 'Bu telefondaki uygulamaların',
+    histEmpty: 'Henüz kayıtlı uygulama yok.',
+    again: 'Görevi tekrar yap',
+    clear: 'Kayıtlı uygulamaları sil',
+    run: 'Uygulama',
+    words: ['KIRMIZI', 'MAVİ', 'YEŞİL', 'SARI']
+  }
+});
+const L = () => window.STR[Kit.lang];
+
+const INK = ['#ff5a52', '#5b95ff', '#3fcf62', '#ffd23f'];   // red, blue, green, yellow (on the dark stage)
+const HKEY = 'psyc3204.stroop.runs';
+const PER_COLOR_MAIN = 5, PER_COLOR_PRACTICE = 1;
+const TIMEOUT_MS = 3000, FIX_MS = 500, MIN_RT = 200;
+
+/* ---------- trial lists ---------- */
+function makePool(per) {
+  const pool = [];
+  for (let ink = 0; ink < 4; ink++) {
+    const others = [0, 1, 2, 3].filter(j => j !== ink);
+    for (let k = 0; k < per; k++) {
+      pool.push({ cond: 'con', ink, word: ink });
+      pool.push({ cond: 'inc', ink, word: others[(k + ink) % 3] });
+    }
+  }
+  return pool;
+}
+function fits(seq, x) {
+  const n = seq.length;
+  if (n && seq[n - 1].ink === x.ink) return false;
+  if (n && seq[n - 1].word === x.word) return false;
+  if (n >= 3 && seq[n - 1].cond === x.cond && seq[n - 2].cond === x.cond && seq[n - 3].cond === x.cond) return false;
+  return true;
+}
+function buildSeq(pool, rnd) {
+  for (let attempt = 0; attempt < 400; attempt++) {
+    const rest = pool.slice();
+    const seq = [];
+    while (rest.length) {
+      const cands = [];
+      for (let k = 0; k < rest.length; k++) if (fits(seq, rest[k])) cands.push(k);
+      if (!cands.length) break;
+      seq.push(rest.splice(cands[Math.floor(rnd() * cands.length)], 1)[0]);
+    }
+    if (!rest.length) return seq;
+  }
+  return Kit.shuffle(pool, rnd);
+}
+
+/* ---------- screens ---------- */
+const scr = { intro: $('#scrIntro'), task: $('#scrTask'), between: $('#scrBetween'), results: $('#scrResults') };
+function show(name) {
+  Object.entries(scr).forEach(([k, el]) => { el.hidden = k !== name; });
+  document.body.classList.toggle('in-task', name === 'task');
+  window.scrollTo(0, 0);
+}
+
+/* ---------- keys ---------- */
+const keysEl = $('#keys');
+keysEl.innerHTML = INK.map((c, k) => `<button type="button" class="key" data-k="${k}" style="background:${c}"></button>`).join('');
+const keyBtns = Array.from(keysEl.querySelectorAll('.key'));
+keyBtns.forEach(b => {
+  b.addEventListener('pointerdown', e => {
+    if (e.button !== undefined && e.button > 0) return;
+    e.preventDefault();
+    const now = performance.now();
+    const ts = (typeof e.timeStamp === 'number' && e.timeStamp > RUN.onset - 5 && e.timeStamp <= now + 1) ? e.timeStamp : now;
+    respond(+b.dataset.k, ts);
+  });
+  b.addEventListener('click', e => { if (e.detail === 0) respond(+b.dataset.k, performance.now()); });
+});
+document.addEventListener('keydown', e => {
+  if (scr.task.hidden) return;
+  const k = ['1', '2', '3', '4'].indexOf(e.key);
+  if (k >= 0) { e.preventDefault(); respond(k, performance.now()); }
+});
+
+/* ---------- running a block ---------- */
+const stim = $('#stim'), fbk = $('#fbk');
+const RUN = { phase: null, trials: [], i: 0, res: [], locked: true, onset: 0, timers: [] };
+function later(fn, ms) { RUN.timers.push(setTimeout(fn, ms)); }
+function clearTimers() { RUN.timers.forEach(clearTimeout); RUN.timers = []; }
+
+function startBlock(phase) {
+  $('#abortNote').hidden = true;
+  RUN.phase = phase;
+  RUN.trials = buildSeq(makePool(phase === 'practice' ? PER_COLOR_PRACTICE : PER_COLOR_MAIN), Math.random);
+  RUN.i = 0;
+  RUN.res = [];
+  $('#taskLabel').textContent = phase === 'practice' ? L().practice : L().main;
+  show('task');
+  nextTrial();
+}
+function nextTrial() {
+  clearTimers();
+  if (RUN.i >= RUN.trials.length) { endBlock(); return; }
+  $('#taskCount').textContent = `${RUN.i + 1} / ${RUN.trials.length}`;
+  RUN.locked = true;
+  stim.textContent = '+';
+  stim.style.color = '';
+  fbk.textContent = '';
+  fbk.className = 'fbk';
+  later(() => {
+    requestAnimationFrame(() => {
+      if (scr.task.hidden) return;
+      const tr = RUN.trials[RUN.i];
+      stim.textContent = L().words[tr.word];
+      stim.style.color = INK[tr.ink];
+      RUN.onset = performance.now();
+      RUN.locked = false;
+      later(() => respond(null, performance.now()), TIMEOUT_MS);
+    });
+  }, FIX_MS);
+}
+function respond(key, tResp) {
+  if (RUN.locked || scr.task.hidden) return;
+  RUN.locked = true;
+  clearTimers();
+  const tr = RUN.trials[RUN.i];
+  const correct = key === tr.ink;
+  RUN.res.push({ cond: tr.cond, rt: Math.max(0, tResp - RUN.onset), correct, timeout: key === null });
+  stim.textContent = '';
+  if (RUN.phase === 'practice') {
+    if (correct) { fbk.textContent = '✓ ' + L().fbRight; fbk.className = 'fbk ok'; }
+    else if (key === null) { fbk.textContent = L().fbSlow; fbk.className = 'fbk no'; }
+    else { fbk.textContent = '✗ ' + L().fbWrong + ' ' + L().words[tr.ink]; fbk.className = 'fbk no'; }
+    later(advance, correct ? 700 : 1300);
+  } else if (!correct) {
+    fbk.textContent = key === null ? L().fbSlow : '✗';
+    fbk.className = 'fbk no';
+    later(advance, 600);
+  } else {
+    later(advance, 250);
+  }
+}
+function advance() { RUN.i++; nextTrial(); }
+function abort(showNote) {
+  clearTimers();
+  RUN.locked = true;
+  show('intro');
+  $('#abortNote').hidden = !showNote;
+}
+document.addEventListener('visibilitychange', () => { if (document.hidden && !scr.task.hidden) abort(true); });
+$('#btnQuit').addEventListener('click', () => abort(false));
+
+function endBlock() {
+  if (RUN.phase === 'practice') {
+    const c = RUN.res.filter(r => r.correct).length;
+    $('#pracDoneText').textContent = L().pracCorrect(c, RUN.res.length);
+    lastPractice = { c, n: RUN.res.length };
+    show('between');
+    return;
+  }
+  const r = summarize(RUN.res);
+  if (r.ok) saveRun(r);
+  lastResult = r;
+  renderResults();
+  show('results');
+}
+let lastPractice = null, lastResult = null;
+
+/* ---------- scoring ---------- */
+function median(a) {
+  if (!a.length) return NaN;
+  const s = a.slice().sort((x, y) => x - y);
+  const m = s.length >> 1;
+  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+}
+function summarize(res) {
+  const valid = r => r.correct && r.rt >= MIN_RT;
+  const rtsCon = res.filter(r => r.cond === 'con' && valid(r)).map(r => r.rt);
+  const rtsInc = res.filter(r => r.cond === 'inc' && valid(r)).map(r => r.rt);
+  const nCon = res.filter(r => r.cond === 'con').length, nInc = res.filter(r => r.cond === 'inc').length;
+  const accCon = res.filter(r => r.cond === 'con' && r.correct).length / Math.max(1, nCon);
+  const accInc = res.filter(r => r.cond === 'inc' && r.correct).length / Math.max(1, nInc);
+  const acc = res.filter(r => r.correct).length / Math.max(1, res.length);
+  const mCon = median(rtsCon), mInc = median(rtsInc);
+  const ok = rtsCon.length >= 5 && rtsInc.length >= 5;
+  return { ok, rtsCon, rtsInc, mCon, mInc, effect: ok ? Math.round(mInc - mCon) : NaN, accCon, accInc, acc, date: new Date().toISOString() };
+}
+const BINS = [[-Infinity, 0, '< 0 ms'], [0, 100, '0–99 ms'], [100, 200, '100–199 ms'], [200, 300, '200–299 ms'], [300, 400, '300–399 ms'], [400, Infinity, '400+ ms']];
+const binOf = e => BINS.find(([a, b]) => e >= a && e < b)[2];
+const pct = x => Math.round(x * 100);
+const sgn = e => (e < 0 ? '−' + Math.abs(e) : String(e));
+
+/* ---------- history ---------- */
+function loadRuns() { const v = Kit.store.get(HKEY, []); return Array.isArray(v) ? v : []; }
+function saveRun(r) {
+  const runs = loadRuns();
+  runs.push({ date: r.date, effect: r.effect, mCon: Math.round(r.mCon), mInc: Math.round(r.mInc), acc: pct(r.acc) });
+  Kit.store.set(HKEY, runs.slice(-10));
+}
+function fmtDate(iso) {
+  const d = new Date(iso);
+  const p = n => String(n).padStart(2, '0');
+  return `${p(d.getDate())}.${p(d.getMonth() + 1)}.${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+
+/* ---------- result views ---------- */
+function stripSvg(r) {
+  const W = 360, H = 132, x0 = 78, x1 = 348, max = 2500;
+  const X = v => x0 + Math.min(v, max) / max * (x1 - x0);
+  const rows = [[r.rtsCon, 40, 'var(--series-1)', L().con, r.mCon], [r.rtsInc, 88, 'var(--series-2)', L().inc, r.mInc]];
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(L().con + ': ' + Math.round(r.mCon) + ' ms, ' + L().inc + ': ' + Math.round(r.mInc) + ' ms')}">`;
+  [0, 500, 1000, 1500, 2000, 2500].forEach(v => {
+    s += `<line class="grid" x1="${X(v)}" x2="${X(v)}" y1="14" y2="${H - 22}"/>`;
+    s += `<text x="${X(v)}" y="${H - 8}" text-anchor="${v === max ? 'end' : 'middle'}">${v === max ? '2500+' : v}</text>`;
+  });
+  rows.forEach(([rts, y, col, name, med], ri) => {
+    s += `<text class="rowlbl" x="0" y="${y + 4}">${esc(name)}</text>`;
+    rts.forEach((v, k) => {
+      const jy = y + (((k * 7 + ri * 3) % 5) - 2) * 3.2;
+      s += `<circle cx="${X(v).toFixed(1)}" cy="${jy.toFixed(1)}" r="3.6" style="fill:${col}" stroke="var(--surface)" stroke-width="1"/>`;
+    });
+    if (isFinite(med)) {
+      s += `<line class="med" x1="${X(med)}" x2="${X(med)}" y1="${y - 15}" y2="${y + 15}"/>`;
+      const lx = Math.min(x1 - 20, Math.max(x0 + 20, X(med)));
+      s += `<text class="medlbl" x="${lx}" y="${y - 19}" text-anchor="middle">${Math.round(med)}</text>`;
+    }
+  });
+  s += `<text x="${x1}" y="10" text-anchor="end">ms</text>`;
+  return s + `</svg>`;
+}
+function renderResults() {
+  const r = lastResult;
+  if (!r) return;
+  const S = L();
+  let h = `<p class="eyebrow">${esc(S.resultEyebrow)}</p>`;
+  if (!r.ok) {
+    h += `<p>${esc(S.notEnough)}</p><button type="button" class="btn primary block" data-again>${esc(S.again)}</button>`;
+    $('#resMain').innerHTML = h;
+  } else {
+    h += `<div class="eff"><span class="big">${sgn(r.effect)} ms</span><span>${esc(S.effectLbl)}</span></div>`;
+    h += `<p>${esc(r.effect > 0 ? S.effectPos(r.effect) : S.effectNeg(sgn(r.effect)))}</p>`;
+    h += `<div class="stats">`
+      + `<div class="stat"><span class="lbl"><i style="background:var(--series-1)"></i>${esc(S.conLong)}</span><span class="val">${Math.round(r.mCon)} ms</span><span class="sub">${esc(S.medianRT)} · ${esc(S.accuracy(pct(r.accCon)))}</span></div>`
+      + `<div class="stat"><span class="lbl"><i style="background:var(--series-2)"></i>${esc(S.incLong)}</span><span class="val">${Math.round(r.mInc)} ms</span><span class="sub">${esc(S.medianRT)} · ${esc(S.accuracy(pct(r.accInc)))}</span></div>`
+      + `</div>`;
+    if (r.acc < 0.8) h += `<p class="note">${esc(S.lowAcc(pct(r.acc)))}</p>`;
+    h += `<div class="menti"><span class="small">${esc(S.menti)}</span><b>${esc(binOf(r.effect))}</b></div>`;
+    h += `<figure class="strip" style="margin:0">${stripSvg(r)}<figcaption class="small muted">${esc(S.stripCap)}</figcaption></figure>`;
+    $('#resMain').innerHTML = h;
+  }
+  $('#discussList').innerHTML = S.discuss.map(q => `<li>${esc(q)}</li>`).join('');
+  renderHistory();
+  const again = $('#resMain [data-again]');
+  if (again) again.addEventListener('click', () => startBlock('practice'));
+}
+function renderHistory() {
+  const S = L();
+  const runs = loadRuns();
+  let h = `<h2>${esc(S.histTitle)}</h2>`;
+  if (!runs.length) h += `<p class="muted">${esc(S.histEmpty)}</p>`;
+  else h += `<ul class="hist">${runs.map((x, k) => `<li><span>${esc(S.run)} ${k + 1} · ${fmtDate(x.date)}</span><span class="mono">${sgn(x.effect)} ms</span></li>`).join('')}</ul>`;
+  h += `<div class="row"><button type="button" class="btn primary" data-again2>${esc(S.again)}</button>`;
+  if (runs.length) h += `<button type="button" class="btn ghost" data-clear>${esc(S.clear)}</button>`;
+  h += `</div>`;
+  $('#resHistory').innerHTML = h;
+  $('#resHistory [data-again2]').addEventListener('click', () => startBlock('main'));
+  const c = $('#resHistory [data-clear]');
+  if (c) c.addEventListener('click', () => { Kit.store.set(HKEY, []); renderHistory(); });
+}
+
+/* ---------- static text that depends on language ---------- */
+function renderStatic() {
+  const S = L();
+  keyBtns.forEach((b, k) => { b.textContent = S.words[k]; b.setAttribute('aria-label', S.words[k]); });
+  const ex = $('#exWord');
+  ex.textContent = S.words[1];
+  ex.style.color = INK[0];
+  const ek = $('#exKey');
+  ek.textContent = S.words[0];
+  ek.style.background = INK[0];
+  $('#exCaption').textContent = S.exCaption(S.words[1]);
+  if (lastPractice) $('#pracDoneText').textContent = S.pracCorrect(lastPractice.c, lastPractice.n);
+  $('#taskLabel').textContent = RUN.phase === 'main' ? S.main : S.practice;
+  if (!scr.results.hidden) renderResults();
+}
+
+$('#btnPractice').addEventListener('click', () => startBlock('practice'));
+$('#btnMain').addEventListener('click', () => startBlock('main'));
+$('#btnPracticeAgain').addEventListener('click', () => startBlock('practice'));
+
+Kit.init();
+renderStatic();
+Kit.onLang(renderStatic);
+window.__stroop = { makePool, buildSeq, fits, summarize, median, RUN };
+})();
+
+</script>
+</body>
+</html>

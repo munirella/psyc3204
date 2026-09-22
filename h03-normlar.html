@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#4a3aa7">
+<title>Normlar ve Yapılar</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%234a3aa7%22%2F%3E%3Cpath%20d%3D%22M18%2044h28M22%2044V26M32%2044V18M42%2044V32%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f2f2f6;
+  --surface:#fdfdfe;
+  --surface-2:#ebebf1;
+  --surface-3:#dfdfe8;
+  --ink:#14131b;
+  --ink-2:#4a4957;
+  --muted:#65636f;
+  --line:#e0dfe7;
+  --line-strong:#c3c2ce;
+  --accent:#4a3aa7;
+  --accent-hover:#3c2f8e;
+  --accent-ink:#ffffff;
+  --accent-soft:#e9e6f8;
+  --good:#0ca30c;
+  --good-text:#006300;
+  --good-soft:#e1f3e1;
+  --crit:#d03b3b;
+  --crit-text:#a82626;
+  --crit-soft:#fbe5e5;
+  --warn:#fab219;
+  --warn-soft:#fdf0cc;
+  --series-1:#2a78d6;
+  --series-2:#eb6834;
+  --stage:#15141c;
+  --stage-ink:#f3f3f7;
+  --shadow:0 1px 2px rgba(20,19,27,.05),0 8px 24px rgba(20,19,27,.07);
+  --radius:16px;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Roboto Mono",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0f0f14;
+    --surface:#18181f;
+    --surface-2:#22222b;
+    --surface-3:#2e2e39;
+    --ink:#f3f3f7;
+    --ink-2:#c4c3cf;
+    --muted:#9896a6;
+    --line:#2b2b35;
+    --line-strong:#41414d;
+    --accent:#9d93ee;
+    --accent-hover:#b3abf3;
+    --accent-ink:#14131b;
+    --accent-soft:#2b2847;
+    --good-text:#5fd35f;
+    --good-soft:#17301a;
+    --crit-text:#ff8f8f;
+    --crit-soft:#3a1d20;
+    --warn-soft:#3b3119;
+    --series-1:#3987e5;
+    --series-2:#d95926;
+    --stage:#0b0b10;
+    --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0f0f14;
+  --surface:#18181f;
+  --surface-2:#22222b;
+  --surface-3:#2e2e39;
+  --ink:#f3f3f7;
+  --ink-2:#c4c3cf;
+  --muted:#9896a6;
+  --line:#2b2b35;
+  --line-strong:#41414d;
+  --accent:#9d93ee;
+  --accent-hover:#b3abf3;
+  --accent-ink:#14131b;
+  --accent-soft:#2b2847;
+  --good-text:#5fd35f;
+  --good-soft:#17301a;
+  --crit-text:#ff8f8f;
+  --crit-soft:#3a1d20;
+  --warn-soft:#3b3119;
+  --series-1:#3987e5;
+  --series-2:#d95926;
+  --stage:#0b0b10;
+  --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top,0px)}
+[hidden]{display:none!important}
+h1,h2,h3{margin:0;text-wrap:balance;line-height:1.2}
+p{margin:0}
+ul,ol{margin:0}
+button,input,select{font:inherit;color:inherit}
+button{touch-action:manipulation}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:680px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);text-decoration:none;font-weight:600;font-size:14px;min-height:40px;padding:0 4px;border-radius:8px}
+.back:hover{color:var(--ink)}
+.back svg{width:18px;height:18px}
+.lang{display:inline-flex;border:1px solid var(--line-strong);border-radius:999px;padding:2px;background:var(--surface)}
+.lang button{border:0;background:transparent;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.05em;cursor:pointer;color:var(--ink-2);min-height:34px;min-width:44px}
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+
+/* page */
+.app{max-width:680px;margin:0 auto;padding-inline:16px;padding-block:18px 48px;display:grid;gap:18px}
+.head{display:grid;gap:6px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(26px,7vw,34px);font-weight:750;letter-spacing:-.015em}
+.lead{color:var(--ink-2);font-size:16px}
+.card,[id^="quiz"]{scroll-margin-top:72px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:grid;gap:14px}
+.card h2{font-size:19px;font-weight:700}
+.card h3{font-size:16px;font-weight:700}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.note{font-size:14px;color:var(--ink-2);background:var(--surface-2);border-radius:12px;padding:10px 12px}
+.foot{max-width:680px;margin:0 auto;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 28px);font-size:13px;color:var(--muted)}
+.list{padding-left:20px;display:grid;gap:6px}
+
+/* buttons */
+.btn{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:12px;padding:10px 16px;min-height:48px;font-weight:650;font-size:16px;cursor:pointer;text-decoration:none;transition:background-color .15s,border-color .15s}
+.btn:hover{background:var(--surface-2)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--ink-2)}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.row.end{justify-content:flex-end}
+.row.between{justify-content:space-between}
+
+/* segmented tabs */
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;background:var(--surface-2);border-radius:14px;padding:4px}
+.seg button{border:0;background:transparent;border-radius:10px;padding:8px 6px;min-height:48px;font-size:14px;font-weight:650;color:var(--ink-2);cursor:pointer;line-height:1.2}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.seg .n{display:block;font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+/* quiz */
+.progress{display:grid;gap:6px}
+.progress-top{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);font-weight:600}
+.bar{height:6px;background:var(--surface-2);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .3s}
+.q-text{font-size:18px;font-weight:600;line-height:1.4}
+.q-sub{font-size:15px;color:var(--ink-2)}
+.choices{display:grid;gap:10px}
+.choice{appearance:none;text-align:left;width:100%;display:flex;align-items:center;gap:12px;border:1.5px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:14px;padding:12px 14px;min-height:56px;font-size:16px;font-weight:550;cursor:pointer;line-height:1.35}
+.choice:hover{border-color:var(--accent)}
+.choice .mark{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line-strong);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--muted)}
+.choice[disabled]{cursor:default}
+.choice.correct{border-color:var(--good);background:var(--good-soft)}
+.choice.correct .mark{background:var(--good);border-color:var(--good);color:#fff}
+.choice.wrong{border-color:var(--crit);background:var(--crit-soft)}
+.choice.wrong .mark{background:var(--crit);border-color:var(--crit);color:#fff}
+.choice.dim{opacity:.6}
+.feedback{border-radius:14px;padding:12px 14px;display:grid;gap:4px;font-size:15px}
+.feedback.ok{background:var(--good-soft)}
+.feedback.no{background:var(--crit-soft)}
+.feedback.info{background:var(--surface-2)}
+.feedback b{font-size:16px}
+.feedback.ok b{color:var(--good-text)}
+.feedback.no b{color:var(--crit-text)}
+.score{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.score .big{font-family:var(--mono);font-size:44px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.review{list-style:none;padding:0;display:grid;border-top:1px solid var(--line)}
+.review li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.review .ans{color:var(--ink-2);font-size:14px}
+.ico{width:20px;height:20px;flex:none}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
+
+.stack{display:grid;gap:18px}
+.groups{display:grid;gap:12px}
+.grp{border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px}
+.grp h3{font-size:16px}
+.grp .mstats{font-family:var(--mono);font-size:14px;color:var(--ink-2)}
+.grp .opts{display:grid;gap:8px}
+.grp .choice{min-height:48px;padding:8px 12px;font-size:15px}
+.nums{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--mono);font-size:15px}
+.nums b{font-weight:700}
+.curve svg{width:100%;max-width:420px;height:auto;display:block}
+.curve text{font-family:var(--mono);font-size:10px;fill:var(--muted)}
+.curve .cv{fill:none;stroke:var(--ink-2);stroke-width:1.5}
+.curve .area{fill:var(--accent);fill-opacity:.22}
+.curve .mk{stroke:var(--accent);stroke-width:2.5}
+.curve .mklbl{fill:var(--accent);font-weight:700;font-size:11px}
+.curve .base{stroke:var(--line-strong);stroke-width:1}
+.slider{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.slider label{font-weight:600}
+.slider output{font-size:22px;font-weight:700}
+input[type="range"]{width:100%;accent-color:var(--accent);height:32px;margin:0}
+.explore{display:grid;gap:12px}
+.xrow{border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px}
+.xrow:first-child{border-top:0;padding-top:0}
+.xrow .xname{font-weight:650}
+.feedback .nums b{color:var(--ink)}
+
+</style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-in"><a class="back" href="index.html" data-keep-lang><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5L7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="back">Tüm haftalar</span></a><div class="lang" role="group" aria-label="Language / Dil"><button type="button" data-lang-btn="tr" lang="tr" aria-pressed="false">TR</button><button type="button" data-lang-btn="en" lang="en" aria-pressed="false">EN</button></div></div></div>
+<main class="app">
+  <header class="head">
+    <p class="eyebrow" data-t="eyebrow"></p>
+    <h1 data-t="h1"></h1>
+    <p class="lead" data-t="lead"></p>
+  </header>
+  <nav class="seg" role="tablist" aria-label="Parts">
+    <button type="button" role="tab" id="tab-p1" data-panel="p1" aria-controls="p1"><span class="n">1</span><span data-t="tab1"></span></button>
+    <button type="button" role="tab" id="tab-p2" data-panel="p2" aria-controls="p2"><span class="n">2</span><span data-t="tab2"></span></button>
+    <button type="button" role="tab" id="tab-p3" data-panel="p3" aria-controls="p3"><span class="n">3</span><span data-t="tab3"></span></button>
+  </nav>
+
+  <section id="p1" role="tabpanel" aria-labelledby="tab-p1" class="card">
+    <h2 data-t="tsTitle"></h2>
+    <p data-t="tsLead"></p>
+    <div id="quizTS"></div>
+  </section>
+
+  <section id="p2" role="tabpanel" aria-labelledby="tab-p2">
+    <div class="stack">
+      <div class="card">
+        <h2 data-t="nTitle"></h2>
+        <p id="nLead"></p>
+        <p class="small muted" data-t="nRule"></p>
+        <div class="groups" id="groups"></div>
+        <div id="nSummary" aria-live="polite"></div>
+      </div>
+      <div class="card">
+        <h2 data-t="xTitle"></h2>
+        <p data-t="xLead"></p>
+        <div class="slider">
+          <label for="raw" data-t="rawLbl"></label>
+          <output id="rawOut" class="mono" for="raw">32</output>
+        </div>
+        <input type="range" id="raw" min="0" max="50" step="1" value="32">
+        <div class="explore" id="explore"></div>
+        <p class="small muted" id="formulas"></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="p3" role="tabpanel" aria-labelledby="tab-p3" class="card">
+    <h2 data-t="opTitle"></h2>
+    <p class="note" data-t="opDef"></p>
+    <p data-t="opLead"></p>
+    <div id="quizOp"></div>
+  </section>
+</main>
+<footer class="foot"><p data-t="privacy"></p></footer>
+
+<script>
+/* PSYC3204 phone-app kit: language, helpers, tabs, quiz */
+const Kit = (() => {
+  'use strict';
+  const KEY = 'psyc3204.lang';
+  const subs = [];
+  let lang = 'tr';
+  try {
+    const p = new URLSearchParams(location.search).get('lang');
+    if (p === 'tr' || p === 'en') lang = p;
+    else {
+      let s = null;
+      try { s = localStorage.getItem(KEY); } catch (e) { s = null; }
+      if (s === 'tr' || s === 'en') lang = s;
+      else lang = (navigator.language || '').toLowerCase().startsWith('tr') ? 'tr' : 'en';
+    }
+  } catch (e) { lang = 'tr'; }
+
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const t = v => (v == null ? '' : typeof v === 'string' ? v : (v[lang] != null ? v[lang] : (v.en || '')));
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+
+  function apply() {
+    document.documentElement.lang = lang;
+    const S = (window.STR && window.STR[lang]) || {};
+    $$('[data-t]').forEach(el => { const v = S[el.dataset.t]; if (typeof v === 'string') el.textContent = v; });
+    $$('[data-lang-btn]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.langBtn === lang)));
+    $$('a[data-keep-lang]').forEach(a => {
+      const href = a.getAttribute('href') || '';
+      const [base, hash] = href.split('#');
+      a.setAttribute('href', base.split('?')[0] + '?lang=' + lang + (hash ? '#' + hash : ''));
+    });
+    if (S.docTitle) document.title = S.docTitle;
+  }
+  function setLang(l) {
+    if (l === lang) return;
+    lang = l;
+    try { localStorage.setItem(KEY, l); } catch (e) { /* storage unavailable */ }
+    try { const u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u.toString()); } catch (e) { /* file:// or sandbox */ }
+    apply();
+    subs.forEach(f => { try { f(l); } catch (e) { console.error(e); } });
+  }
+  function onLang(f) { subs.push(f); }
+
+  function shuffle(a, rnd) {
+    const r = rnd || Math.random;
+    const b = a.slice();
+    for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; }
+    return b;
+  }
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      let q = Math.imul(a ^ a >>> 15, 1 | a);
+      q = q + Math.imul(q ^ q >>> 7, 61 | q) ^ q;
+      return ((q ^ q >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+  };
+
+  const ICON = {
+    ok: '<svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" style="fill:var(--good)"/><path d="M5.8 10.3l2.8 2.8 5.6-6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    no: '<svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" style="fill:var(--crit)"/><path d="M6.8 6.8l6.4 6.4M13.2 6.8l-6.4 6.4" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>',
+    info: '<svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2" fill="none" style="stroke:var(--muted)" stroke-width="1.6"/><path d="M10 9v5" style="stroke:var(--muted)" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="6.3" r="1.2" style="fill:var(--muted)"/></svg>'
+  };
+
+  /* Tabs: buttons [role=tab][data-panel]; remembers the part in the URL hash (#p1, #p2...) */
+  function tabs(nav, onChange) {
+    const btns = $$('[role="tab"]', nav);
+    function select(id, push) {
+      btns.forEach(b => {
+        const on = b.dataset.panel === id;
+        b.setAttribute('aria-selected', String(on));
+        b.tabIndex = on ? 0 : -1;
+        const p = document.getElementById(b.dataset.panel);
+        if (p) p.hidden = !on;
+      });
+      if (push) { try { history.replaceState(null, '', '#' + id); } catch (e) { /* ignore */ } }
+      if (onChange) onChange(id);
+    }
+    btns.forEach((b, k) => {
+      b.addEventListener('click', () => { select(b.dataset.panel, true); });
+      b.addEventListener('keydown', e => {
+        const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        const nb = btns[(k + d + btns.length) % btns.length];
+        nb.focus(); select(nb.dataset.panel, true);
+      });
+    });
+    const h = (location.hash || '').slice(1);
+    select(btns.some(b => b.dataset.panel === h) ? h : btns[0].dataset.panel, false);
+    return { select };
+  }
+
+  /* Quiz: one question at a time, instant feedback, summary with review */
+  function quiz(root, cfg) {
+    const items = cfg.items;
+    const L = cfg.labels;
+    const st = { i: 0, picks: new Array(items.length).fill(null) };
+    function score() { return st.picks.reduce((s, p, k) => s + (p === items[k].answer ? 1 : 0), 0); }
+    function render(focusFirst) {
+      if (st.i >= items.length) return renderSummary();
+      const it = items[st.i];
+      const pick = st.picks[st.i];
+      const answered = pick !== null;
+      const opts = it.options || cfg.options;
+      let h = `<div class="progress"><div class="progress-top"><span>${esc(t(L.question))} ${st.i + 1} / ${items.length}</span><span>${esc(t(L.correctSoFar))}: ${score()}</span></div><div class="bar"><i style="width:${(st.i / items.length) * 100}%"></i></div></div>`;
+      if (it.pre) h += `<p class="q-sub">${esc(t(it.pre))}</p>`;
+      h += `<p class="q-text" tabindex="-1">${esc(t(it.q))}</p>`;
+      if (cfg.prompt) h += `<p class="q-sub">${esc(t(cfg.prompt))}</p>`;
+      h += `<div class="choices">`;
+      opts.forEach((o, k) => {
+        let cls = 'choice', mark = String.fromCharCode(65 + k);
+        if (answered) {
+          if (k === it.answer) { cls += ' correct'; mark = '✓'; }
+          else if (k === pick) { cls += ' wrong'; mark = '✗'; }
+          else cls += ' dim';
+        }
+        h += `<button type="button" class="${cls}" data-k="${k}"${answered ? ' disabled' : ''}><span class="mark" aria-hidden="true">${mark}</span><span>${esc(t(o))}</span></button>`;
+      });
+      h += `</div>`;
+      if (answered) {
+        const ok = pick === it.answer;
+        const head = ok ? t(L.right) : t(L.notQuite) + ' ' + t(L.bestAnswer) + ': ' + t(opts[it.answer]) + '.';
+        h += `<div class="feedback ${ok ? 'ok' : 'no'}" role="status"><b>${esc(head)}</b><span>${esc(t(it.explain))}</span></div>`;
+        h += `<div class="row end"><button type="button" class="btn primary" data-next>${esc(t(st.i === items.length - 1 ? L.finish : L.next))}</button></div>`;
+      }
+      root.innerHTML = h;
+      root.querySelectorAll('.choice:not([disabled])').forEach(b => b.addEventListener('click', () => {
+        st.picks[st.i] = +b.dataset.k;
+        render();
+        const fb = root.querySelector('.feedback');
+        if (fb && fb.scrollIntoView) fb.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        if (cfg.onAnswer) cfg.onAnswer(st.i, st.picks[st.i] === it.answer);
+      }));
+      const nx = root.querySelector('[data-next]');
+      if (nx) nx.addEventListener('click', () => { st.i++; render(true); root.scrollIntoView({ block: 'start', behavior: 'smooth' }); });
+      if (focusFirst) { const q = root.querySelector('.q-text'); if (q) q.focus({ preventScroll: true }); }
+    }
+    function renderSummary() {
+      const s = score();
+      let h = `<div class="score"><span class="big">${s} / ${items.length}</span><span class="muted">${esc(t(L.correctTotal))}</span></div>`;
+      if (cfg.summaryNote) h += `<p class="note">${esc(t(cfg.summaryNote))}</p>`;
+      h += `<ul class="review">`;
+      items.forEach((it, k) => {
+        const opts = it.options || cfg.options;
+        const ok = st.picks[k] === it.answer;
+        h += `<li>${ok ? ICON.ok : ICON.no}<div><div>${esc(t(it.short || it.q))}</div><div class="ans">${esc(t(L.bestAnswer))}: ${esc(t(opts[it.answer]))}</div></div></li>`;
+      });
+      h += `</ul><div class="row"><button type="button" class="btn" data-restart>${esc(t(L.restart))}</button></div>`;
+      root.innerHTML = h;
+      root.querySelector('[data-restart]').addEventListener('click', () => { st.i = 0; st.picks.fill(null); render(true); });
+      if (cfg.onFinish) cfg.onFinish(s, items.length);
+    }
+    onLang(() => render());
+    render();
+    return { restart() { st.i = 0; st.picks.fill(null); render(); } };
+  }
+
+  const QUIZ_LABELS = {
+    question: { en: 'Question', tr: 'Soru' },
+    correctSoFar: { en: 'Correct', tr: 'Doğru' },
+    right: { en: 'Correct!', tr: 'Doğru!' },
+    notQuite: { en: 'Not quite.', tr: 'Tam değil.' },
+    bestAnswer: { en: 'Best answer', tr: 'En iyi yanıt' },
+    next: { en: 'Next', tr: 'Sonraki' },
+    finish: { en: 'See results', tr: 'Sonucu gör' },
+    correctTotal: { en: 'correct', tr: 'doğru' },
+    restart: { en: 'Start again', tr: 'Baştan başla' }
+  };
+
+  const COMMON = {
+    en: { back: 'All weeks', privacy: 'Your answers stay on this phone. Nothing is sent anywhere.' },
+    tr: { back: 'Tüm haftalar', privacy: 'Yanıtların bu telefonda kalır, hiçbir yere gönderilmez.' }
+  };
+  function withCommon(s) { return { en: Object.assign({}, COMMON.en, s.en), tr: Object.assign({}, COMMON.tr, s.tr) }; }
+
+  function init() {
+    $$('[data-lang-btn]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.langBtn)));
+    apply();
+  }
+  return { get lang() { return lang; }, withCommon, t, esc, $, $$, apply, setLang, onLang, shuffle, mulberry32, store, ICON, tabs, quiz, QUIZ_LABELS, init };
+})();
+
+</script>
+<script>
+(() => {
+'use strict';
+const { t, esc, $ } = Kit;
+window.STR = Kit.withCommon({
+  en: {
+    docTitle: 'Norms and Constructs · PSYC3204',
+    eyebrow: 'PSYC3204 · Week 3',
+    h1: 'Norms and constructs',
+    lead: 'Three short rounds: traits and states, what a score means against a norm group, and turning a construct into behavior.',
+    tab1: 'Trait or state?', tab2: 'Same score, different meaning', tab3: 'Define a construct',
+    tsTitle: 'Trait or state?',
+    tsLead: 'A trait is a relatively enduring way in which people differ; a state is less enduring (Cohen et al., 2022, Ch. 4).',
+    nTitle: 'Same score, different meaning',
+    nRule: 'In this activity, a percentile rank below 25 counts as “below average”, 25 to 75 as “around average”, and above 75 as “above average”.',
+    xTitle: 'Try any score',
+    xLead: 'Move the slider and watch how the same raw score changes meaning across the three norm groups.',
+    rawLbl: 'Raw score (0–50)',
+    opTitle: 'Define a construct: aggression',
+    opDef: 'Working definition for this activity: aggression is behavior meant to harm another person.',
+    opLead: 'Decide whether each behavior is an indicator of aggression, a related but different construct, or unrelated. Some cases are debatable; your reasons matter.'
+  },
+  tr: {
+    docTitle: 'Normlar ve Yapılar · PSKO3204',
+    eyebrow: 'PSKO3204 · 3. hafta',
+    h1: 'Normlar ve yapılar',
+    lead: 'Üç kısa tur: özellik ve durum, bir puanın norm grubuna göre anlamı ve bir yapıyı davranışlara dönüştürmek.',
+    tab1: 'Özellik mi, durum mu?', tab2: 'Aynı puan, farklı anlam', tab3: 'Yapıyı tanımla',
+    tsTitle: 'Özellik mi, durum mu?',
+    tsLead: 'Özellik, insanların birbirinden farklılaştığı görece kalıcı bir yoldur; durum ise daha az kalıcıdır (Cohen vd., 2022, Böl. 4).',
+    nTitle: 'Aynı puan, farklı anlam',
+    nRule: 'Bu etkinlikte yüzdelik sıra 25’in altındaysa “ortalamanın altında”, 25 ile 75 arasındaysa “ortalama civarında”, 75’in üstündeyse “ortalamanın üstünde” sayılıyor.',
+    xTitle: 'Başka puanları dene',
+    xLead: 'Kaydırıcıyı hareket ettir ve aynı ham puanın üç norm grubunda nasıl farklı anlam kazandığını izle.',
+    rawLbl: 'Ham puan (0–50)',
+    opTitle: 'Yapıyı tanımla: saldırganlık',
+    opDef: 'Bu etkinlikteki çalışma tanımı: Saldırganlık, başka birine zarar vermeyi amaçlayan davranıştır.',
+    opLead: 'Her davranışın saldırganlığın bir göstergesi mi, ilişkili ama farklı bir yapı mı, yoksa ilgisiz mi olduğuna karar ver. Bazı durumlar tartışmaya açık; gerekçen önemli.'
+  }
+});
+const TXT = {
+  en: {
+    lead: r => `Ayşe scored ${r} out of 50 on a made-up Short Memory Test. Where does this score fall in each norm group?`,
+    mean: 'Mean', sd: 'SD',
+    cat: ['Below average', 'Around average', 'Above average'],
+    right: 'Correct!', wrong: 'Not quite.', is: 'It is',
+    pct: 'percentile rank',
+    summary: 'The same raw score of 32 is below average among young adults, around average among psychology students, and above average among adults in their seventies. A raw score means little until we know the comparison group.',
+    formulas: 'z = (raw score − mean) / SD · T = 50 + 10z · standard score = 100 + 15z. Percentile ranks assume normally distributed scores. All norms here are made up.',
+    std: 'Standard score',
+    curveAria: (g, r) => `Normal curve for ${g}; the shaded area is the share of the group scoring below ${r}.`
+  },
+  tr: {
+    lead: r => `Ayşe, uydurma bir Kısa Bellek Testi’nden 50 üzerinden ${r} aldı. Bu puan her norm grubunda nereye düşüyor?`,
+    mean: 'Ort.', sd: 'SS',
+    cat: ['Ortalamanın altında', 'Ortalama civarında', 'Ortalamanın üstünde'],
+    right: 'Doğru!', wrong: 'Tam değil.', is: 'Doğru yanıt:',
+    pct: 'yüzdelik sıra',
+    summary: 'Aynı 32 puan genç yetişkinler arasında ortalamanın altında, psikoloji öğrencileri arasında ortalama civarında, 70’li yaşlardaki yetişkinler arasında ise ortalamanın üstünde. Bir ham puan, karşılaştırıldığı grup bilinmeden pek bir şey söylemez.',
+    formulas: 'z = (ham puan − ortalama) / SS · T = 50 + 10z · standart puan = 100 + 15z. Yüzdelik sıralar puanların normal dağıldığı varsayımıyla hesaplandı. Buradaki tüm normlar uydurmadır.',
+    std: 'Standart puan',
+    curveAria: (g, r) => `${g} için normal eğri; taralı alan, grupta ${r} puanın altında kalanların oranı.`
+  }
+};
+const X = () => TXT[Kit.lang];
+
+/* ---------- 1. trait or state ---------- */
+const TRAIT = { en: 'Trait', tr: 'Özellik' }, STATE = { en: 'State', tr: 'Durum' };
+const ET = { en: 'This describes how the person usually is, across time and situations.', tr: 'Bu ifade kişinin zaman ve durumlar boyunca genellikle nasıl olduğunu anlatıyor.' };
+const ES = { en: 'This describes how the person is right now or in a specific situation; it is likely to pass.', tr: 'Bu ifade kişinin şu anki ya da belirli bir durumdaki hâlini anlatıyor; büyük olasılıkla geçicidir.' };
+const ts = [
+  { q: { en: '“In general, I am an anxious person.”', tr: '“Genel olarak kaygılı bir insanım.”' }, answer: 0, explain: ET },
+  { q: { en: '“Right now, just before the exam, I feel very tense.”', tr: '“Şu anda, sınavdan hemen önce, çok gerginim.”' }, answer: 1, explain: ES },
+  { q: { en: '“I am usually talkative with friends.”', tr: '“Arkadaş ortamında genellikle konuşkan biriyimdir.”' }, answer: 0, explain: ET },
+  { q: { en: '“I can’t concentrate this morning because I didn’t sleep.”', tr: '“Bu sabah uyuyamadığım için dikkatimi toplayamıyorum.”' }, answer: 1, explain: ES },
+  { q: { en: '“I have always been open to new experiences.”', tr: '“Yeni deneyimlere hep açık biri olmuşumdur.”' }, answer: 0, explain: ET },
+  { q: { en: '“I am furious because of the news I just got.”', tr: '“Az önce aldığım haber yüzünden çok öfkeliyim.”' }, answer: 1, explain: ES },
+  { q: { en: '“I tend to leave things until the last minute.”', tr: '“İşlerimi genellikle son dakikaya bırakırım.”' }, answer: 0, explain: ET },
+  { q: { en: '“Today I feel more energetic than usual.”', tr: '“Bugün kendimi her zamankinden enerjik hissediyorum.”' }, answer: 1, explain: ES }
+];
+
+/* ---------- 2. norms ---------- */
+const RAW = 32;
+const GROUPS = [
+  { name: { en: 'Adults aged 20–29', tr: '20–29 yaş arası yetişkinler' }, M: 38, SD: 5 },
+  { name: { en: 'Adults aged 70–79', tr: '70–79 yaş arası yetişkinler' }, M: 27, SD: 6 },
+  { name: { en: 'Psychology students', tr: 'Psikoloji öğrencileri' }, M: 33, SD: 4 }
+];
+function erf(x) {
+  const s = Math.sign(x); x = Math.abs(x);
+  const tt = 1 / (1 + 0.3275911 * x);
+  const y = 1 - (((((1.061405429 * tt - 1.453152027) * tt) + 1.421413741) * tt - 0.284496736) * tt + 0.254829592) * tt * Math.exp(-x * x);
+  return s * y;
+}
+const Phi = z => 0.5 * (1 + erf(z / Math.SQRT2));
+const dec = (v, d) => { const s = v.toFixed(d); return (Kit.lang === 'tr' ? s.replace('.', ',') : s).replace('-', '−'); };
+function stats(g, raw) {
+  const z = (raw - g.M) / g.SD;
+  const p = Phi(z) * 100;
+  return { z, T: 50 + 10 * z, std: 100 + 15 * z, p, cat: p < 25 ? 0 : p <= 75 ? 1 : 2 };
+}
+function pctText(p) { return p < 1 ? '<1' : p > 99 ? '>99' : String(Math.round(p)); }
+function curveSvg(g, raw, name) {
+  const W = 320, H = 92, pad = 10, base = 70;
+  const lo = g.M - 3.5 * g.SD, hi = g.M + 3.5 * g.SD;
+  const xs = v => pad + (v - lo) / (hi - lo) * (W - 2 * pad);
+  const pdf = v => Math.exp(-0.5 * ((v - g.M) / g.SD) ** 2);
+  const ys = v => base - pdf(v) * 56;
+  const pts = [];
+  for (let k = 0; k <= 80; k++) { const v = lo + (hi - lo) * k / 80; pts.push([xs(v), ys(v)]); }
+  const line = 'M' + pts.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('L');
+  const rc = Math.max(lo, Math.min(hi, raw));
+  const under = pts.filter(p => p[0] <= xs(rc));
+  let area = '';
+  if (under.length) area = `M${xs(lo).toFixed(1)} ${base}L` + under.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('L') + `L${xs(rc).toFixed(1)} ${ys(rc).toFixed(1)}L${xs(rc).toFixed(1)} ${base}Z`;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(X().curveAria(name, raw))}">`;
+  s += `<line class="base" x1="${pad}" x2="${W - pad}" y1="${base}" y2="${base}"/>`;
+  if (area) s += `<path class="area" d="${area}"/>`;
+  s += `<path class="cv" d="${line}"/>`;
+  [-2, 0, 2].forEach(k => { const v = g.M + k * g.SD; s += `<line class="base" x1="${xs(v)}" x2="${xs(v)}" y1="${base}" y2="${base + 4}"/><text x="${xs(v)}" y="${base + 15}" text-anchor="middle">${v}</text>`; });
+  const mx = xs(rc);
+  s += `<line class="mk" x1="${mx}" x2="${mx}" y1="${ys(rc) - 6 < 12 ? 12 : Math.min(ys(rc) - 6, base - 8)}" y2="${base}"/>`;
+  const lx = Math.max(pad + 8, Math.min(W - pad - 8, mx));
+  s += `<text class="mklbl" x="${lx}" y="10" text-anchor="middle">${raw}${raw !== rc ? (raw < rc ? ' ◂' : ' ▸') : ''}</text>`;
+  return s + `</svg>`;
+}
+const picks = GROUPS.map(() => null);
+function renderGroups() {
+  const S = X();
+  $('#nLead').textContent = S.lead(RAW);
+  $('#groups').innerHTML = GROUPS.map((g, gi) => {
+    const st = stats(g, RAW);
+    const pick = picks[gi];
+    let h = `<div class="grp"><h3>${esc(t(g.name))}</h3><div class="mstats">${esc(S.mean)} = ${g.M} · ${esc(S.sd)} = ${g.SD}</div><div class="opts">`;
+    S.cat.forEach((c, k) => {
+      let cls = 'choice';
+      let mark = String.fromCharCode(65 + k);
+      if (pick !== null) {
+        if (k === st.cat) { cls += ' correct'; mark = '✓'; }
+        else if (k === pick) { cls += ' wrong'; mark = '✗'; }
+        else cls += ' dim';
+      }
+      h += `<button type="button" class="${cls}" data-g="${gi}" data-k="${k}"${pick !== null ? ' disabled' : ''}><span class="mark" aria-hidden="true">${mark}</span><span>${esc(c)}</span></button>`;
+    });
+    h += `</div>`;
+    if (pick !== null) {
+      const ok = pick === st.cat;
+      h += `<div class="feedback ${ok ? 'ok' : 'no'}" role="status"><b>${esc(ok ? S.right : S.wrong + ' ' + S.is + ' ' + S.cat[st.cat].toLowerCase())}</b>`
+        + `<div class="nums"><span>z = <b>${dec(st.z, 2)}</b></span><span>T = <b>${Math.round(st.T)}</b></span><span>${esc(S.pct)} ≈ <b>${pctText(st.p)}</b></span></div></div>`;
+      h += `<div class="curve">${curveSvg(g, RAW, t(g.name))}</div>`;
+    }
+    return h + `</div>`;
+  }).join('');
+  $('#groups').querySelectorAll('.choice:not([disabled])').forEach(b => b.addEventListener('click', () => { picks[+b.dataset.g] = +b.dataset.k; renderGroups(); }));
+  $('#nSummary').innerHTML = picks.every(p => p !== null) ? `<p class="note">${esc(S.summary)}</p>` : '';
+}
+function renderExplore() {
+  const S = X();
+  const raw = +$('#raw').value;
+  $('#rawOut').textContent = raw;
+  $('#explore').innerHTML = GROUPS.map(g => {
+    const st = stats(g, raw);
+    return `<div class="xrow"><div class="xname">${esc(t(g.name))} <span class="muted small">(${esc(S.mean)} ${g.M}, ${esc(S.sd)} ${g.SD})</span></div>`
+      + `<div class="nums"><span>z = <b>${dec(st.z, 2)}</b></span><span>T = <b>${Math.round(st.T)}</b></span><span>${esc(S.std)} = <b>${Math.round(st.std)}</b></span><span>${esc(S.pct)} ≈ <b>${pctText(st.p)}</b></span></div>`
+      + `<div class="curve">${curveSvg(g, raw, t(g.name))}</div></div>`;
+  }).join('');
+  $('#formulas').textContent = S.formulas;
+}
+$('#raw').addEventListener('input', renderExplore);
+
+/* ---------- 3. operationalization ---------- */
+const OPT = [
+  { en: 'An indicator of aggression', tr: 'Saldırganlığın bir göstergesi' },
+  { en: 'Not aggression, but a related construct', tr: 'Saldırganlık değil ama ilişkili bir yapı' },
+  { en: 'Unrelated to aggression', tr: 'Saldırganlıkla ilgisiz' }
+];
+const op = [
+  { q: { en: 'Pushing someone during an argument.', tr: 'Tartışma sırasında karşısındakini itmek.' }, answer: 0,
+    explain: { en: 'A physical act directed at another person that can hurt them.', tr: 'Başka birine yönelik, ona zarar verebilecek fiziksel bir davranış.' } },
+  { q: { en: 'Spreading gossip about someone to humiliate them.', tr: 'Birini küçük düşürmek için hakkında dedikodu yaymak.' }, answer: 0,
+    explain: { en: 'Not physical, but the aim is to harm the other person (relational aggression).', tr: 'Fiziksel değil ama amaç karşıdakine zarar vermek (ilişkisel saldırganlık).' } },
+  { q: { en: 'Shouting insults at someone in anger.', tr: 'Öfkeyle birine bağırıp hakaret etmek.' }, answer: 0,
+    explain: { en: 'Verbal aggression: words used to hurt someone.', tr: 'Sözel saldırganlık: sözlerle birini incitmek.' } },
+  { q: { en: 'Fouling an opponent on purpose to injure them.', tr: 'Rakibi sakatlamak için bilerek faul yapmak.' }, answer: 0,
+    explain: { en: 'The intent to harm makes this aggression, even inside a game.', tr: 'Zarar verme amacı taşıdığı için oyun içinde olsa da saldırganlıktır.' } },
+  { q: { en: 'Often saying that you feel angry.', tr: 'Sık sık öfkelendiğini söylemek.' }, answer: 1,
+    explain: { en: 'Anger is an emotion. It is related to aggression, but many angry people never act aggressively.', tr: 'Öfke bir duygudur. Saldırganlıkla ilişkilidir ama öfkelenen herkes saldırgan davranmaz.' } },
+  { q: { en: 'Often assuming that other people mean you harm.', tr: 'Başkalarının sana kötülük etmek istediğini sık sık düşünmek.' }, answer: 1,
+    explain: { en: 'This is a way of interpreting others’ intentions. It can go together with aggression, but it is a thought, not a harmful act.', tr: 'Bu, başkalarının niyetini yorumlama biçimidir. Saldırganlıkla birlikte görülebilir ama zarar veren bir davranış değil, bir düşüncedir.' } },
+  { q: { en: 'Acting without thinking things through.', tr: 'Düşünmeden harekete geçmek.' }, answer: 1,
+    explain: { en: 'Impulsivity can make aggression more likely, but it is a separate construct and does not involve an intent to harm.', tr: 'Dürtüsellik saldırgan davranışı kolaylaştırabilir ama ayrı bir yapıdır ve zarar verme amacı içermez.' } },
+  { q: { en: 'Drinking a lot of coffee.', tr: 'Çok kahve içmek.' }, answer: 2,
+    explain: { en: 'Nothing here points to harming others.', tr: 'Bu davranışta başkasına zarar vermeye işaret eden bir şey yok.' } },
+  { q: { en: 'Enjoying reading books.', tr: 'Kitap okumayı sevmek.' }, answer: 2,
+    explain: { en: 'Unrelated to the construct as we defined it.', tr: 'Tanımladığımız yapıyla ilgisi yok.' } },
+  { q: { en: 'Bumping into an opponent by accident while going for the ball.', tr: 'Topa giderken rakibe istemeden çarpmak.' }, answer: 2,
+    explain: { en: 'There is no intent to harm, so by our definition it is not aggression. How would an observer tell the two kinds of collision apart? That is a measurement question.', tr: 'Zarar verme amacı olmadığı için tanımımıza göre saldırganlık değildir. Bir gözlemci iki çarpışmayı birbirinden nasıl ayırt eder? Bu bir ölçme sorusudur.' } }
+];
+
+Kit.init();
+Kit.tabs($('.seg'));
+Kit.quiz($('#quizTS'), { items: ts, options: [TRAIT, STATE], labels: Kit.QUIZ_LABELS,
+  summaryNote: { en: 'Some tests measure traits (for example, trait anxiety) and others measure states (for example, anxiety right now). The same person can score differently on the two.', tr: 'Bazı testler özellikleri (örneğin sürekli kaygı), bazıları durumları (örneğin şu anki kaygı) ölçer. Aynı kişi ikisinden farklı puanlar alabilir.' } });
+renderGroups();
+renderExplore();
+Kit.onLang(() => { renderGroups(); renderExplore(); });
+Kit.quiz($('#quizOp'), { items: op, options: OPT, labels: Kit.QUIZ_LABELS,
+  summaryNote: { en: 'This is what you will do for your own project in the first milestone: define the construct and list the behaviors that show it.', tr: 'Projenin ilk teslimde yapacağın iş de bu: yapıyı tanımlamak ve onu gösteren davranışları sıralamak.' } });
+window.__norms = { stats, Phi };
+})();
+
+</script>
+</body>
+</html>
