@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#4a3aa7">
+<title>Örneklem ve norm</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%234a3aa7%22%2F%3E%3Cpath%20d%3D%22M18%2044h28M22%2044V26M32%2044V18M42%2044V32%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f2f2f6;
+  --surface:#fdfdfe;
+  --surface-2:#ebebf1;
+  --surface-3:#dfdfe8;
+  --ink:#14131b;
+  --ink-2:#4a4957;
+  --muted:#65636f;
+  --line:#e0dfe7;
+  --line-strong:#c3c2ce;
+  --accent:#4a3aa7;
+  --accent-hover:#3c2f8e;
+  --accent-ink:#ffffff;
+  --accent-soft:#e9e6f8;
+  --good:#0ca30c;
+  --good-text:#006300;
+  --good-soft:#e1f3e1;
+  --crit:#d03b3b;
+  --crit-text:#a82626;
+  --crit-soft:#fbe5e5;
+  --warn:#fab219;
+  --warn-soft:#fdf0cc;
+  --series-1:#2a78d6;
+  --series-2:#eb6834;
+  --stage:#15141c;
+  --stage-ink:#f3f3f7;
+  --shadow:0 1px 2px rgba(20,19,27,.05),0 8px 24px rgba(20,19,27,.07);
+  --radius:16px;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Roboto Mono",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0f0f14;
+    --surface:#18181f;
+    --surface-2:#22222b;
+    --surface-3:#2e2e39;
+    --ink:#f3f3f7;
+    --ink-2:#c4c3cf;
+    --muted:#9896a6;
+    --line:#2b2b35;
+    --line-strong:#41414d;
+    --accent:#9d93ee;
+    --accent-hover:#b3abf3;
+    --accent-ink:#14131b;
+    --accent-soft:#2b2847;
+    --good-text:#5fd35f;
+    --good-soft:#17301a;
+    --crit-text:#ff8f8f;
+    --crit-soft:#3a1d20;
+    --warn-soft:#3b3119;
+    --series-1:#3987e5;
+    --series-2:#d95926;
+    --stage:#0b0b10;
+    --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0f0f14;
+  --surface:#18181f;
+  --surface-2:#22222b;
+  --surface-3:#2e2e39;
+  --ink:#f3f3f7;
+  --ink-2:#c4c3cf;
+  --muted:#9896a6;
+  --line:#2b2b35;
+  --line-strong:#41414d;
+  --accent:#9d93ee;
+  --accent-hover:#b3abf3;
+  --accent-ink:#14131b;
+  --accent-soft:#2b2847;
+  --good-text:#5fd35f;
+  --good-soft:#17301a;
+  --crit-text:#ff8f8f;
+  --crit-soft:#3a1d20;
+  --warn-soft:#3b3119;
+  --series-1:#3987e5;
+  --series-2:#d95926;
+  --stage:#0b0b10;
+  --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top,0px)}
+[hidden]{display:none!important}
+h1,h2,h3{margin:0;text-wrap:balance;line-height:1.2}
+p{margin:0}
+ul,ol{margin:0}
+button,input,select{font:inherit;color:inherit}
+button{touch-action:manipulation}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:680px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);text-decoration:none;font-weight:600;font-size:14px;min-height:40px;padding:0 4px;border-radius:8px}
+.back:hover{color:var(--ink)}
+.back svg{width:18px;height:18px}
+.lang{display:inline-flex;border:1px solid var(--line-strong);border-radius:999px;padding:2px;background:var(--surface)}
+.lang button{border:0;background:transparent;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.05em;cursor:pointer;color:var(--ink-2);min-height:34px;min-width:44px}
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+
+/* page */
+.app{max-width:680px;margin:0 auto;padding-inline:16px;padding-block:18px 48px;display:grid;gap:18px}
+.head{display:grid;gap:6px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(26px,7vw,34px);font-weight:750;letter-spacing:-.015em}
+.lead{color:var(--ink-2);font-size:16px}
+.card,[id^="quiz"]{scroll-margin-top:72px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:grid;gap:14px}
+.card h2{font-size:19px;font-weight:700}
+.card h3{font-size:16px;font-weight:700}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.note{font-size:14px;color:var(--ink-2);background:var(--surface-2);border-radius:12px;padding:10px 12px}
+.foot{max-width:680px;margin:0 auto;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 28px);font-size:13px;color:var(--muted)}
+.list{padding-left:20px;display:grid;gap:6px}
+
+/* buttons */
+.btn{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:12px;padding:10px 16px;min-height:48px;font-weight:650;font-size:16px;cursor:pointer;text-decoration:none;transition:background-color .15s,border-color .15s}
+.btn:hover{background:var(--surface-2)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--ink-2)}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.row.end{justify-content:flex-end}
+.row.between{justify-content:space-between}
+
+/* segmented tabs */
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;background:var(--surface-2);border-radius:14px;padding:4px}
+.seg button{border:0;background:transparent;border-radius:10px;padding:8px 6px;min-height:48px;font-size:14px;font-weight:650;color:var(--ink-2);cursor:pointer;line-height:1.2}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.seg .n{display:block;font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+/* quiz */
+.progress{display:grid;gap:6px}
+.progress-top{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);font-weight:600}
+.bar{height:6px;background:var(--surface-2);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .3s}
+.q-text{font-size:18px;font-weight:600;line-height:1.4}
+.q-sub{font-size:15px;color:var(--ink-2)}
+.choices{display:grid;gap:10px}
+.choice{appearance:none;text-align:left;width:100%;display:flex;align-items:center;gap:12px;border:1.5px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:14px;padding:12px 14px;min-height:56px;font-size:16px;font-weight:550;cursor:pointer;line-height:1.35}
+.choice:hover{border-color:var(--accent)}
+.choice .mark{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line-strong);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--muted)}
+.choice[disabled]{cursor:default}
+.choice.correct{border-color:var(--good);background:var(--good-soft)}
+.choice.correct .mark{background:var(--good);border-color:var(--good);color:#fff}
+.choice.wrong{border-color:var(--crit);background:var(--crit-soft)}
+.choice.wrong .mark{background:var(--crit);border-color:var(--crit);color:#fff}
+.choice.dim{opacity:.6}
+.feedback{border-radius:14px;padding:12px 14px;display:grid;gap:4px;font-size:15px}
+.feedback.ok{background:var(--good-soft)}
+.feedback.no{background:var(--crit-soft)}
+.feedback.info{background:var(--surface-2)}
+.feedback b{font-size:16px}
+.feedback.ok b{color:var(--good-text)}
+.feedback.no b{color:var(--crit-text)}
+.score{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.score .big{font-family:var(--mono);font-size:44px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.review{list-style:none;padding:0;display:grid;border-top:1px solid var(--line)}
+.review li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.review .ans{color:var(--ink-2);font-size:14px}
+.ico{width:20px;height:20px;flex:none}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
+
+.stack{display:grid;gap:18px}
+.groups{display:grid;gap:12px}
+.grp{border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px}
+.grp h3{font-size:16px}
+.grp .mstats{font-family:var(--mono);font-size:14px;color:var(--ink-2)}
+.grp .opts{display:grid;gap:8px}
+.grp .choice{min-height:48px;padding:8px 12px;font-size:15px}
+.nums{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--mono);font-size:15px}
+.nums b{font-weight:700}
+.curve svg{width:100%;max-width:420px;height:auto;display:block}
+.curve text{font-family:var(--mono);font-size:10px;fill:var(--muted)}
+.curve .cv{fill:none;stroke:var(--ink-2);stroke-width:1.5}
+.curve .area{fill:var(--accent);fill-opacity:.22}
+.curve .mk{stroke:var(--accent);stroke-width:2.5}
+.curve .mklbl{fill:var(--accent);font-weight:700;font-size:11px}
+.curve .base{stroke:var(--line-strong);stroke-width:1}
+.slider{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.slider label{font-weight:600}
+.slider output{font-size:22px;font-weight:700}
+input[type="range"]{width:100%;accent-color:var(--accent);height:32px;margin:0}
+.explore{display:grid;gap:12px}
+.xrow{border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px}
+.xrow:first-child{border-top:0;padding-top:0}
+.xrow .xname{font-weight:650}
+.feedback .nums b{color:var(--ink)}
+
+
+/* demo */
+.topbar-in,.app,.foot{max-width:1080px}
+.head{display:grid;gap:6px}
+.ctrls{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center}
+.seg2{display:inline-flex;background:var(--surface-2);border-radius:14px;padding:4px;gap:4px}
+.seg2 button{border:0;background:transparent;border-radius:10px;padding:8px 14px;min-height:44px;font-size:15px;font-weight:650;color:var(--ink-2);cursor:pointer}
+.seg2 button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.14)}
+.rng{display:flex;align-items:center;gap:10px;min-width:240px;flex:1}
+.rng label{font-weight:650;font-size:15px;white-space:nowrap}
+.rng output{font-family:var(--mono);font-weight:700;font-size:17px;min-width:3ch;text-align:right}
+.grid2{display:grid;gap:18px}
+@media (min-width:900px){.grid2{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);align-items:start}}
+.card h2{font-size:18px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tile{background:var(--surface-2);border-radius:12px;padding:10px 12px;display:grid;gap:2px}
+.tile span{font-size:13px;font-weight:650;color:var(--muted)}
+.tile b{font-family:var(--mono);font-size:24px;font-weight:700;line-height:1.15}
+.tile small{font-family:var(--mono);font-size:13px;color:var(--ink-2)}
+.msg{border-radius:12px;padding:12px 14px;font-size:15px;line-height:1.45;display:flex;gap:10px;align-items:flex-start}
+.msg svg{flex:none;width:22px;height:22px;margin-top:1px}
+.msg.ok{background:var(--good-soft)}
+.msg.bad{background:var(--crit-soft)}
+.msg.mid{background:var(--warn-soft)}
+svg text{font-family:var(--font)}
+.btn.small{min-height:44px;padding:8px 14px;font-size:15px}
+</style>
+<style>
+#popSvg svg{width:100%;height:auto;display:block}
+.pop .dot{transition:r .25s,opacity .25s}
+#barSvg svg,#stripSvg svg{width:100%;height:auto;display:block}
+:root{--y1:#86b6ef;--y2:#3987e5;--y3:#1c5cab;--y4:#0d366b;--t1:#14131b;--t2:#fff;--t3:#fff;--t4:#fff}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--y1:#184f95;--y2:#256abf;--y3:#3987e5;--y4:#86b6ef;--t1:#fff;--t2:#fff;--t3:#fff;--t4:#14131b}}
+:root[data-theme="dark"]{--y1:#184f95;--y2:#256abf;--y3:#3987e5;--y4:#86b6ef;--t1:#fff;--t2:#fff;--t3:#fff;--t4:#14131b}
+.tile b{font-size:clamp(18px,5vw,24px);overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-in"><a class="back" href="index.html" data-keep-lang><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5L7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="back">Tüm haftalar</span></a><div class="lang" role="group" aria-label="Language / Dil"><button type="button" data-lang-btn="tr" lang="tr" aria-pressed="false">TR</button><button type="button" data-lang-btn="en" lang="en" aria-pressed="false">EN</button></div></div></div>
+<main class="app">
+  <div class="head"><p class="eyebrow" data-t="eyebrow"></p><h1 data-t="title"></h1><p class="lead" data-t="lead"></p></div>
+  <div class="ctrls">
+    <div class="seg2" role="group" id="modes">
+      <button type="button" data-m="random"></button><button type="button" data-m="strat"></button><button type="button" data-m="conv"></button>
+    </div>
+    <div class="rng"><label for="n" data-t="nLabel"></label><input type="range" id="n" min="10" max="60" step="5" value="30"><output id="nOut">30</output></div>
+    <button type="button" class="btn small" id="redraw"></button>
+  </div>
+  <p class="note" id="modeNote"></p>
+  <div class="grid2">
+    <section class="card pop"><h2 id="popH"></h2><div class="legend" id="legend"></div><div id="popSvg"></div></section>
+    <div class="stack">
+      <section class="card bars"><h2 data-t="compH"></h2><div id="barSvg"></div></section>
+      <section class="card"><h2 data-t="normH"></h2><div class="tiles" id="tiles"></div></section>
+      <section class="card strip"><h2 id="ayseH"></h2><div id="stripSvg"></div><div class="tiles" id="pct"></div><div id="msg"></div></section>
+    </div>
+  </div>
+</main>
+<p class="foot" data-t="foot"></p>
+<script>
+(function () {
+  'use strict';
+  const KEY = 'psyc3204.lang';
+  let lang = 'tr';
+  try {
+    const p = new URLSearchParams(location.search).get('lang');
+    if (p === 'tr' || p === 'en') lang = p;
+    else { let s = null; try { s = localStorage.getItem(KEY); } catch (e) { s = null; }
+      if (s === 'tr' || s === 'en') lang = s; else lang = (navigator.language || '').toLowerCase().startsWith('tr') ? 'tr' : 'en'; }
+  } catch (e) { lang = 'tr'; }
+  const $ = (q, r) => (r || document).querySelector(q);
+  const $$ = (q, r) => Array.from((r || document).querySelectorAll(q));
+  const fmt = v => { const s = (Math.round(v * 10) / 10).toFixed(1); return lang === 'tr' ? s.replace('.', ',') : s; };
+  const S = {
+    tr: { back: 'Tüm haftalar', eyebrow: '3. hafta · gösterim', title: 'Örneklem ve norm',
+      lead: 'Aynı evrenden norm örneklemini üç farklı yolla seçin. Kimin seçildiğine göre norm ve Ayşe’nin yüzdeliği nasıl değişiyor?',
+      modes: { random: 'Seçkisiz', strat: 'Tabakalı', conv: 'Kolayda' },
+      notes: { random: 'Seçkisiz: evrendeki herkesin seçilme şansı eşit. “Yeniden çek” ile her seferinde farklı bir örneklem çıkar.',
+        strat: 'Tabakalı: önce evren sınıflara bölünür, sonra her sınıftan evrendeki oranı kadar kişi seçilir.',
+        conv: 'Kolayda: yalnızca ulaşması kolay olanlar, burada kütüphane çıkışında karşılaştığınız ilk kişiler. Bu öğrencilerin çoğu son sınıfta.' },
+      nLabel: 'Örneklem büyüklüğü', redraw: 'Yeniden çek',
+      popH: n => `Evren: ${n} öğrenci (her nokta bir öğrenci)`, years: ['1. sınıf', '2. sınıf', '3. sınıf', '4. sınıf'],
+      region: 'kütüphane çıkışı', compH: 'Sınıflara göre dağılım', pop: 'Evren', samp: 'Örneklem',
+      normH: 'Norm: akademik yazma testi', popMean: 'Evren ortalaması', sampMean: 'Örneklem ortalaması', popSd: 'Evren SS', sampSd: 'Örneklem SS',
+      ayseH: s => `Ayşe ${s} aldı. Yüzdelik sırası kaç?`, vsPop: 'Evrene göre', vsSamp: 'Bu norm örneklemine göre', pct: v => `${v}. yüzdelik`,
+      dots: 'örneklemdeki puanlar', ayse: 'Ayşe',
+      ok: 'Örneklem evrene benziyor; Ayşe’nin yüzdeliği iki karşılaştırmada da yakın.',
+      low: 'Ayşe bu norm grubuna göre olduğundan düşük görünüyor.', high: 'Ayşe bu norm grubuna göre olduğundan yüksek görünüyor.',
+      higher: 'evrenden yüksek', lower: 'evrenden düşük',
+      chance: 'Seçkisiz örneklemde de şans payı var: örneklemi büyütüp yeniden çekin.',
+      foot: 'PSKO3204 / PSYC3204 · 3. hafta · Evren ve puanlar ders için uydurulmuştur.' },
+    en: { back: 'All weeks', eyebrow: 'Week 3 · demo', title: 'Samples and norms',
+      lead: 'Choose a norming sample from the same population in three ways. How do the norms, and Ayşe’s percentile, change with who gets picked?',
+      modes: { random: 'Random', strat: 'Stratified', conv: 'Convenience' },
+      notes: { random: 'Random: everyone in the population has the same chance of being picked. “Draw again” gives a different sample each time.',
+        strat: 'Stratified: the population is split by year first, then each year is sampled in proportion to its share of the population.',
+        conv: 'Convenience: only people who are easy to reach, here the first people you meet at the library exit. Most of them are seniors.' },
+      nLabel: 'Sample size', redraw: 'Draw again',
+      popH: n => `Population: ${n} students (each dot is one student)`, years: ['1st year', '2nd year', '3rd year', '4th year'],
+      region: 'library exit', compH: 'Share of each year', pop: 'Population', samp: 'Sample',
+      normH: 'Norms: academic writing test', popMean: 'Population mean', sampMean: 'Sample mean', popSd: 'Population SD', sampSd: 'Sample SD',
+      ayseH: s => `Ayşe scored ${s}. What is her percentile rank?`, vsPop: 'Against the population', vsSamp: 'Against this norming sample', pct: v => `${v}${v % 10 === 1 && v !== 11 ? 'st' : v % 10 === 2 && v !== 12 ? 'nd' : v % 10 === 3 && v !== 13 ? 'rd' : 'th'} percentile`,
+      dots: 'scores in the sample', ayse: 'Ayşe',
+      ok: 'The sample looks like the population; Ayşe’s percentile is similar in both comparisons.',
+      low: 'Against this norm group, Ayşe looks worse than she is.', high: 'Against this norm group, Ayşe looks better than she is.',
+      higher: 'higher than the population', lower: 'lower than the population',
+      chance: 'Random samples vary by chance too: increase the sample size and draw again.',
+      foot: 'PSYC3204 / PSKO3204 · Week 3 · The population and scores are made up for class.' }
+  };
+  const T = () => S[lang];
+
+  // seeded population
+  function mulberry(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  const R = mulberry(20261007);
+  const gauss = () => { let u = 0, v = 0; while (!u) u = R(); while (!v) v = R(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+  const COLS = 20, ROWS = 10, MEANS = [38, 45, 52, 59];
+  const P = [];
+  for (let c = 0; c < COLS; c++) for (let r = 0; r < ROWS; r++) {
+    const t = c / (COLS - 1);
+    const w = [0.45 - 0.42 * t, 0.30 - 0.20 * t, 0.15 + 0.12 * t, 0.10 + 0.50 * t];
+    let u = R(), y = 0; while (y < 3 && u > w[y]) { u -= w[y]; y++; }
+    const s = Math.max(20, Math.min(80, Math.round(MEANS[y] + 6 * gauss())));
+    P.push({ c, r, y, s, i: P.length });
+  }
+  const N = P.length;
+  const mean = a => a.reduce((x, p) => x + p.s, 0) / a.length;
+  const sd = a => { const m = mean(a); return Math.sqrt(a.reduce((x, p) => x + (p.s - m) ** 2, 0) / (a.length - 1)); };
+  const share = a => [0, 1, 2, 3].map(k => a.filter(p => p.y === k).length / a.length);
+  const pctile = (a, x) => Math.round((a.filter(p => p.s < x).length + 0.5 * a.filter(p => p.s === x).length) / a.length * 100);
+  const AYSE = Math.round(mean(P));
+  const popShare = share(P);
+
+  let mode = 'random', n = 30, sample = [];
+  const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  function draw() {
+    if (mode === 'random') sample = shuffle(P).slice(0, n);
+    else if (mode === 'strat') {
+      const q = popShare.map(s => s * n); const k = q.map(Math.floor);
+      let rest = n - k.reduce((a, b) => a + b, 0);
+      q.map((v, i) => [v - Math.floor(v), i]).sort((a, b) => b[0] - a[0]).forEach(([, i]) => { if (rest > 0) { k[i]++; rest--; } });
+      sample = [0, 1, 2, 3].flatMap(y => shuffle(P.filter(p => p.y === y)).slice(0, k[y]));
+    } else {
+      const cx = COLS - 1, cy = (ROWS - 1) / 2;
+      sample = P.slice().sort((a, b) => ((a.c - cx) ** 2 + (a.r - cy) ** 2 * 0.6) - ((b.c - cx) ** 2 + (b.r - cy) ** 2 * 0.6)).slice(0, n);
+    }
+    render();
+  }
+
+  const YC = ['var(--y1)', 'var(--y2)', 'var(--y3)', 'var(--y4)'];
+  function popSvg() {
+    const t = T(), W = 600, H = 300, gx = W / COLS, gy = H / ROWS, sel = new Set(sample.map(p => p.i));
+    let s = `<svg viewBox="0 0 ${W} ${H + 8}" role="img" aria-label="${t.popH(N)}">`;
+    if (mode === 'conv') {
+      const ex = sample.reduce((m, p) => Math.min(m, p.c), COLS);
+      s += `<rect x="${ex * gx - 4}" y="2" width="${W - ex * gx + 2}" height="${H}" rx="14" fill="none" stroke="var(--line-strong)" stroke-dasharray="6 6"/>`;
+      s += `<text x="${W - 8}" y="${H + 6}" text-anchor="end" font-size="13" fill="var(--muted)">${t.region} →</text>`;
+    }
+    P.forEach(p => {
+      const on = sel.has(p.i);
+      s += `<circle class="dot" cx="${(p.c + .5) * gx}" cy="${(p.r + .5) * gy}" r="${on ? 10 : 5}" fill="${YC[p.y]}" opacity="${on ? 1 : .5}" ${on ? 'stroke="var(--ink)" stroke-width="2"' : ''}><title>${t.years[p.y]} · ${p.s}</title></circle>`;
+    });
+    return s + '</svg>';
+  }
+  function barSvg() {
+    const t = T(), W = 520, rowH = 40, lab = 96, ss = share(sample);
+    let s = `<svg viewBox="0 0 ${W} ${rowH * 2 + 16}" role="img" aria-label="${t.compH}">`;
+    [[t.pop, popShare], [t.samp, ss]].forEach(([name, sh], k) => {
+      const y = k * (rowH + 8) + 4; let x = lab;
+      s += `<text x="0" y="${y + rowH / 2 + 5}" font-size="15" font-weight="650" fill="var(--ink)">${name}</text>`;
+      sh.forEach((v, i) => {
+        const w = v * (W - lab); if (w <= 0) return;
+        s += `<rect x="${x + 1}" y="${y}" width="${Math.max(0, w - 2)}" height="${rowH}" rx="4" fill="${YC[i]}"><title>${t.years[i]}: ${Math.round(v * 100)}%</title></rect>`;
+        if (v >= .09) s += `<text x="${x + w / 2}" y="${y + rowH / 2 + 5}" text-anchor="middle" font-size="14" font-weight="700" fill="var(--t${i + 1})">${Math.round(v * 100)}%</text>`;
+        x += w;
+      });
+    });
+    return s + '</svg>';
+  }
+  function stripSvg() {
+    const t = T(), W = 520, H = 112, lo = 20, hi = 80, X = v => 12 + (v - lo) / (hi - lo) * (W - 24);
+    let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${t.dots}">`;
+    s += `<line x1="12" x2="${W - 12}" y1="72" y2="72" stroke="var(--line-strong)"/>`;
+    for (let v = lo; v <= hi; v += 10) s += `<line x1="${X(v)}" x2="${X(v)}" y1="68" y2="76" stroke="var(--line-strong)"/><text x="${X(v)}" y="92" text-anchor="middle" font-size="13" fill="var(--muted)">${v}</text>`;
+    const cnt = {};
+    sample.slice().sort((a, b) => a.s - b.s).forEach(p => { const k = Math.round(p.s / 2) * 2; cnt[k] = (cnt[k] || 0) + 1; const yy = 66 - cnt[k] * 8; s += `<circle cx="${X(k)}" cy="${yy}" r="4.5" fill="${YC[p.y]}"><title>${t.years[p.y]} · ${p.s}</title></circle>`; });
+    s += `<line x1="${X(AYSE)}" x2="${X(AYSE)}" y1="4" y2="78" stroke="var(--crit)" stroke-width="2.5"/><text x="${X(AYSE)}" y="109" text-anchor="middle" font-size="14" font-weight="700" fill="var(--crit-text)">${t.ayse} (${AYSE})</text>`;
+    return s + '</svg>';
+  }
+  const ICON = { ok: '<svg viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="var(--good)"/><path d="M6.5 11.5l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    bad: '<svg viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="var(--crit)"/><path d="M11 6v6.5M11 15.5v.5" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>' };
+  function render() {
+    const t = T();
+    $$('#modes button').forEach(b => { b.textContent = t.modes[b.dataset.m]; b.setAttribute('aria-pressed', String(b.dataset.m === mode)); });
+    $('#modeNote').textContent = t.notes[mode];
+    $('#redraw').textContent = t.redraw; $('#redraw').disabled = mode === 'conv';
+    $('#popH').textContent = t.popH(N);
+    $('#legend').innerHTML = t.years.map((y, i) => `<span><i style="background:${YC[i]}"></i>${y}</span>`).join('');
+    $('#popSvg').innerHTML = popSvg(); $('#barSvg').innerHTML = barSvg();
+    const pm = mean(P), sm = mean(sample);
+    $('#tiles').innerHTML = `<div class="tile"><span>${t.popMean}</span><b>${fmt(pm)}</b><small>${t.popSd} ${fmt(sd(P))}</small></div><div class="tile"><span>${t.sampMean}</span><b>${fmt(sm)}</b><small>${t.sampSd} ${fmt(sd(sample))}</small></div>`;
+    $('#ayseH').textContent = t.ayseH(AYSE); $('#stripSvg').innerHTML = stripSvg();
+    const a = pctile(P, AYSE), b = pctile(sample, AYSE);
+    $('#pct').innerHTML = `<div class="tile"><span>${t.vsPop}</span><b>${t.pct(a)}</b></div><div class="tile"><span>${t.vsSamp}</span><b>${t.pct(b)}</b></div>`;
+    const diff = b - a;
+    $('#msg').innerHTML = Math.abs(diff) <= 10 ? `<p class="msg ok">${ICON.ok}<span>${t.ok}</span></p>` : `<p class="msg bad">${ICON.bad}<span>${diff < 0 ? t.low : t.high} ${lang === 'tr' ? 'Örneklem ortalaması' : 'The sample mean is'} ${sm > pm ? t.higher : t.lower}.${mode === 'random' ? ' ' + t.chance : ''}</span></p>`;
+  }
+  function applyLang() {
+    document.documentElement.lang = lang;
+    $$('[data-t]').forEach(el => { const v = T()[el.dataset.t]; if (typeof v === 'string') el.textContent = v; });
+    $$('[data-lang-btn]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.langBtn === lang)));
+    $$('a[data-keep-lang]').forEach(a => a.setAttribute('href', 'index.html?lang=' + lang));
+    document.title = T().title; render();
+  }
+  $$('[data-lang-btn]').forEach(b => b.addEventListener('click', () => { lang = b.dataset.langBtn; try { localStorage.setItem(KEY, lang); } catch (e) {} try { const u = new URL(location.href); u.searchParams.set('lang', lang); history.replaceState(null, '', u.toString()); } catch (e) {} applyLang(); }));
+  $$('#modes button').forEach(b => b.addEventListener('click', () => { mode = b.dataset.m; draw(); }));
+  $('#n').addEventListener('input', e => { n = +e.target.value; $('#nOut').textContent = n; draw(); });
+  $('#redraw').addEventListener('click', draw);
+  draw(); applyLang();
+})();
+</script>
+</body>
+</html>

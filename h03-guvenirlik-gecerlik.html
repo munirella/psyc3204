@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#4a3aa7">
+<title>Tutarlı mı, doğru mu?</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%234a3aa7%22%2F%3E%3Cpath%20d%3D%22M18%2044h28M22%2044V26M32%2044V18M42%2044V32%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f2f2f6;
+  --surface:#fdfdfe;
+  --surface-2:#ebebf1;
+  --surface-3:#dfdfe8;
+  --ink:#14131b;
+  --ink-2:#4a4957;
+  --muted:#65636f;
+  --line:#e0dfe7;
+  --line-strong:#c3c2ce;
+  --accent:#4a3aa7;
+  --accent-hover:#3c2f8e;
+  --accent-ink:#ffffff;
+  --accent-soft:#e9e6f8;
+  --good:#0ca30c;
+  --good-text:#006300;
+  --good-soft:#e1f3e1;
+  --crit:#d03b3b;
+  --crit-text:#a82626;
+  --crit-soft:#fbe5e5;
+  --warn:#fab219;
+  --warn-soft:#fdf0cc;
+  --series-1:#2a78d6;
+  --series-2:#eb6834;
+  --stage:#15141c;
+  --stage-ink:#f3f3f7;
+  --shadow:0 1px 2px rgba(20,19,27,.05),0 8px 24px rgba(20,19,27,.07);
+  --radius:16px;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Roboto Mono",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0f0f14;
+    --surface:#18181f;
+    --surface-2:#22222b;
+    --surface-3:#2e2e39;
+    --ink:#f3f3f7;
+    --ink-2:#c4c3cf;
+    --muted:#9896a6;
+    --line:#2b2b35;
+    --line-strong:#41414d;
+    --accent:#9d93ee;
+    --accent-hover:#b3abf3;
+    --accent-ink:#14131b;
+    --accent-soft:#2b2847;
+    --good-text:#5fd35f;
+    --good-soft:#17301a;
+    --crit-text:#ff8f8f;
+    --crit-soft:#3a1d20;
+    --warn-soft:#3b3119;
+    --series-1:#3987e5;
+    --series-2:#d95926;
+    --stage:#0b0b10;
+    --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0f0f14;
+  --surface:#18181f;
+  --surface-2:#22222b;
+  --surface-3:#2e2e39;
+  --ink:#f3f3f7;
+  --ink-2:#c4c3cf;
+  --muted:#9896a6;
+  --line:#2b2b35;
+  --line-strong:#41414d;
+  --accent:#9d93ee;
+  --accent-hover:#b3abf3;
+  --accent-ink:#14131b;
+  --accent-soft:#2b2847;
+  --good-text:#5fd35f;
+  --good-soft:#17301a;
+  --crit-text:#ff8f8f;
+  --crit-soft:#3a1d20;
+  --warn-soft:#3b3119;
+  --series-1:#3987e5;
+  --series-2:#d95926;
+  --stage:#0b0b10;
+  --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top,0px)}
+[hidden]{display:none!important}
+h1,h2,h3{margin:0;text-wrap:balance;line-height:1.2}
+p{margin:0}
+ul,ol{margin:0}
+button,input,select{font:inherit;color:inherit}
+button{touch-action:manipulation}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:680px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);text-decoration:none;font-weight:600;font-size:14px;min-height:40px;padding:0 4px;border-radius:8px}
+.back:hover{color:var(--ink)}
+.back svg{width:18px;height:18px}
+.lang{display:inline-flex;border:1px solid var(--line-strong);border-radius:999px;padding:2px;background:var(--surface)}
+.lang button{border:0;background:transparent;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.05em;cursor:pointer;color:var(--ink-2);min-height:34px;min-width:44px}
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+
+/* page */
+.app{max-width:680px;margin:0 auto;padding-inline:16px;padding-block:18px 48px;display:grid;gap:18px}
+.head{display:grid;gap:6px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(26px,7vw,34px);font-weight:750;letter-spacing:-.015em}
+.lead{color:var(--ink-2);font-size:16px}
+.card,[id^="quiz"]{scroll-margin-top:72px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:grid;gap:14px}
+.card h2{font-size:19px;font-weight:700}
+.card h3{font-size:16px;font-weight:700}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.note{font-size:14px;color:var(--ink-2);background:var(--surface-2);border-radius:12px;padding:10px 12px}
+.foot{max-width:680px;margin:0 auto;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 28px);font-size:13px;color:var(--muted)}
+.list{padding-left:20px;display:grid;gap:6px}
+
+/* buttons */
+.btn{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:12px;padding:10px 16px;min-height:48px;font-weight:650;font-size:16px;cursor:pointer;text-decoration:none;transition:background-color .15s,border-color .15s}
+.btn:hover{background:var(--surface-2)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--ink-2)}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.row.end{justify-content:flex-end}
+.row.between{justify-content:space-between}
+
+/* segmented tabs */
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;background:var(--surface-2);border-radius:14px;padding:4px}
+.seg button{border:0;background:transparent;border-radius:10px;padding:8px 6px;min-height:48px;font-size:14px;font-weight:650;color:var(--ink-2);cursor:pointer;line-height:1.2}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.seg .n{display:block;font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+/* quiz */
+.progress{display:grid;gap:6px}
+.progress-top{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);font-weight:600}
+.bar{height:6px;background:var(--surface-2);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .3s}
+.q-text{font-size:18px;font-weight:600;line-height:1.4}
+.q-sub{font-size:15px;color:var(--ink-2)}
+.choices{display:grid;gap:10px}
+.choice{appearance:none;text-align:left;width:100%;display:flex;align-items:center;gap:12px;border:1.5px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:14px;padding:12px 14px;min-height:56px;font-size:16px;font-weight:550;cursor:pointer;line-height:1.35}
+.choice:hover{border-color:var(--accent)}
+.choice .mark{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line-strong);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--muted)}
+.choice[disabled]{cursor:default}
+.choice.correct{border-color:var(--good);background:var(--good-soft)}
+.choice.correct .mark{background:var(--good);border-color:var(--good);color:#fff}
+.choice.wrong{border-color:var(--crit);background:var(--crit-soft)}
+.choice.wrong .mark{background:var(--crit);border-color:var(--crit);color:#fff}
+.choice.dim{opacity:.6}
+.feedback{border-radius:14px;padding:12px 14px;display:grid;gap:4px;font-size:15px}
+.feedback.ok{background:var(--good-soft)}
+.feedback.no{background:var(--crit-soft)}
+.feedback.info{background:var(--surface-2)}
+.feedback b{font-size:16px}
+.feedback.ok b{color:var(--good-text)}
+.feedback.no b{color:var(--crit-text)}
+.score{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.score .big{font-family:var(--mono);font-size:44px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.review{list-style:none;padding:0;display:grid;border-top:1px solid var(--line)}
+.review li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.review .ans{color:var(--ink-2);font-size:14px}
+.ico{width:20px;height:20px;flex:none}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
+
+.stack{display:grid;gap:18px}
+.groups{display:grid;gap:12px}
+.grp{border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px}
+.grp h3{font-size:16px}
+.grp .mstats{font-family:var(--mono);font-size:14px;color:var(--ink-2)}
+.grp .opts{display:grid;gap:8px}
+.grp .choice{min-height:48px;padding:8px 12px;font-size:15px}
+.nums{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--mono);font-size:15px}
+.nums b{font-weight:700}
+.curve svg{width:100%;max-width:420px;height:auto;display:block}
+.curve text{font-family:var(--mono);font-size:10px;fill:var(--muted)}
+.curve .cv{fill:none;stroke:var(--ink-2);stroke-width:1.5}
+.curve .area{fill:var(--accent);fill-opacity:.22}
+.curve .mk{stroke:var(--accent);stroke-width:2.5}
+.curve .mklbl{fill:var(--accent);font-weight:700;font-size:11px}
+.curve .base{stroke:var(--line-strong);stroke-width:1}
+.slider{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.slider label{font-weight:600}
+.slider output{font-size:22px;font-weight:700}
+input[type="range"]{width:100%;accent-color:var(--accent);height:32px;margin:0}
+.explore{display:grid;gap:12px}
+.xrow{border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px}
+.xrow:first-child{border-top:0;padding-top:0}
+.xrow .xname{font-weight:650}
+.feedback .nums b{color:var(--ink)}
+
+
+/* demo */
+.topbar-in,.app,.foot{max-width:1080px}
+.head{display:grid;gap:6px}
+.ctrls{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center}
+.seg2{display:inline-flex;background:var(--surface-2);border-radius:14px;padding:4px;gap:4px}
+.seg2 button{border:0;background:transparent;border-radius:10px;padding:8px 14px;min-height:44px;font-size:15px;font-weight:650;color:var(--ink-2);cursor:pointer}
+.seg2 button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.14)}
+.rng{display:flex;align-items:center;gap:10px;min-width:240px;flex:1}
+.rng label{font-weight:650;font-size:15px;white-space:nowrap}
+.rng output{font-family:var(--mono);font-weight:700;font-size:17px;min-width:3ch;text-align:right}
+.grid2{display:grid;gap:18px}
+@media (min-width:900px){.grid2{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);align-items:start}}
+.card h2{font-size:18px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tile{background:var(--surface-2);border-radius:12px;padding:10px 12px;display:grid;gap:2px}
+.tile span{font-size:13px;font-weight:650;color:var(--muted)}
+.tile b{font-family:var(--mono);font-size:24px;font-weight:700;line-height:1.15}
+.tile small{font-family:var(--mono);font-size:13px;color:var(--ink-2)}
+.msg{border-radius:12px;padding:12px 14px;font-size:15px;line-height:1.45;display:flex;gap:10px;align-items:flex-start}
+.msg svg{flex:none;width:22px;height:22px;margin-top:1px}
+.msg.ok{background:var(--good-soft)}
+.msg.bad{background:var(--crit-soft)}
+.msg.mid{background:var(--warn-soft)}
+svg text{font-family:var(--font)}
+.btn.small{min-height:44px;padding:8px 14px;font-size:15px}
+.btn[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+</style>
+<style>
+#target svg,#strip svg{width:100%;height:auto;display:block}
+#target svg{max-width:440px;margin:0 auto}
+.sl{display:grid;gap:4px}
+.sl .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.sl label{font-weight:650}
+.sl output{font-family:var(--mono);font-weight:700}
+.sl small{color:var(--muted);font-size:13px}
+.verdict{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.vd{border-radius:12px;padding:10px 12px;display:flex;gap:10px;align-items:center;font-weight:700;font-size:16px}
+.vd svg{width:22px;height:22px;flex:none}
+.vd small{display:block;font-weight:500;font-size:13px;color:var(--ink-2)}
+.vd.ok{background:var(--good-soft)} .vd.mid{background:var(--warn-soft)} .vd.bad{background:var(--crit-soft)}
+.presets{display:flex;flex-wrap:wrap;gap:8px}
+.tile b{font-size:clamp(18px,5vw,24px)}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-in"><a class="back" href="index.html" data-keep-lang><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5L7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="back">Tüm haftalar</span></a><div class="lang" role="group" aria-label="Language / Dil"><button type="button" data-lang-btn="tr" lang="tr" aria-pressed="false">TR</button><button type="button" data-lang-btn="en" lang="en" aria-pressed="false">EN</button></div></div></div>
+<main class="app">
+  <div class="head"><p class="eyebrow" data-t="eyebrow"></p><h1 data-t="title"></h1><p class="lead" data-t="lead"></p></div>
+  <div class="grid2">
+    <section class="card"><h2 data-t="targetH"></h2><div id="target"></div><p class="small muted" data-t="targetNote"></p></section>
+    <div class="stack">
+      <section class="card">
+        <div class="presets" id="presets"></div>
+        <div class="sl"><div class="top"><label for="bias" data-t="biasL"></label><output id="biasO"></output></div><input type="range" id="bias" min="0" max="0.15" step="0.01" value="0"><small data-t="biasS"></small></div>
+        <div class="sl"><div class="top"><label for="noise" data-t="noiseL"></label><output id="noiseO"></output></div><input type="range" id="noise" min="0" max="0.1" step="0.005" value="0.005"><small data-t="noiseS"></small></div>
+        <button type="button" class="btn small" id="again"></button>
+      </section>
+      <section class="card"><h2 data-t="readH"></h2><div id="strip"></div><div class="tiles" id="tiles"></div></section>
+      <section class="card"><div class="verdict" id="verdict"></div><p class="msg" id="msg"></p></section>
+    </div>
+  </div>
+</main>
+<p class="foot" data-t="foot"></p>
+<script>
+(function () {
+  'use strict';
+  const KEY = 'psyc3204.lang';
+  let lang = 'tr';
+  try {
+    const p = new URLSearchParams(location.search).get('lang');
+    if (p === 'tr' || p === 'en') lang = p;
+    else { let s = null; try { s = localStorage.getItem(KEY); } catch (e) { s = null; }
+      if (s === 'tr' || s === 'en') lang = s; else lang = (navigator.language || '').toLowerCase().startsWith('tr') ? 'tr' : 'en'; }
+  } catch (e) { lang = 'tr'; }
+  const $ = (q, r) => (r || document).querySelector(q);
+  const $$ = (q, r) => Array.from((r || document).querySelectorAll(q));
+  const f2 = v => { const s = v.toFixed(2); return lang === 'tr' ? s.replace('.', ',') : s; };
+  const S = {
+    tr: { back: 'Tüm haftalar', eyebrow: '3. hafta · gösterim', title: 'Tutarlı mı, doğru mu?',
+      lead: '1 librelik (yaklaşık 450 g) sertifikalı bir altın külçeyi aynı tartıda on kez tartıyoruz. İki tür hatayı ayarlayın; tartı güvenilir mi, geçerli mi?',
+      targetH: 'Hedef: merkez gerçek ağırlık', targetNote: 'Her nokta bir tartım. Merkeze uzaklık hatayı, noktaların birbirine uzaklığı tutarsızlığı gösterir.',
+      presets: ['A tartısı', 'B tartısı', 'C tartısı'],
+      biasL: 'Sistematik hata (yanlılık)', biasS: 'Her tartımda aynı yönde, aynı miktarda kayma.', noiseL: 'Rastgele hata', noiseS: 'Tartımdan tartıma değişen, öngörülemeyen sapma.',
+      again: 'Yeniden tart', readH: 'On tartım (libre)', mean: 'Ortalama', spread: 'Yayılım (SS)', truth: 'gerçek',
+      relH: 'Güvenirlik', valH: 'Geçerlik', high: 'yüksek', mid: 'orta', low: 'düşük', yes: 'var', no: 'yok',
+      m: { both: 'Tutarlı ve doğru: hem güvenilir hem geçerli.', relOnly: 'Tutarlı ama yanlış: tartı güvenilir, ama geçerli değil. Güvenirlik gerekli, ama yeterli değil.',
+        unrel: 'Tutarsız: tartımlar birbirini tutmuyor. Ortalama doğru olsa bile tek bir tartıma güvenemezsiniz; güvenilir olmayan ölçüm geçerli de olamaz.',
+        mid: 'Orta: tartımlar biraz dağılıyor. Hataları sıfıra yaklaştırın ya da büyütün ve farkı izleyin.' },
+      foot: 'PSKO3204 / PSYC3204 · 3. hafta · Sayılar ders için uydurulmuştur; örnek kitaptaki altın külçe örneğinden uyarlandı.' },
+    en: { back: 'All weeks', eyebrow: 'Week 3 · demo', title: 'Consistent or accurate?',
+      lead: 'We weigh a certified 1-pound gold bar ten times on the same scale. Set the two kinds of error: is the scale reliable? Is it valid?',
+      targetH: 'Target: the center is the true weight', targetNote: 'Each dot is one weighing. Distance from the center shows error; distance between dots shows inconsistency.',
+      presets: ['Scale A', 'Scale B', 'Scale C'],
+      biasL: 'Systematic error (bias)', biasS: 'The same shift, in the same direction, every time.', noiseL: 'Random error', noiseS: 'Unpredictable deviation that changes from one weighing to the next.',
+      again: 'Weigh again', readH: 'Ten weighings (lb)', mean: 'Mean', spread: 'Spread (SD)', truth: 'true',
+      relH: 'Reliability', valH: 'Validity', high: 'high', mid: 'moderate', low: 'low', yes: 'yes', no: 'no',
+      m: { both: 'Consistent and accurate: both reliable and valid.', relOnly: 'Consistent but wrong: the scale is reliable but not valid. Reliability is necessary, but not sufficient.',
+        unrel: 'Inconsistent: the readings do not agree. Even if the mean is right, you cannot trust a single reading; an unreliable measure cannot be valid.',
+        mid: 'Moderate: the readings scatter a little. Move the errors toward zero or make them larger and watch the difference.' },
+      foot: 'PSYC3204 / PSKO3204 · Week 3 · Made-up numbers, adapted from the gold bar example in the textbook (Cohen et al., 2022).' }
+  };
+  const T = () => S[lang];
+  const PRE = [[0, 0.005], [0.10, 0.005], [0, 0.08]];
+  let bias = 0, noise = 0.005, eps = [];
+  const g = () => { let u = 0, v = 0; while (!u) u = Math.random(); while (!v) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+  function newEps() { eps = Array.from({ length: 10 }, () => [g(), g()]); }
+  const ICON = {
+    ok: '<svg viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="var(--good)"/><path d="M6.5 11.5l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    mid: '<svg viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="var(--warn)"/><path d="M6.5 11h9" stroke="#14131b" stroke-width="2.4" stroke-linecap="round"/></svg>',
+    bad: '<svg viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="var(--crit)"/><path d="M7.5 7.5l7 7M14.5 7.5l-7 7" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>' };
+  function render() {
+    const t = T();
+    const reads = eps.map(e => 1 + bias + noise * e[0]);
+    const m = reads.reduce((a, b) => a + b, 0) / 10, sd = Math.sqrt(reads.reduce((a, b) => a + (b - m) ** 2, 0) / 9);
+    // target: radius 160 = 0.20 kg
+    const C = 180, K = 160 / 0.2;
+    let s = `<svg viewBox="0 0 360 360" role="img" aria-label="${t.targetH}">`;
+    [160, 120, 80, 40].forEach((r, i) => { s += `<circle cx="${C}" cy="${C}" r="${r}" fill="${i % 2 ? 'var(--surface)' : 'var(--surface-2)'}" stroke="var(--line-strong)"/>`; });
+    s += `<circle cx="${C}" cy="${C}" r="7" fill="var(--warn)" stroke="var(--ink)" stroke-width="1.5"/>`;
+    eps.forEach((e, i) => { const x = C + (bias + noise * e[0]) * K, y = C - (bias * 0.6 + noise * e[1]) * K;
+      s += `<circle cx="${Math.max(8, Math.min(352, x)).toFixed(1)}" cy="${Math.max(8, Math.min(352, y)).toFixed(1)}" r="9" fill="var(--accent)" stroke="var(--surface)" stroke-width="2"><title>${f2(reads[i])} lb</title></circle>`; });
+    $('#target').innerHTML = s + '</svg>';
+    // strip
+    const W = 520, lo = 0.8, hi = 1.3, X = v => 14 + (Math.max(lo, Math.min(hi, v)) - lo) / (hi - lo) * (W - 28);
+    let st = `<svg viewBox="0 0 ${W} 86" role="img" aria-label="${t.readH}"><line x1="14" x2="${W - 14}" y1="50" y2="50" stroke="var(--line-strong)"/>`;
+    for (let v = 0.8; v <= 1.301; v += 0.1) st += `<line x1="${X(v)}" x2="${X(v)}" y1="46" y2="54" stroke="var(--line-strong)"/><text x="${X(v)}" y="72" text-anchor="middle" font-size="13" fill="var(--muted)">${f2(v)}</text>`;
+    st += `<line x1="${X(1)}" x2="${X(1)}" y1="14" y2="54" stroke="var(--warn)" stroke-width="3"/><text x="${X(1)}" y="10" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink-2)">${t.truth}</text>`;
+    reads.forEach((v, i) => { st += `<circle cx="${X(v).toFixed(1)}" cy="${42 - (i % 3) * 8}" r="6" fill="var(--accent)" stroke="var(--surface)" stroke-width="1.5"><title>${f2(v)} lb</title></circle>`; });
+    st += `<line x1="${X(m)}" x2="${X(m)}" y1="20" y2="54" stroke="var(--ink)" stroke-width="2" stroke-dasharray="4 3"/>`;
+    $('#strip').innerHTML = st + '</svg>';
+    $('#tiles').innerHTML = `<div class="tile"><span>${t.mean}</span><b>${f2(m)} lb</b></div><div class="tile"><span>${t.spread}</span><b>${f2(sd)} lb</b></div>`;
+    const rel = noise <= 0.015 ? 'ok' : noise <= 0.04 ? 'mid' : 'bad';
+    const val = rel === 'ok' && bias <= 0.015 ? 'ok' : (rel === 'mid' && bias <= 0.015 ? 'mid' : 'bad');
+    const L = { ok: t.high, mid: t.mid, bad: t.low }, V = { ok: t.yes, mid: t.mid, bad: t.no };
+    $('#verdict').innerHTML = `<div class="vd ${rel}">${ICON[rel]}<span>${t.relH}<small>${L[rel]}</small></span></div><div class="vd ${val}">${ICON[val]}<span>${t.valH}<small>${V[val]}</small></span></div>`;
+    const key = rel === 'ok' ? (val === 'ok' ? 'both' : 'relOnly') : rel === 'bad' ? 'unrel' : 'mid';
+    $('#msg').className = 'msg ' + (key === 'both' ? 'ok' : key === 'mid' ? 'mid' : 'bad');
+    $('#msg').textContent = t.m[key];
+    $('#biasO').textContent = '+' + f2(bias) + ' lb'; $('#noiseO').textContent = '± ' + f2(noise) + ' lb';
+    $('#again').textContent = t.again;
+    $('#presets').innerHTML = t.presets.map((p, i) => `<button type="button" class="btn small" data-p="${i}" aria-pressed="${PRE[i][0] === bias && PRE[i][1] === noise}">${p}</button>`).join('');
+    $$('#presets button').forEach(b => b.addEventListener('click', () => { [bias, noise] = PRE[+b.dataset.p]; $('#bias').value = bias; $('#noise').value = noise; newEps(); render(); }));
+  }
+  function applyLang() {
+    document.documentElement.lang = lang;
+    $$('[data-t]').forEach(el => { const v = T()[el.dataset.t]; if (typeof v === 'string') el.textContent = v; });
+    $$('[data-lang-btn]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.langBtn === lang)));
+    $$('a[data-keep-lang]').forEach(a => a.setAttribute('href', 'index.html?lang=' + lang));
+    document.title = T().title; render();
+  }
+  $$('[data-lang-btn]').forEach(b => b.addEventListener('click', () => { lang = b.dataset.langBtn; try { localStorage.setItem(KEY, lang); } catch (e) {} try { const u = new URL(location.href); u.searchParams.set('lang', lang); history.replaceState(null, '', u.toString()); } catch (e) {} applyLang(); }));
+  $('#bias').addEventListener('input', e => { bias = +e.target.value; render(); });
+  $('#noise').addEventListener('input', e => { noise = +e.target.value; render(); });
+  $('#again').addEventListener('click', () => { newEps(); render(); });
+  newEps(); applyLang();
+})();
+</script>
+</body>
+</html>
