@@ -456,12 +456,12 @@ window.STR = Kit.withCommon({
 const W = (n, date, en, tr, apps, status) => ({ n, date, topic: { en, tr }, apps: apps || [], status: status || (apps && apps.length ? 'ready' : 'soon') });
 const A = (file, en, tr) => ({ file, title: { en, tr } });
 const WEEKS = [
-  W(1, '2026-09-23', 'Introduction; testing and assessment', 'Giriş; test ve değerlendirme',
-    [A('h01-stroop.html', 'Stroop task', 'Stroop görevi'), A('h01-test-mi.html', 'Test or assessment?', 'Test mi, değerlendirme mi?')]),
+  W(1, '2026-09-23', 'Introduction; testing and assessment', 'Giriş; test ve değerleme',
+    [A('h01-stroop.html', 'Stroop task', 'Stroop görevi'), A('h01-test-mi.html', 'Test or assessment?', 'Test mi, değerleme mi?')]),
   W(2, '2026-09-30', 'History, culture, and ethics', 'Tarih, kültür ve etik',
     [A('h02-tarih-etik.html', 'History and ethics', 'Tarih ve etik')]),
   W(3, '2026-10-07', 'Assumptions, norms, and standardization', 'Varsayımlar, normlar ve standardizasyon',
-    [A('h03-normlar.html', 'Norms and constructs', 'Normlar ve yapılar')]),
+    [A('h03-normlar.html', 'Norms and constructs', 'Normlar ve yapılar'), A('h03-puani-yorumla.html', 'Read the score', 'Puanı yorumla'), A('h03-proje-zinciri.html', 'Project: your scale is a chain', 'Proje: ölçeğiniz bir zincir')]),
   W(4, '2026-10-14', 'Scales of measurement; writing items', 'Ölçek düzeyleri; madde yazımı'),
   W(5, '2026-10-21', 'Face and content validity; response styles', 'Görünüş ve kapsam geçerliği; yanıt stilleri'),
   W(6, '2026-10-28', 'Holiday (no class)', 'Tatil (ders yok)', [], 'none'),
@@ -472,7 +472,7 @@ const WEEKS = [
   W(10, '2026-11-25', 'Item analysis and test revision', 'Madde analizi ve test revizyonu',
     [A('h07-alfa-lab.html', 'Cronbach’s alpha lab', 'Cronbach alfa laboratuvarı')]),
   W(11, '2026-12-02', 'Intelligence', 'Zekâ'),
-  W(12, '2026-12-09', 'Personality assessment; project presentations (1)', 'Kişilik değerlendirmesi; proje sunumları (1)'),
+  W(12, '2026-12-09', 'Personality assessment; project presentations (1)', 'Kişilik değerlemesi; proje sunumları (1)'),
   W(13, '2026-12-16', 'Test showcase; project presentations (2)', 'Test vitrini; proje sunumları (2)'),
   W(14, '2026-12-23', 'Project presentations (3); course overview', 'Proje sunumları (3); dönem toparlaması', [], 'none')
 ];

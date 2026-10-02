@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#4a3aa7">
+<title>Puanı Yorumla</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%234a3aa7%22%2F%3E%3Cpath%20d%3D%22M18%2044h28M22%2044V26M32%2044V18M42%2044V32%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f2f2f6;
+  --surface:#fdfdfe;
+  --surface-2:#ebebf1;
+  --surface-3:#dfdfe8;
+  --ink:#14131b;
+  --ink-2:#4a4957;
+  --muted:#65636f;
+  --line:#e0dfe7;
+  --line-strong:#c3c2ce;
+  --accent:#4a3aa7;
+  --accent-hover:#3c2f8e;
+  --accent-ink:#ffffff;
+  --accent-soft:#e9e6f8;
+  --good:#0ca30c;
+  --good-text:#006300;
+  --good-soft:#e1f3e1;
+  --crit:#d03b3b;
+  --crit-text:#a82626;
+  --crit-soft:#fbe5e5;
+  --warn:#fab219;
+  --warn-soft:#fdf0cc;
+  --series-1:#2a78d6;
+  --series-2:#eb6834;
+  --stage:#15141c;
+  --stage-ink:#f3f3f7;
+  --shadow:0 1px 2px rgba(20,19,27,.05),0 8px 24px rgba(20,19,27,.07);
+  --radius:16px;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Roboto Mono",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0f0f14;
+    --surface:#18181f;
+    --surface-2:#22222b;
+    --surface-3:#2e2e39;
+    --ink:#f3f3f7;
+    --ink-2:#c4c3cf;
+    --muted:#9896a6;
+    --line:#2b2b35;
+    --line-strong:#41414d;
+    --accent:#9d93ee;
+    --accent-hover:#b3abf3;
+    --accent-ink:#14131b;
+    --accent-soft:#2b2847;
+    --good-text:#5fd35f;
+    --good-soft:#17301a;
+    --crit-text:#ff8f8f;
+    --crit-soft:#3a1d20;
+    --warn-soft:#3b3119;
+    --series-1:#3987e5;
+    --series-2:#d95926;
+    --stage:#0b0b10;
+    --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0f0f14;
+  --surface:#18181f;
+  --surface-2:#22222b;
+  --surface-3:#2e2e39;
+  --ink:#f3f3f7;
+  --ink-2:#c4c3cf;
+  --muted:#9896a6;
+  --line:#2b2b35;
+  --line-strong:#41414d;
+  --accent:#9d93ee;
+  --accent-hover:#b3abf3;
+  --accent-ink:#14131b;
+  --accent-soft:#2b2847;
+  --good-text:#5fd35f;
+  --good-soft:#17301a;
+  --crit-text:#ff8f8f;
+  --crit-soft:#3a1d20;
+  --warn-soft:#3b3119;
+  --series-1:#3987e5;
+  --series-2:#d95926;
+  --stage:#0b0b10;
+  --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top,0px)}
+[hidden]{display:none!important}
+h1,h2,h3{margin:0;text-wrap:balance;line-height:1.2}
+p{margin:0}
+ul,ol{margin:0}
+button,input,select{font:inherit;color:inherit}
+button{touch-action:manipulation}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:680px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);text-decoration:none;font-weight:600;font-size:14px;min-height:40px;padding:0 4px;border-radius:8px}
+.back:hover{color:var(--ink)}
+.back svg{width:18px;height:18px}
+.lang{display:inline-flex;border:1px solid var(--line-strong);border-radius:999px;padding:2px;background:var(--surface)}
+.lang button{border:0;background:transparent;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.05em;cursor:pointer;color:var(--ink-2);min-height:34px;min-width:44px}
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+
+/* page */
+.app{max-width:680px;margin:0 auto;padding-inline:16px;padding-block:18px 48px;display:grid;gap:18px}
+.head{display:grid;gap:6px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(26px,7vw,34px);font-weight:750;letter-spacing:-.015em}
+.lead{color:var(--ink-2);font-size:16px}
+.card,[id^="quiz"]{scroll-margin-top:72px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:grid;gap:14px}
+.card h2{font-size:19px;font-weight:700}
+.card h3{font-size:16px;font-weight:700}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.note{font-size:14px;color:var(--ink-2);background:var(--surface-2);border-radius:12px;padding:10px 12px}
+.foot{max-width:680px;margin:0 auto;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 28px);font-size:13px;color:var(--muted)}
+.list{padding-left:20px;display:grid;gap:6px}
+
+/* buttons */
+.btn{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:12px;padding:10px 16px;min-height:48px;font-weight:650;font-size:16px;cursor:pointer;text-decoration:none;transition:background-color .15s,border-color .15s}
+.btn:hover{background:var(--surface-2)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--ink-2)}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.row.end{justify-content:flex-end}
+.row.between{justify-content:space-between}
+
+/* segmented tabs */
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;background:var(--surface-2);border-radius:14px;padding:4px}
+.seg button{border:0;background:transparent;border-radius:10px;padding:8px 6px;min-height:48px;font-size:14px;font-weight:650;color:var(--ink-2);cursor:pointer;line-height:1.2}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.seg .n{display:block;font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+/* quiz */
+.progress{display:grid;gap:6px}
+.progress-top{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);font-weight:600}
+.bar{height:6px;background:var(--surface-2);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .3s}
+.q-text{font-size:18px;font-weight:600;line-height:1.4}
+.q-sub{font-size:15px;color:var(--ink-2)}
+.choices{display:grid;gap:10px}
+.choice{appearance:none;text-align:left;width:100%;display:flex;align-items:center;gap:12px;border:1.5px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:14px;padding:12px 14px;min-height:56px;font-size:16px;font-weight:550;cursor:pointer;line-height:1.35}
+.choice:hover{border-color:var(--accent)}
+.choice .mark{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line-strong);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--muted)}
+.choice[disabled]{cursor:default}
+.choice.correct{border-color:var(--good);background:var(--good-soft)}
+.choice.correct .mark{background:var(--good);border-color:var(--good);color:#fff}
+.choice.wrong{border-color:var(--crit);background:var(--crit-soft)}
+.choice.wrong .mark{background:var(--crit);border-color:var(--crit);color:#fff}
+.choice.dim{opacity:.6}
+.feedback{border-radius:14px;padding:12px 14px;display:grid;gap:4px;font-size:15px}
+.feedback.ok{background:var(--good-soft)}
+.feedback.no{background:var(--crit-soft)}
+.feedback.info{background:var(--surface-2)}
+.feedback b{font-size:16px}
+.feedback.ok b{color:var(--good-text)}
+.feedback.no b{color:var(--crit-text)}
+.score{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.score .big{font-family:var(--mono);font-size:44px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.review{list-style:none;padding:0;display:grid;border-top:1px solid var(--line)}
+.review li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.review .ans{color:var(--ink-2);font-size:14px}
+.ico{width:20px;height:20px;flex:none}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
+
+.stack{display:grid;gap:18px}
+.groups{display:grid;gap:12px}
+.grp{border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px}
+.grp h3{font-size:16px}
+.grp .mstats{font-family:var(--mono);font-size:14px;color:var(--ink-2)}
+.grp .opts{display:grid;gap:8px}
+.grp .choice{min-height:48px;padding:8px 12px;font-size:15px}
+.nums{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--mono);font-size:15px}
+.nums b{font-weight:700}
+.curve svg{width:100%;max-width:420px;height:auto;display:block}
+.curve text{font-family:var(--mono);font-size:10px;fill:var(--muted)}
+.curve .cv{fill:none;stroke:var(--ink-2);stroke-width:1.5}
+.curve .area{fill:var(--accent);fill-opacity:.22}
+.curve .mk{stroke:var(--accent);stroke-width:2.5}
+.curve .mklbl{fill:var(--accent);font-weight:700;font-size:11px}
+.curve .base{stroke:var(--line-strong);stroke-width:1}
+.slider{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.slider label{font-weight:600}
+.slider output{font-size:22px;font-weight:700}
+input[type="range"]{width:100%;accent-color:var(--accent);height:32px;margin:0}
+.explore{display:grid;gap:12px}
+.xrow{border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px}
+.xrow:first-child{border-top:0;padding-top:0}
+.xrow .xname{font-weight:650}
+.feedback .nums b{color:var(--ink)}
+
+
+/* practice */
+.qnum{font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.04em}
+.scales{display:grid;gap:14px}
+.sc{border:1px solid var(--line);border-radius:14px;padding:12px 10px;display:grid;gap:6px;background:var(--surface)}
+.sc-h{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 10px;align-items:baseline;padding:0 4px}
+.sc-h b{font-size:15px}
+.sc-h span{font-family:var(--mono);font-size:13px;color:var(--ink-2)}
+.grid{display:grid;grid-template-columns:minmax(58px,auto) repeat(5,minmax(0,1fr));align-items:center;row-gap:2px}
+.grid .lbl{font-size:12px;font-weight:700;color:var(--muted);padding-right:6px;line-height:1.2}
+.grid .v{text-align:center;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:15px;padding:5px 0;border-radius:8px;white-space:nowrap}
+.grid .v.on{background:var(--accent-soft);font-weight:700;color:var(--ink)}
+.grid .v.q{color:var(--muted)}
+.grid .v.rev{color:var(--accent);font-weight:700}
+.grid .cv{grid-column:2 / span 5}
+.grid .cv svg{width:100%;height:auto;display:block;overflow:visible}
+.cv .line{fill:none;stroke:var(--ink-2);stroke-width:1.6}
+.cv .shade{fill:var(--accent);fill-opacity:.22}
+.cv .base{stroke:var(--line-strong);stroke-width:1}
+.cv .tick{stroke:var(--line-strong);stroke-width:1;stroke-dasharray:2 3}
+.cv .mk{stroke:var(--accent);stroke-width:3;stroke-linecap:round}
+.cv .dot{fill:var(--accent)}
+.cv text{font-family:var(--mono);font-size:15px;font-weight:600;fill:var(--ink-2);text-anchor:middle}
+.hint{border-radius:14px;padding:12px 14px;background:var(--warn-soft);display:grid;gap:4px;font-size:15px}
+.hint b{font-size:16px}
+.hero{text-align:center;display:grid;gap:8px;justify-items:center}
+.hero .icon{width:64px;height:64px;border-radius:18px;background:var(--accent);display:grid;place-items:center}
+.hero .icon svg{width:36px;height:36px}
+.steps{display:grid;gap:8px;padding-left:20px}
+.sum{display:grid;gap:8px;padding-left:20px}
+.res{font-size:20px;font-weight:700}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-in"><a class="back" href="index.html" data-keep-lang><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5L7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="back">Tüm haftalar</span></a><div class="lang" role="group" aria-label="Language / Dil"><button type="button" data-lang-btn="tr" lang="tr" aria-pressed="false">TR</button><button type="button" data-lang-btn="en" lang="en" aria-pressed="false">EN</button></div></div></div>
+
+<main class="app" id="app" aria-live="polite"></main>
+<p class="foot" data-t="foot"></p>
+
+<script>
+(function () {
+  'use strict';
+  const KEY = 'psyc3204.lang';
+  let lang = 'tr';
+  try {
+    const p = new URLSearchParams(location.search).get('lang');
+    if (p === 'tr' || p === 'en') lang = p;
+    else {
+      let s = null;
+      try { s = localStorage.getItem(KEY); } catch (e) { s = null; }
+      if (s === 'tr' || s === 'en') lang = s;
+      else lang = (navigator.language || '').toLowerCase().startsWith('tr') ? 'tr' : 'en';
+    }
+  } catch (e) { lang = 'tr'; }
+
+  const $ = (q, r) => (r || document).querySelector(q);
+  const $$ = (q, r) => Array.from((r || document).querySelectorAll(q));
+  const ZS = [-2, -1, 0, 1, 2];
+  const sz = v => v === 0 ? '0' : (v > 0 ? '+' : '−') + Math.abs(v);
+  const PC = [2, 16, 50, 84, 98];
+
+  const S = {
+    tr: {
+      back: 'Tüm haftalar',
+      foot: 'PSKO3204 / PSYC3204 · 3. hafta · Bütün sayılar ders için uydurulmuştur. Yüzdelik sıraları normal dağılım varsayar.',
+      title: 'Puanı Yorumla', eyebrow: '3. hafta · sınıf etkinliği',
+      lead: 'Ham puan tek başına az şey söyler. Dokuz kısa soruda puanları norm grubuna göre yorumlayın.',
+      howH: 'Nasıl çalışır?',
+      how: ['Süre yok; kendi hızınızda ilerleyin.', 'Her soruda bir şekil var: ortalama ortada, her adım bir standart sapma (SS). Hesap makinesi gerekmez; şekle bakın.', 'Yanlış yanıtta bir ipucu çıkar ve bir kez daha deneyebilirsiniz.'],
+      formula: 'z = (ham puan − ortalama) ÷ SS · T = 50 + 10z · IQ = 100 + 15z',
+      start: 'Başla', next: 'Sonraki soru', finish: 'Özete geç', again: 'Baştan başla',
+      q: 'Soru', of: '/', right: 'Doğru!', wrong: 'Yanlış.', tryAgain: 'Bir daha deneyin', answer: 'Doğru yanıt',
+      rows: { raw: 'Ham puan', sd: 'Uzaklık', z: 'z puanı', t: 'T puanı', iq: 'IQ', pct: 'Yüzdelik' },
+      sdl: ['−2 SS', '−1 SS', 'Ort.', '+1 SS', '+2 SS'],
+      pct: v => '%' + v, pctRank: v => v + '.',
+      ms: (m, s) => `ort. ${m} · SS ${s}`,
+      doneH: 'Bitti!', result: (c, n) => `${n} sorudan ${c} tanesini ilk denemede doğru yaptınız.`,
+      sumH: 'Akılda kalsın',
+      sum: ['z puanı, puanın ortalamadan kaç SS uzakta olduğunu söyler: eksi altında, artı üstünde.', 'z = −2, −1, 0, +1, +2 yaklaşık 2., 16., 50., 84. ve 98. yüzdeliğe karşılık gelir.', 'T = 50 + 10z; IQ = 100 + 15z. Aynı bilgi, farklı birim.', 'Aynı ham puan, farklı norm grubunda farklı anlam taşır.', 'Doğru yüzdesi yüzdelik sırası değildir.'],
+      endNote: 'Ekranı açık tutun: en zor soruyu sınıfta birlikte konuşacağız.',
+      groups: { math: 'Matematik testi', verb: 'Sözel test', y20: '20–29 yaş', psy: 'Psikoloji öğrencileri', y70: '70–79 yaş' },
+      Q: [
+        { text: 'Zeynep bir sınav kaygısı ölçeğinden <b>46</b> aldı. Norm grubunun ortalaması <b>40</b>, standart sapması (SS) <b>6</b>. Zeynep’in puanı nerede?',
+          opts: ['Ortalamanın 2 SS altında', 'Tam ortalamada', 'Ortalamanın 1 SS üstünde', 'Ortalamanın 2 SS üstünde'],
+          hint: 'Şekilde 46’yı bulun. Ortalamadan (40) kaç adım sağda?',
+          ex: '46 − 40 = 6 puan, yani tam 1 SS. Zeynep ortalamanın 1 SS üstünde.' },
+        { text: 'Mert aynı ölçekten <b>28</b> aldı. Bu uzaklığı SS cinsinden yazınca <b>z puanı</b> elde edilir. Mert’in z puanı kaç?',
+          opts: ['−2', '−1', '+2', '−12'],
+          hint: '28 ortalamanın solunda mı, sağında mı? Kaç adım uzakta?',
+          ex: 'z = (28 − 40) ÷ 6 = −12 ÷ 6 = −2. Eksi işareti puanın ortalamanın altında olduğunu söyler.' },
+        { text: 'Eğrideki yüzdeler, her aralıkta kaç kişinin bulunduğunu gösteriyor. Mert’in z puanı <b>−2</b>. Norm grubunun yaklaşık yüzde kaçı Mert’ten <b>düşük</b> puan aldı?',
+          opts: ['%2', '%16', '%50', '%98'],
+          hint: 'Eğride Mert’in solunda kalan alana bakın.',
+          ex: '−2’nin solunda yalnızca %2 var. Mert 2. yüzdelikte: grubun %98’i ondan yüksek puan aldı.' },
+        { text: 'Zeynep’in z puanı <b>+1</b>. <b>Yüzdelik sırası</b> (ondan düşük puan alanların yüzdesi) yaklaşık kaçtır?',
+          opts: ['34. yüzdelik', '50. yüzdelik', '84. yüzdelik', '98. yüzdelik'],
+          hint: 'Zeynep’in solundaki bütün alanları toplayın: ortalamanın solu %50, ortalama ile +1 arası %34.',
+          ex: '%2 + %14 + %34 + %34 = %84. Zeynep 84. yüzdelikte.' },
+        { text: '<b>T puanlarında</b> ortalama 50, SS 10’dur. Zeynep’in z puanı <b>+1</b>. T puanı kaç?',
+          opts: ['51', '60', '40', '10'],
+          hint: 'T ölçeğinde her SS adımı 10 puan. +1, ortalamanın bir adım üstü.',
+          ex: 'T = 50 + 10 × 1 = 60.' },
+        { text: 'Zekâ testlerinde (sapma IQ’su) ortalama 100, SS 15’tir. Bir çocuğun z puanı <b>−1</b>. IQ puanı kaç?',
+          opts: ['85', '99', '90', '115'],
+          hint: 'Her SS adımı 15 puan. Eksi işareti aşağı demek.',
+          ex: 'IQ = 100 + 15 × (−1) = 85.' },
+        { text: 'Ece matematik testinden de sözel testten de aynı ham puanı aldı: <b>70</b>. Sınıfına göre hangisinde daha başarılı?',
+          opts: ['Matematik testinde', 'Sözel testte', 'İkisi aynı: ham puanlar eşit'],
+          hint: 'İki şekilde de 70’i bulun. Hangisinde ortalamadan daha uzakta?',
+          ex: 'Matematik: z = (70 − 60) ÷ 10 = +1 (84. yüzdelik). Sözel: z = (70 − 50) ÷ 10 = +2 (98. yüzdelik). Aynı ham puan, farklı anlam.' },
+        { text: 'Deniz bir bellek testinden <b>32</b> aldı. Hangi norm grubuyla karşılaştırılırsa <b>en iyi</b> görünür?',
+          opts: ['20–29 yaş', 'Psikoloji öğrencileri', '70–79 yaş'],
+          hint: 'Her şekilde 32’yi bulun. Hangisinde ortalamanın sağında kalıyor?',
+          ex: '20–29 yaş: z = −2. Psikoloji öğrencileri: z = −1. 70–79 yaş: z = +1. En iyi 70–79 yaşa göre görünür; ama Deniz 21 yaşında bir öğrenciyse doğru karşılaştırma grubu bu değildir.' },
+        { text: 'Can 40 soruluk bir testte <b>32</b> doğru yaptı (%80 doğru). Yüzdelik sırası kaçtır?',
+          opts: ['80. yüzdelik', '32. yüzdelik', 'Bilinemez: norm grubunun puanları gerekir'],
+          hint: 'Yüzdelik sırası, başkalarıyla karşılaştırma ister. Burada başka kimsenin puanını biliyor muyuz?',
+          ex: 'Doğru yüzdesi yüzdelik sırası değildir. Herkes 35 ve üstü aldıysa Can grubun altında kalır; herkes 25 aldıysa en üstte olur.' }
+      ]
+    },
+    en: {
+      back: 'All weeks',
+      foot: 'PSYC3204 / PSKO3204 · Week 3 · All numbers are made up for class. Percentile ranks assume a normal distribution.',
+      title: 'Read the Score', eyebrow: 'Week 3 · class activity',
+      lead: 'A raw score means little on its own. Interpret scores against norm groups in nine short questions.',
+      howH: 'How it works',
+      how: ['No timer; go at your own pace.', 'Each question has a picture: the mean is in the middle, and each step is one standard deviation (SD). No calculator needed; read the picture.', 'If you answer wrong, you get a hint and one more try.'],
+      formula: 'z = (raw score − mean) ÷ SD · T = 50 + 10z · IQ = 100 + 15z',
+      start: 'Start', next: 'Next question', finish: 'See the summary', again: 'Start over',
+      q: 'Question', of: '/', right: 'Correct!', wrong: 'Not quite.', tryAgain: 'Try once more', answer: 'Correct answer',
+      rows: { raw: 'Raw score', sd: 'Distance', z: 'z score', t: 'T score', iq: 'IQ', pct: 'Percentile' },
+      sdl: ['−2 SD', '−1 SD', 'Mean', '+1 SD', '+2 SD'],
+      pct: v => v + '%', pctRank: v => v + 'th',
+      ms: (m, s) => `mean ${m} · SD ${s}`,
+      doneH: 'Done!', result: (c, n) => `You got ${c} of ${n} questions right on the first try.`,
+      sumH: 'Take-aways',
+      sum: ['A z score tells how many SDs a score is from the mean: minus is below, plus is above.', 'z = −2, −1, 0, +1, +2 are about the 2nd, 16th, 50th, 84th, and 98th percentiles.', 'T = 50 + 10z; IQ = 100 + 15z. Same information, different units.', 'The same raw score means different things in different norm groups.', 'Percentage correct is not a percentile rank.'],
+      endNote: 'Keep this screen open: we will discuss the hardest question together.',
+      groups: { math: 'Math test', verb: 'Verbal test', y20: 'Adults 20–29', psy: 'Psychology students', y70: 'Adults 70–79' },
+      Q: [
+        { text: 'Zeynep scored <b>46</b> on a test anxiety scale. The norm group’s mean is <b>40</b> and its standard deviation (SD) is <b>6</b>. Where does Zeynep’s score fall?',
+          opts: ['2 SD below the mean', 'Exactly at the mean', '1 SD above the mean', '2 SD above the mean'],
+          hint: 'Find 46 in the picture. How many steps to the right of the mean (40) is it?',
+          ex: '46 − 40 = 6 points, exactly 1 SD. Zeynep is 1 SD above the mean.' },
+        { text: 'Mert scored <b>28</b> on the same scale. Distance from the mean in SD units is the <b>z score</b>. What is Mert’s z score?',
+          opts: ['−2', '−1', '+2', '−12'],
+          hint: 'Is 28 to the left or the right of the mean? How many steps away?',
+          ex: 'z = (28 − 40) ÷ 6 = −12 ÷ 6 = −2. The minus sign means the score is below the mean.' },
+        { text: 'The percentages on the curve show how many people fall in each interval. Mert’s z score is <b>−2</b>. About what percentage of the norm group scored <b>lower</b> than Mert?',
+          opts: ['2%', '16%', '50%', '98%'],
+          hint: 'Look at the area to the left of Mert on the curve.',
+          ex: 'Only 2% lie to the left of −2. Mert is at the 2nd percentile: 98% of the group scored higher.' },
+        { text: 'Zeynep’s z score is <b>+1</b>. What is her approximate <b>percentile rank</b> (the percentage who scored lower)?',
+          opts: ['34th percentile', '50th percentile', '84th percentile', '98th percentile'],
+          hint: 'Add up all the areas to Zeynep’s left: 50% to the left of the mean, 34% between the mean and +1.',
+          ex: '2% + 14% + 34% + 34% = 84%. Zeynep is at the 84th percentile.' },
+        { text: '<b>T scores</b> have a mean of 50 and an SD of 10. Zeynep’s z score is <b>+1</b>. What is her T score?',
+          opts: ['51', '60', '40', '10'],
+          hint: 'On the T scale, each SD step is 10 points. +1 is one step above the mean.',
+          ex: 'T = 50 + 10 × 1 = 60.' },
+        { text: 'Intelligence tests (deviation IQ) have a mean of 100 and an SD of 15. A child’s z score is <b>−1</b>. What is the IQ score?',
+          opts: ['85', '99', '90', '115'],
+          hint: 'Each SD step is 15 points. A minus sign means down.',
+          ex: 'IQ = 100 + 15 × (−1) = 85.' },
+        { text: 'Ece got the same raw score on a math test and a verbal test: <b>70</b>. Compared with her class, on which test did she do better?',
+          opts: ['The math test', 'The verbal test', 'The same: the raw scores are equal'],
+          hint: 'Find 70 in both pictures. Where is it farther from the mean?',
+          ex: 'Math: z = (70 − 60) ÷ 10 = +1 (84th percentile). Verbal: z = (70 − 50) ÷ 10 = +2 (98th percentile). Same raw score, different meaning.' },
+        { text: 'Deniz scored <b>32</b> on a memory test. Compared with which norm group does Deniz look <b>best</b>?',
+          opts: ['Adults 20–29', 'Psychology students', 'Adults 70–79'],
+          hint: 'Find 32 in each picture. In which one is it to the right of the mean?',
+          ex: 'Adults 20–29: z = −2. Psychology students: z = −1. Adults 70–79: z = +1. Deniz looks best against adults 70–79, but if Deniz is a 21-year-old student, that is not the right comparison group.' },
+        { text: 'Can answered <b>32</b> of 40 items correctly (80% correct). What is Can’s percentile rank?',
+          opts: ['80th percentile', '32nd percentile', 'We cannot tell: we need the norm group’s scores'],
+          hint: 'A percentile rank needs a comparison with other people. Do we know anyone else’s score here?',
+          ex: 'Percentage correct is not a percentile rank. If everyone else scored 35 or more, Can is near the bottom; if everyone else scored 25, Can is at the top.' }
+      ]
+    }
+  };
+  const T = () => S[lang];
+
+  // language-independent structure: correct option index and picture spec
+  // scale: {g: group key or null, m, s, mark (z), rows: [[key, mode]], areas, shade}
+  // mode: 'show' | 'hide' (revealed after answer) | 'mean' (only the mean shown until revealed)
+  const SPEC = [
+    { ok: 2, scales: [{ m: 40, s: 6, mark: 1, rows: [['raw', 'show'], ['sd', 'hide']] }] },
+    { ok: 0, scales: [{ m: 40, s: 6, mark: -2, rows: [['raw', 'show'], ['z', 'hide']] }] },
+    { ok: 0, scales: [{ m: 40, s: 6, mark: -2, areas: true, shade: true, rows: [['z', 'show'], ['pct', 'hide']] }] },
+    { ok: 2, scales: [{ m: 40, s: 6, mark: 1, areas: true, shade: true, rows: [['z', 'show'], ['pct', 'hide']] }] },
+    { ok: 1, scales: [{ m: 50, s: 10, mark: 1, rows: [['z', 'show'], ['t', 'mean']] }] },
+    { ok: 0, scales: [{ m: 100, s: 15, mark: -1, rows: [['z', 'show'], ['iq', 'mean']] }] },
+    { ok: 1, scales: [
+      { g: 'math', m: 60, s: 10, mark: 1, rows: [['raw', 'show'], ['z', 'hide']] },
+      { g: 'verb', m: 50, s: 10, mark: 2, rows: [['raw', 'show'], ['z', 'hide']] }] },
+    { ok: 2, scales: [
+      { g: 'y20', m: 40, s: 4, mark: -2, rows: [['raw', 'show'], ['z', 'hide']] },
+      { g: 'psy', m: 36, s: 4, mark: -1, rows: [['raw', 'show'], ['z', 'hide']] },
+      { g: 'y70', m: 24, s: 8, mark: 1, rows: [['raw', 'show'], ['z', 'hide']] }] },
+    { ok: 2, scales: [] }
+  ];
+  const N = SPEC.length;
+
+  function cellVals(key, sc) {
+    const t = T();
+    switch (key) {
+      case 'raw': return ZS.map(z => String(sc.m + z * sc.s));
+      case 'sd': return t.sdl.slice();
+      case 'z': return ZS.map(sz);
+      case 't': return ZS.map(z => String(50 + 10 * z));
+      case 'iq': return ZS.map(z => String(100 + 15 * z));
+      case 'pct': return PC.map(v => t.pctRank(v));
+    }
+  }
+  const X = z => 150 + 60 * z;
+  const Y = z => 84 - 70 * Math.exp(-z * z / 2);
+  function curve(sc) {
+    const t = T();
+    let d = '', sh = '';
+    for (let i = 0; i <= 100; i++) {
+      const z = -2.5 + 5 * i / 100;
+      d += (i ? 'L' : 'M') + X(z).toFixed(1) + ' ' + Y(z).toFixed(1);
+    }
+    if (sc.shade) {
+      sh = 'M' + X(-2.5) + ' 84';
+      for (let i = 0; i <= 80; i++) {
+        const z = -2.5 + (sc.mark + 2.5) * i / 80;
+        sh += 'L' + X(z).toFixed(1) + ' ' + Y(z).toFixed(1);
+      }
+      sh += 'L' + X(sc.mark).toFixed(1) + ' 84Z';
+    }
+    const ticks = ZS.map(z => `<line class="tick" x1="${X(z)}" x2="${X(z)}" y1="${Y(z).toFixed(1)}" y2="84"/>`).join('');
+    const areas = sc.areas ? [[-2.3, 2, 68], [-1.5, 14, 79], [-0.5, 34, 66], [0.5, 34, 66], [1.5, 14, 79], [2.3, 2, 68]]
+      .map(a => `<text x="${X(a[0]).toFixed(1)}" y="${a[2]}">${t.pct(a[1])}</text>`).join('') : '';
+    const mk = `<line class="mk" x1="${X(sc.mark)}" x2="${X(sc.mark)}" y1="${(Y(sc.mark) - 8).toFixed(1)}" y2="84"/><circle class="dot" cx="${X(sc.mark)}" cy="${(Y(sc.mark) - 8).toFixed(1)}" r="5"/>`;
+    return `<svg viewBox="0 0 300 88" aria-hidden="true">${sh ? `<path class="shade" d="${sh}"/>` : ''}${ticks}<path class="line" d="${d}"/><line class="base" x1="0" x2="300" y1="84" y2="84"/>${areas}${mk}</svg>`;
+  }
+  function scaleHTML(sc, revealed) {
+    const t = T();
+    const head = sc.g ? `<div class="sc-h"><b>${t.groups[sc.g]}</b><span>${t.ms(sc.m, sc.s)}</span></div>` : '';
+    const mi = ZS.indexOf(sc.mark);
+    let rows = `<div class="lbl"></div><div class="cv">${curve(sc)}</div>`;
+    sc.rows.forEach(([key, mode]) => {
+      const vals = cellVals(key, sc);
+      rows += `<div class="lbl">${t.rows[key]}</div>` + vals.map((v, i) => {
+        let cls = 'v', txt = v;
+        const hidden = !revealed && (mode === 'hide' || (mode === 'mean' && i !== 2));
+        if (hidden) { cls += ' q'; txt = '?'; }
+        else if (revealed && (mode === 'hide' || (mode === 'mean' && i !== 2))) cls += ' rev';
+        if (i === mi) cls += ' on';
+        return `<div class="${cls}">${txt}</div>`;
+      }).join('');
+    });
+    return `<div class="sc">${head}<div class="grid">${rows}</div></div>`;
+  }
+
+  // state
+  let st = null; // {i, tries, picked:[], done, first}
+  const app = $('#app');
+
+  function renderStart() {
+    st = null;
+    const t = T();
+    app.innerHTML = `<div class="hero"><div class="icon" aria-hidden="true"><svg viewBox="0 0 36 36"><path d="M4 30h28" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M5 29C11 29 12 8 18 8s7 21 13 21" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M24 8v21" stroke="#fab219" stroke-width="3" stroke-linecap="round"/></svg></div>
+      <p class="eyebrow">${t.eyebrow}</p><h1>${t.title}</h1><p class="lead">${t.lead}</p></div>
+      <section class="card"><h2>${t.howH}</h2><ul class="steps">${t.how.map(r => `<li>${r}</li>`).join('')}</ul><p class="note mono">${t.formula}</p>
+      <button class="btn primary block" id="go" type="button">${t.start}</button></section>`;
+    $('#go').addEventListener('click', () => { st = { i: 0, tries: 0, picked: [], done: false, first: 0 }; renderQ(); window.scrollTo(0, 0); });
+  }
+
+  function renderQ() {
+    const t = T(); const sp = SPEC[st.i]; const q = t.Q[st.i];
+    const pct = Math.round((st.i) / N * 100);
+    const last = st.i === N - 1;
+    const scales = sp.scales.length ? `<div class="scales">${sp.scales.map(sc => scaleHTML(sc, st.done)).join('')}</div>` : '';
+    const choices = q.opts.map((o, k) => {
+      let cls = 'choice';
+      if (st.done && k === sp.ok) cls += ' correct';
+      else if (st.picked.includes(k)) cls += ' wrong';
+      else if (st.done) cls += ' dim';
+      const dis = st.done || st.picked.includes(k) ? ' disabled' : '';
+      return `<button class="${cls}" type="button" data-k="${k}"${dis}><span class="mark">${'ABCD'[k]}</span><span>${o}</span></button>`;
+    }).join('');
+    let fb = '';
+    if (st.done) {
+      fb = `<div class="feedback ${st.lastWrong ? 'no' : 'ok'}"><b>${st.lastWrong ? t.wrong : t.right}</b>${st.lastWrong ? `<span>${t.answer}: ${q.opts[sp.ok]}</span>` : ''}<span class="small">${q.ex}</span></div>
+        <button class="btn primary block" id="nx" type="button">${last ? t.finish : t.next}</button>`;
+    } else if (st.tries === 1) {
+      fb = `<div class="hint"><b>${t.tryAgain}</b><span>${q.hint}</span></div>`;
+    }
+    app.innerHTML = `<div class="progress"><div class="progress-top"><span>${t.q} ${st.i + 1} ${t.of} ${N}</span></div><div class="bar"><i style="width:${pct}%"></i></div></div>
+      <section class="card"><div class="q-text">${q.text}</div>${scales}<div class="choices">${choices}</div><div id="fb">${fb}</div></section>`;
+    $$('.choice', app).forEach(b => b.addEventListener('click', () => answer(+b.dataset.k)));
+    const nx = $('#nx');
+    if (nx) {
+      nx.addEventListener('click', () => {
+        if (last) renderEnd();
+        else { st = { i: st.i + 1, tries: 0, picked: [], done: false, first: st.first }; renderQ(); window.scrollTo(0, 0); }
+      });
+    }
+  }
+  function answer(k) {
+    if (st.done || st.picked.includes(k)) return;
+    const sp = SPEC[st.i];
+    st.tries++;
+    if (k === sp.ok) {
+      st.done = true; st.lastWrong = false;
+      if (st.tries === 1) st.first++;
+    } else {
+      st.picked.push(k);
+      if (st.tries >= 2) { st.done = true; st.lastWrong = true; }
+    }
+    renderQ();
+    const f = $('#fb'); if (f && f.firstElementChild) f.firstElementChild.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    const nx = $('#nx'); if (nx) nx.focus({ preventScroll: true });
+  }
+  function renderEnd() {
+    const t = T(); const c = st.first;
+    st.end = true;
+    app.innerHTML = `<div class="hero"><p class="eyebrow">${t.title}</p><h1>${t.doneH}</h1><p class="res">${t.result(c, N)}</p></div>
+      <section class="card"><h2>${t.sumH}</h2><ul class="sum">${t.sum.map(x => `<li>${x}</li>`).join('')}</ul>
+      ${scaleHTML({ m: 50, s: 10, mark: 0, areas: true, rows: [['z', 'show'], ['pct', 'show'], ['t', 'show'], ['iq', 'show']] }, true)}</section>
+      <p class="note">${t.endNote}</p>
+      <button class="btn block" id="again" type="button">${t.again}</button>`;
+    $('#again').addEventListener('click', () => { renderStart(); window.scrollTo(0, 0); });
+    window.scrollTo(0, 0);
+  }
+
+  function applyLang() {
+    document.documentElement.lang = lang;
+    $$('[data-t]').forEach(el => { const v = T()[el.dataset.t]; if (typeof v === 'string') el.textContent = v; });
+    $$('[data-lang-btn]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.langBtn === lang)));
+    $$('a[data-keep-lang]').forEach(a => { a.setAttribute('href', 'index.html?lang=' + lang); });
+    document.title = T().title;
+  }
+  $$('[data-lang-btn]').forEach(b => b.addEventListener('click', () => {
+    const l = b.dataset.langBtn; if (l === lang) return; lang = l;
+    try { localStorage.setItem(KEY, l); } catch (e) { /* unavailable */ }
+    try { const u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u.toString()); } catch (e) { /* sandbox */ }
+    applyLang();
+    if (!st) renderStart();
+    else if (st.end) renderEnd();
+    else renderQ();
+  }));
+  applyLang(); renderStart();
+})();
+</script>
+</body>
+</html>
