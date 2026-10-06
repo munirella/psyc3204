@@ -289,7 +289,7 @@ input[type="range"]{width:100%;accent-color:var(--accent);height:32px;margin:0}
       ms: (m, s) => `ort. ${m} · SS ${s}`,
       doneH: 'Bitti!', result: (c, n) => `${n} sorudan ${c} tanesini ilk denemede doğru yaptınız.`,
       sumH: 'Akılda kalsın',
-      sum: ['z puanı, puanın ortalamadan kaç SS uzakta olduğunu söyler: eksi altında, artı üstünde.', 'z = −2, −1, 0, +1, +2 yaklaşık 2., 16., 50., 84. ve 98. yüzdeliğe karşılık gelir.', 'T = 50 + 10z; IQ = 100 + 15z. Aynı bilgi, farklı birim.', 'Aynı ham puan, farklı norm grubunda farklı anlam taşır.', 'Doğru yüzdesi yüzdelik sırası değildir.'],
+      sum: ['z puanı, puanın ortalamadan kaç SS uzakta olduğunu söyler: eksi altında, artı üstünde.', 'z = −2, −1, 0, +1, +2 yaklaşık 2., 16., 50., 84. ve 98. yüzdeliğe karşılık gelir.', 'T = 50 + 10z; IQ = 100 + 15z. Aynı bilgi, farklı birim.', 'Aynı ham puan, farklı norm grubunda farklı anlam taşır.', 'Yüzdelik bir karşılaştırmadır: grubun puanları olmadan hesaplanamaz.'],
       endNote: 'Ekranı açık tutun: en zor soruyu sınıfta birlikte konuşacağız.',
       groups: { math: 'Matematik testi', verb: 'Sözel test', y20: '20–29 yaş', psy: 'Psikoloji öğrencileri', y70: '70–79 yaş' },
       Q: [
@@ -325,10 +325,10 @@ input[type="range"]{width:100%;accent-color:var(--accent);height:32px;margin:0}
           opts: ['20–29 yaş', 'Psikoloji öğrencileri', '70–79 yaş'],
           hint: 'Her şekilde 32’yi bulun. Hangisinde ortalamanın sağında kalıyor?',
           ex: '20–29 yaş: z = −2. Psikoloji öğrencileri: z = −1. 70–79 yaş: z = +1. En iyi 70–79 yaşa göre görünür; ama Deniz 21 yaşında bir öğrenciyse doğru karşılaştırma grubu bu değildir.' },
-        { text: 'Can 40 soruluk bir testte <b>32</b> doğru yaptı (%80 doğru). Yüzdelik sırası kaçtır?',
-          opts: ['80. yüzdelik', '32. yüzdelik', 'Bilinemez: norm grubunun puanları gerekir'],
+        { text: 'Can bir testten <b>32</b> aldı. Başka bilgi yok. Can’in yüzdelik sırası kaçtır?',
+          opts: ['50. yüzdelik', '32. yüzdelik', 'Bilinemez: norm grubunun puanları gerekir'],
           hint: 'Yüzdelik sırası, başkalarıyla karşılaştırma ister. Burada başka kimsenin puanını biliyor muyuz?',
-          ex: 'Doğru yüzdesi yüzdelik sırası değildir. Herkes 35 ve üstü aldıysa Can grubun altında kalır; herkes 25 aldıysa en üstte olur.' }
+          ex: 'Yüzdelik bir karşılaştırmadır: grubun puanları olmadan hesaplanamaz. Herkes 35 ve üstü aldıysa Can grubun altında kalır; herkes 25 aldıysa en üstte olur.' }
       ]
     },
     en: {
@@ -347,7 +347,7 @@ input[type="range"]{width:100%;accent-color:var(--accent);height:32px;margin:0}
       ms: (m, s) => `mean ${m} · SD ${s}`,
       doneH: 'Done!', result: (c, n) => `You got ${c} of ${n} questions right on the first try.`,
       sumH: 'Take-aways',
-      sum: ['A z score tells how many SDs a score is from the mean: minus is below, plus is above.', 'z = −2, −1, 0, +1, +2 are about the 2nd, 16th, 50th, 84th, and 98th percentiles.', 'T = 50 + 10z; IQ = 100 + 15z. Same information, different units.', 'The same raw score means different things in different norm groups.', 'Percentage correct is not a percentile rank.'],
+      sum: ['A z score tells how many SDs a score is from the mean: minus is below, plus is above.', 'z = −2, −1, 0, +1, +2 are about the 2nd, 16th, 50th, 84th, and 98th percentiles.', 'T = 50 + 10z; IQ = 100 + 15z. Same information, different units.', 'The same raw score means different things in different norm groups.', 'A percentile is a comparison: it cannot be computed without the group’s scores.'],
       endNote: 'Keep this screen open: we will discuss the hardest question together.',
       groups: { math: 'Math test', verb: 'Verbal test', y20: 'Adults 20–29', psy: 'Psychology students', y70: 'Adults 70–79' },
       Q: [
@@ -383,10 +383,10 @@ input[type="range"]{width:100%;accent-color:var(--accent);height:32px;margin:0}
           opts: ['Adults 20–29', 'Psychology students', 'Adults 70–79'],
           hint: 'Find 32 in each picture. In which one is it to the right of the mean?',
           ex: 'Adults 20–29: z = −2. Psychology students: z = −1. Adults 70–79: z = +1. Deniz looks best against adults 70–79, but if Deniz is a 21-year-old student, that is not the right comparison group.' },
-        { text: 'Can answered <b>32</b> of 40 items correctly (80% correct). What is Can’s percentile rank?',
-          opts: ['80th percentile', '32nd percentile', 'We cannot tell: we need the norm group’s scores'],
+        { text: 'Can scored <b>32</b> on a test. Nothing else is known. What is Can’s percentile rank?',
+          opts: ['50th percentile', '32nd percentile', 'We cannot tell: we need the norm group’s scores'],
           hint: 'A percentile rank needs a comparison with other people. Do we know anyone else’s score here?',
-          ex: 'Percentage correct is not a percentile rank. If everyone else scored 35 or more, Can is near the bottom; if everyone else scored 25, Can is at the top.' }
+          ex: 'A percentile is a comparison: it cannot be computed without the group’s scores. If everyone else scored 35 or more, Can is near the bottom; if everyone else scored 25, Can is at the top.' }
       ]
     }
   };
