@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#4a3aa7">
+<title>Ölçek Düzeyleri ve Maddeler</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%234a3aa7%22%2F%3E%3Cpath%20d%3D%22M18%2044h28M22%2044V26M32%2044V18M42%2044V32%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f2f2f6;
+  --surface:#fdfdfe;
+  --surface-2:#ebebf1;
+  --surface-3:#dfdfe8;
+  --ink:#14131b;
+  --ink-2:#4a4957;
+  --muted:#65636f;
+  --line:#e0dfe7;
+  --line-strong:#c3c2ce;
+  --accent:#4a3aa7;
+  --accent-hover:#3c2f8e;
+  --accent-ink:#ffffff;
+  --accent-soft:#e9e6f8;
+  --good:#0ca30c;
+  --good-text:#006300;
+  --good-soft:#e1f3e1;
+  --crit:#d03b3b;
+  --crit-text:#a82626;
+  --crit-soft:#fbe5e5;
+  --warn:#fab219;
+  --warn-soft:#fdf0cc;
+  --series-1:#2a78d6;
+  --series-2:#eb6834;
+  --stage:#15141c;
+  --stage-ink:#f3f3f7;
+  --shadow:0 1px 2px rgba(20,19,27,.05),0 8px 24px rgba(20,19,27,.07);
+  --radius:16px;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Roboto Mono",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0f0f14;
+    --surface:#18181f;
+    --surface-2:#22222b;
+    --surface-3:#2e2e39;
+    --ink:#f3f3f7;
+    --ink-2:#c4c3cf;
+    --muted:#9896a6;
+    --line:#2b2b35;
+    --line-strong:#41414d;
+    --accent:#9d93ee;
+    --accent-hover:#b3abf3;
+    --accent-ink:#14131b;
+    --accent-soft:#2b2847;
+    --good-text:#5fd35f;
+    --good-soft:#17301a;
+    --crit-text:#ff8f8f;
+    --crit-soft:#3a1d20;
+    --warn-soft:#3b3119;
+    --series-1:#3987e5;
+    --series-2:#d95926;
+    --stage:#0b0b10;
+    --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0f0f14;
+  --surface:#18181f;
+  --surface-2:#22222b;
+  --surface-3:#2e2e39;
+  --ink:#f3f3f7;
+  --ink-2:#c4c3cf;
+  --muted:#9896a6;
+  --line:#2b2b35;
+  --line-strong:#41414d;
+  --accent:#9d93ee;
+  --accent-hover:#b3abf3;
+  --accent-ink:#14131b;
+  --accent-soft:#2b2847;
+  --good-text:#5fd35f;
+  --good-soft:#17301a;
+  --crit-text:#ff8f8f;
+  --crit-soft:#3a1d20;
+  --warn-soft:#3b3119;
+  --series-1:#3987e5;
+  --series-2:#d95926;
+  --stage:#0b0b10;
+  --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top,0px)}
+[hidden]{display:none!important}
+h1,h2,h3{margin:0;text-wrap:balance;line-height:1.2}
+p{margin:0}
+ul,ol{margin:0}
+button,input,select{font:inherit;color:inherit}
+button{touch-action:manipulation}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:680px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);text-decoration:none;font-weight:600;font-size:14px;min-height:40px;padding:0 4px;border-radius:8px}
+.back:hover{color:var(--ink)}
+.back svg{width:18px;height:18px}
+.lang{display:inline-flex;border:1px solid var(--line-strong);border-radius:999px;padding:2px;background:var(--surface)}
+.lang button{border:0;background:transparent;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.05em;cursor:pointer;color:var(--ink-2);min-height:34px;min-width:44px}
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+
+/* page */
+.app{max-width:680px;margin:0 auto;padding-inline:16px;padding-block:18px 48px;display:grid;gap:18px}
+.head{display:grid;gap:6px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(26px,7vw,34px);font-weight:750;letter-spacing:-.015em}
+.lead{color:var(--ink-2);font-size:16px}
+.card,[id^="quiz"]{scroll-margin-top:72px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:grid;gap:14px}
+.card h2{font-size:19px;font-weight:700}
+.card h3{font-size:16px;font-weight:700}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.note{font-size:14px;color:var(--ink-2);background:var(--surface-2);border-radius:12px;padding:10px 12px}
+.foot{max-width:680px;margin:0 auto;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 28px);font-size:13px;color:var(--muted)}
+.list{padding-left:20px;display:grid;gap:6px}
+
+/* buttons */
+.btn{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:12px;padding:10px 16px;min-height:48px;font-weight:650;font-size:16px;cursor:pointer;text-decoration:none;transition:background-color .15s,border-color .15s}
+.btn:hover{background:var(--surface-2)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--ink-2)}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.row.end{justify-content:flex-end}
+.row.between{justify-content:space-between}
+
+/* segmented tabs */
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;background:var(--surface-2);border-radius:14px;padding:4px}
+.seg button{border:0;background:transparent;border-radius:10px;padding:8px 6px;min-height:48px;font-size:14px;font-weight:650;color:var(--ink-2);cursor:pointer;line-height:1.2}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.seg .n{display:block;font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+/* quiz */
+.progress{display:grid;gap:6px}
+.progress-top{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);font-weight:600}
+.bar{height:6px;background:var(--surface-2);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .3s}
+.q-text{font-size:18px;font-weight:600;line-height:1.4}
+.q-sub{font-size:15px;color:var(--ink-2)}
+.choices{display:grid;gap:10px}
+.choice{appearance:none;text-align:left;width:100%;display:flex;align-items:center;gap:12px;border:1.5px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:14px;padding:12px 14px;min-height:56px;font-size:16px;font-weight:550;cursor:pointer;line-height:1.35}
+.choice:hover{border-color:var(--accent)}
+.choice .mark{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line-strong);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--muted)}
+.choice[disabled]{cursor:default}
+.choice.correct{border-color:var(--good);background:var(--good-soft)}
+.choice.correct .mark{background:var(--good);border-color:var(--good);color:#fff}
+.choice.wrong{border-color:var(--crit);background:var(--crit-soft)}
+.choice.wrong .mark{background:var(--crit);border-color:var(--crit);color:#fff}
+.choice.dim{opacity:.6}
+.feedback{border-radius:14px;padding:12px 14px;display:grid;gap:4px;font-size:15px}
+.feedback.ok{background:var(--good-soft)}
+.feedback.no{background:var(--crit-soft)}
+.feedback.info{background:var(--surface-2)}
+.feedback b{font-size:16px}
+.feedback.ok b{color:var(--good-text)}
+.feedback.no b{color:var(--crit-text)}
+.score{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.score .big{font-family:var(--mono);font-size:44px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.review{list-style:none;padding:0;display:grid;border-top:1px solid var(--line)}
+.review li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.review .ans{color:var(--ink-2);font-size:14px}
+.ico{width:20px;height:20px;flex:none}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
+
+.stack{display:grid;gap:18px}
+.item-quote{font-size:18px;font-weight:600;line-height:1.4;border-left:4px solid var(--accent);padding:4px 0 4px 12px}
+.fix{display:grid;gap:4px;border-radius:12px;background:var(--good-soft);padding:10px 12px;font-size:15px}
+.fix b{color:var(--good-text)}
+.prompt{font-family:var(--mono);font-size:13.5px;line-height:1.45;background:var(--surface-2);border-radius:12px;padding:10px 12px;color:var(--ink-2)}
+details.cmp{border:1px solid var(--line);border-radius:14px;padding:0}
+details.cmp summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+details.cmp summary::-webkit-details-marker{display:none}
+details.cmp summary::after{content:'+';font-family:var(--mono);font-size:20px;color:var(--accent)}
+details.cmp[open] summary::after{content:'–'}
+.pairs{list-style:none;margin:0;padding:0 16px 14px;display:grid;gap:10px}
+.pairs li{border-top:1px solid var(--line);padding-top:10px;display:grid;gap:4px;font-size:14.5px}
+.pairs .theme{font-weight:700;font-size:15px}
+.pairs .ab{display:grid;grid-template-columns:22px minmax(0,1fr);gap:6px;color:var(--ink-2)}
+.pairs .tag{font-family:var(--mono);font-weight:700;color:var(--accent)}
+.count{font-family:var(--mono);font-size:40px;font-weight:700;line-height:1;letter-spacing:-.02em}
+.scale{display:grid;gap:8px}
+.scale .choice{min-height:52px}
+.grp-badge{display:inline-flex;align-items:center;gap:6px;font-weight:700;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:4px 12px;font-size:14px;width:max-content}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-in"><a class="back" href="index.html" data-keep-lang><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5L7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="back">Tüm haftalar</span></a><div class="lang" role="group" aria-label="Language / Dil"><button type="button" data-lang-btn="tr" lang="tr" aria-pressed="false">TR</button><button type="button" data-lang-btn="en" lang="en" aria-pressed="false">EN</button></div></div></div>
+<main class="app">
+  <header class="head">
+    <p class="eyebrow" data-t="eyebrow"></p>
+    <h1 data-t="h1"></h1>
+    <p class="lead" data-t="lead"></p>
+  </header>
+  <nav class="seg" role="tablist" aria-label="Parts">
+    <button type="button" role="tab" id="tab-p1" data-panel="p1" aria-controls="p1"><span class="n">1</span><span data-t="tab1"></span></button>
+    <button type="button" role="tab" id="tab-p2" data-panel="p2" aria-controls="p2"><span class="n">2</span><span data-t="tab2"></span></button>
+    <button type="button" role="tab" id="tab-p3" data-panel="p3" aria-controls="p3"><span class="n">3</span><span data-t="tab3"></span></button>
+    <button type="button" role="tab" id="tab-p4" data-panel="p4" aria-controls="p4"><span class="n">4</span><span data-t="tab4"></span></button>
+  </nav>
+
+  <section id="p1" role="tabpanel" aria-labelledby="tab-p1" class="card">
+    <h2 data-t="lvTitle"></h2>
+    <p data-t="lvLead"></p>
+    <div id="quizLv"></div>
+  </section>
+
+  <section id="p2" role="tabpanel" aria-labelledby="tab-p2" class="card">
+    <h2 data-t="clTitle"></h2>
+    <p data-t="clLead"></p>
+    <div id="quizCl"></div>
+  </section>
+
+  <section id="p3" role="tabpanel" aria-labelledby="tab-p3">
+    <div class="stack">
+      <div class="card">
+        <h2 data-t="aiTitle"></h2>
+        <p data-t="aiLead"></p>
+        <p class="prompt" id="aiPrompt"></p>
+        <p class="small muted" data-t="aiNote"></p>
+        <div id="quizAi"></div>
+      </div>
+      <div class="card">
+        <h2 data-t="cmpTitle"></h2>
+        <p data-t="cmpLead"></p>
+        <details class="cmp" id="cmpBox">
+          <summary><span data-t="cmpShow"></span></summary>
+          <div style="padding:0 16px 8px" class="row"><span class="count" id="cmpCount"></span><span class="muted small" data-t="cmpCountLbl"></span></div>
+          <ul class="pairs" id="pairs"></ul>
+        </details>
+        <p class="note" data-t="cmpAsk"></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="p4" role="tabpanel" aria-labelledby="tab-p4" class="card">
+    <h2 data-t="midTitle"></h2>
+    <p data-t="midLead"></p>
+    <div id="mid" aria-live="polite"></div>
+  </section>
+</main>
+<footer class="foot"><p data-t="privacy"></p></footer>
+
+<script>
+/* PSYC3204 phone-app kit: language, helpers, tabs, quiz */
+const Kit = (() => {
+  'use strict';
+  const KEY = 'psyc3204.lang';
+  const subs = [];
+  let lang = 'tr';
+  try {
+    const p = new URLSearchParams(location.search).get('lang');
+    if (p === 'tr' || p === 'en') lang = p;
+    else {
+      let s = null;
+      try { s = localStorage.getItem(KEY); } catch (e) { s = null; }
+      if (s === 'tr' || s === 'en') lang = s;
+      else lang = (navigator.language || '').toLowerCase().startsWith('tr') ? 'tr' : 'en';
+    }
+  } catch (e) { lang = 'tr'; }
+
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const t = v => (v == null ? '' : typeof v === 'string' ? v : (v[lang] != null ? v[lang] : (v.en || '')));
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+
+  function apply() {
+    document.documentElement.lang = lang;
+    const S = (window.STR && window.STR[lang]) || {};
+    $$('[data-t]').forEach(el => { const v = S[el.dataset.t]; if (typeof v === 'string') el.textContent = v; });
+    $$('[data-lang-btn]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.langBtn === lang)));
+    $$('a[data-keep-lang]').forEach(a => {
+      const href = a.getAttribute('href') || '';
+      const [base, hash] = href.split('#');
+      a.setAttribute('href', base.split('?')[0] + '?lang=' + lang + (hash ? '#' + hash : ''));
+    });
+    if (S.docTitle) document.title = S.docTitle;
+  }
+  function setLang(l) {
+    if (l === lang) return;
+    lang = l;
+    try { localStorage.setItem(KEY, l); } catch (e) { /* storage unavailable */ }
+    try { const u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u.toString()); } catch (e) { /* file:// or sandbox */ }
+    apply();
+    subs.forEach(f => { try { f(l); } catch (e) { console.error(e); } });
+  }
+  function onLang(f) { subs.push(f); }
+
+  function shuffle(a, rnd) {
+    const r = rnd || Math.random;
+    const b = a.slice();
+    for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; }
+    return b;
+  }
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      let q = Math.imul(a ^ a >>> 15, 1 | a);
+      q = q + Math.imul(q ^ q >>> 7, 61 | q) ^ q;
+      return ((q ^ q >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+  };
+
+  const ICON = {
+    ok: '<svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" style="fill:var(--good)"/><path d="M5.8 10.3l2.8 2.8 5.6-6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    no: '<svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" style="fill:var(--crit)"/><path d="M6.8 6.8l6.4 6.4M13.2 6.8l-6.4 6.4" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>',
+    info: '<svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2" fill="none" style="stroke:var(--muted)" stroke-width="1.6"/><path d="M10 9v5" style="stroke:var(--muted)" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="6.3" r="1.2" style="fill:var(--muted)"/></svg>'
+  };
+
+  /* Tabs: buttons [role=tab][data-panel]; remembers the part in the URL hash (#p1, #p2...) */
+  function tabs(nav, onChange) {
+    const btns = $$('[role="tab"]', nav);
+    function select(id, push) {
+      btns.forEach(b => {
+        const on = b.dataset.panel === id;
+        b.setAttribute('aria-selected', String(on));
+        b.tabIndex = on ? 0 : -1;
+        const p = document.getElementById(b.dataset.panel);
+        if (p) p.hidden = !on;
+      });
+      if (push) { try { history.replaceState(null, '', '#' + id); } catch (e) { /* ignore */ } }
+      if (onChange) onChange(id);
+    }
+    btns.forEach((b, k) => {
+      b.addEventListener('click', () => { select(b.dataset.panel, true); });
+      b.addEventListener('keydown', e => {
+        const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        const nb = btns[(k + d + btns.length) % btns.length];
+        nb.focus(); select(nb.dataset.panel, true);
+      });
+    });
+    const h = (location.hash || '').slice(1);
+    select(btns.some(b => b.dataset.panel === h) ? h : btns[0].dataset.panel, false);
+    return { select };
+  }
+
+  /* Quiz: one question at a time, instant feedback, summary with review */
+  function quiz(root, cfg) {
+    const items = cfg.items;
+    const L = cfg.labels;
+    const st = { i: 0, picks: new Array(items.length).fill(null) };
+    function score() { return st.picks.reduce((s, p, k) => s + (p === items[k].answer ? 1 : 0), 0); }
+    function render(focusFirst) {
+      if (st.i >= items.length) return renderSummary();
+      const it = items[st.i];
+      const pick = st.picks[st.i];
+      const answered = pick !== null;
+      const opts = it.options || cfg.options;
+      let h = `<div class="progress"><div class="progress-top"><span>${esc(t(L.question))} ${st.i + 1} / ${items.length}</span><span>${esc(t(L.correctSoFar))}: ${score()}</span></div><div class="bar"><i style="width:${(st.i / items.length) * 100}%"></i></div></div>`;
+      if (it.pre) h += `<p class="q-sub">${esc(t(it.pre))}</p>`;
+      h += `<p class="q-text" tabindex="-1">${esc(t(it.q))}</p>`;
+      if (cfg.prompt) h += `<p class="q-sub">${esc(t(cfg.prompt))}</p>`;
+      h += `<div class="choices">`;
+      opts.forEach((o, k) => {
+        let cls = 'choice', mark = String.fromCharCode(65 + k);
+        if (answered) {
+          if (k === it.answer) { cls += ' correct'; mark = '✓'; }
+          else if (k === pick) { cls += ' wrong'; mark = '✗'; }
+          else cls += ' dim';
+        }
+        h += `<button type="button" class="${cls}" data-k="${k}"${answered ? ' disabled' : ''}><span class="mark" aria-hidden="true">${mark}</span><span>${esc(t(o))}</span></button>`;
+      });
+      h += `</div>`;
+      if (answered) {
+        const ok = pick === it.answer;
+        const head = ok ? t(L.right) : t(L.notQuite) + ' ' + t(L.bestAnswer) + ': ' + t(opts[it.answer]) + '.';
+        h += `<div class="feedback ${ok ? 'ok' : 'no'}" role="status"><b>${esc(head)}</b><span>${esc(t(it.explain))}</span></div>`;
+        h += `<div class="row end"><button type="button" class="btn primary" data-next>${esc(t(st.i === items.length - 1 ? L.finish : L.next))}</button></div>`;
+      }
+      root.innerHTML = h;
+      root.querySelectorAll('.choice:not([disabled])').forEach(b => b.addEventListener('click', () => {
+        st.picks[st.i] = +b.dataset.k;
+        render();
+        const fb = root.querySelector('.feedback');
+        if (fb && fb.scrollIntoView) fb.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        if (cfg.onAnswer) cfg.onAnswer(st.i, st.picks[st.i] === it.answer);
+      }));
+      const nx = root.querySelector('[data-next]');
+      if (nx) nx.addEventListener('click', () => { st.i++; render(true); root.scrollIntoView({ block: 'start', behavior: 'smooth' }); });
+      if (focusFirst) { const q = root.querySelector('.q-text'); if (q) q.focus({ preventScroll: true }); }
+    }
+    function renderSummary() {
+      const s = score();
+      let h = `<div class="score"><span class="big">${s} / ${items.length}</span><span class="muted">${esc(t(L.correctTotal))}</span></div>`;
+      if (cfg.summaryNote) h += `<p class="note">${esc(t(cfg.summaryNote))}</p>`;
+      h += `<ul class="review">`;
+      items.forEach((it, k) => {
+        const opts = it.options || cfg.options;
+        const ok = st.picks[k] === it.answer;
+        h += `<li>${ok ? ICON.ok : ICON.no}<div><div>${esc(t(it.short || it.q))}</div><div class="ans">${esc(t(L.bestAnswer))}: ${esc(t(opts[it.answer]))}</div></div></li>`;
+      });
+      h += `</ul><div class="row"><button type="button" class="btn" data-restart>${esc(t(L.restart))}</button></div>`;
+      root.innerHTML = h;
+      root.querySelector('[data-restart]').addEventListener('click', () => { st.i = 0; st.picks.fill(null); render(true); });
+      if (cfg.onFinish) cfg.onFinish(s, items.length);
+    }
+    onLang(() => render());
+    render();
+    return { restart() { st.i = 0; st.picks.fill(null); render(); } };
+  }
+
+  const QUIZ_LABELS = {
+    question: { en: 'Question', tr: 'Soru' },
+    correctSoFar: { en: 'Correct', tr: 'Doğru' },
+    right: { en: 'Correct!', tr: 'Doğru!' },
+    notQuite: { en: 'Not quite.', tr: 'Tam değil.' },
+    bestAnswer: { en: 'Best answer', tr: 'En iyi yanıt' },
+    next: { en: 'Next', tr: 'Sonraki' },
+    finish: { en: 'See results', tr: 'Sonucu gör' },
+    correctTotal: { en: 'correct', tr: 'doğru' },
+    restart: { en: 'Start again', tr: 'Baştan başla' }
+  };
+
+  const COMMON = {
+    en: { back: 'All weeks', privacy: 'Your answers stay on this phone. Nothing is sent anywhere.' },
+    tr: { back: 'Tüm haftalar', privacy: 'Yanıtların bu telefonda kalır, hiçbir yere gönderilmez.' }
+  };
+  function withCommon(s) { return { en: Object.assign({}, COMMON.en, s.en), tr: Object.assign({}, COMMON.tr, s.tr) }; }
+
+  function init() {
+    $$('[data-lang-btn]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.langBtn)));
+    apply();
+  }
+  return { get lang() { return lang; }, withCommon, t, esc, $, $$, apply, setLang, onLang, shuffle, mulberry32, store, ICON, tabs, quiz, QUIZ_LABELS, init };
+})();
+
+</script>
+<script>
+(() => {
+'use strict';
+const { t, esc, $ } = Kit;
+window.STR = Kit.withCommon({
+  en: {
+    docTitle: 'Levels and Items · PSYC3204',
+    eyebrow: 'PSYC3204 · Week 4',
+    h1: 'Levels and items',
+    lead: 'Four short parts: levels of measurement, a bad item clinic, items written by AI, and the middle option.',
+    tab1: 'Which level?', tab2: 'Bad item clinic', tab3: 'Written by AI', tab4: 'Middle option',
+    lvTitle: 'Which level of measurement?',
+    lvLead: 'Nominal: categories. Ordinal: order. Interval: equal distances. Ratio: a true zero (Cohen et al., 2022, Ch. 3). Choose the level for each measurement.',
+    clTitle: 'Bad item clinic: the campus shuttle',
+    clLead: 'Each item below was written for a questionnaire on attitudes toward the campus shuttle, and each one breaks one item-writing rule. With your partner, find the rule.',
+    aiTitle: 'These items were written by AI',
+    aiLead: 'We gave an AI tool the same task you have for Milestone 2. This was the whole prompt:',
+    aiNote: 'The tool wrote 15 items. Below are 8 of them, word for word. Does each one follow the item-writing rules?',
+    cmpTitle: 'Same task, a second AI tool',
+    cmpLead: 'We gave the identical prompt to a second AI tool. Before you open the list: how many of its 15 items cover the same theme as an item from the first tool?',
+    cmpShow: 'Show the matching themes',
+    cmpCountLbl: 'of 15 themes appear in both lists',
+    cmpAsk: 'Discuss: if two groups used AI for Milestone 2, what would the panel see on November 4? And where is your group’s definition in these items?',
+    midTitle: 'Does the middle option matter?',
+    midLead: 'Answer one item. Your phone has put you in group A or group B, and the two groups see different response scales.'
+  },
+  tr: {
+    docTitle: 'Ölçek Düzeyleri ve Maddeler · PSKO3204',
+    eyebrow: 'PSKO3204 · 4. hafta',
+    h1: 'Ölçek düzeyleri ve maddeler',
+    lead: 'Dört kısa bölüm: ölçek düzeyleri, kötü madde kliniği, yapay zekânın yazdığı maddeler ve orta seçenek.',
+    tab1: 'Hangi düzey?', tab2: 'Kötü madde kliniği', tab3: 'Yapay zekâ yazdı', tab4: 'Orta seçenek',
+    lvTitle: 'Hangi ölçek düzeyi?',
+    lvLead: 'Sınıflama: kategoriler. Sıralama: sıra. Eşit aralıklı: eşit uzaklıklar. Oranlı: gerçek sıfır (Cohen vd., 2022, Böl. 3). Her ölçüm için düzeyi seç.',
+    clTitle: 'Kötü madde kliniği: kampüs servisi',
+    clLead: 'Aşağıdaki maddeler kampüs servisine yönelik tutumu ölçen bir anket için yazıldı ve her biri bir madde yazım kuralını çiğniyor. Eşinle birlikte hangi kural olduğunu bul.',
+    aiTitle: 'Bu maddeleri yapay zekâ yazdı',
+    aiLead: 'Bir yapay zekâ aracına T2’de sizin yapacağınız işin aynısını verdik. Komutun tamamı şuydu:',
+    aiNote: 'Araç 15 madde yazdı. Aşağıda bunların 8’i, hiç değiştirilmeden. Her biri madde yazım kurallarına uyuyor mu?',
+    cmpTitle: 'Aynı görev, ikinci bir yapay zekâ aracı',
+    cmpLead: 'Aynı komutu ikinci bir yapay zekâ aracına verdik. Listeyi açmadan önce tahmin et: 15 maddesinden kaçı, ilk aracın maddelerinden biriyle aynı temayı işliyor?',
+    cmpShow: 'Ortak temaları göster',
+    cmpCountLbl: 'tema iki listede de var (15 temadan)',
+    cmpAsk: 'Tartışın: İki grup T2’de yapay zekâ kullansaydı, 4 Kasım’daki panelde ne görülürdü? Grubunuzun tanımı bu maddelerin neresinde?',
+    midTitle: 'Orta seçenek fark eder mi?',
+    midLead: 'Tek bir maddeyi yanıtla. Telefonun seni A ya da B grubuna yerleştirdi; iki grup farklı yanıt ölçekleri görüyor.'
+  }
+});
+
+/* ---------- 1. levels of measurement ---------- */
+const LV = [
+  { en: 'Nominal', tr: 'Sınıflama (nominal)' },
+  { en: 'Ordinal', tr: 'Sıralama (ordinal)' },
+  { en: 'Interval', tr: 'Eşit aralıklı (interval)' },
+  { en: 'Ratio', tr: 'Oranlı (ratio)' }
+];
+const lv = [
+  { q: { en: 'A football player’s jersey number (for example, 10)', tr: 'Bir futbolcunun forma numarası (ör. 10)' }, short: { en: 'Jersey number', tr: 'Forma numarası' }, answer: 0,
+    explain: { en: 'The number is only a label: number 10 is not “more” than number 7. You can only say same or different (Cohen et al., 2022, p. 88).', tr: 'Numara yalnızca bir etiket: 10 numara, 7 numaradan “daha fazla” değildir. Yalnızca aynı ya da farklı diyebilirsin (Cohen vd., 2022, s. 88).' } },
+  { q: { en: 'Finishing place in a race (1st, 2nd, 3rd)', tr: 'Bir yarıştaki derece (1., 2., 3.)' }, short: { en: 'Finishing place', tr: 'Yarış derecesi' }, answer: 1,
+    explain: { en: 'There is an order, but the gaps are unequal: 2nd place may be 0.1 seconds behind the winner, 3rd place a whole minute (p. 89).', tr: 'Bir sıra var ama aralıklar eşit değil: ikinci, birinciden 0,1 saniye geride olabilir; üçüncü ise bir dakika (s. 89).' } },
+  { q: { en: 'Air temperature in degrees Celsius', tr: 'Santigrat derece cinsinden hava sıcaklığı' }, short: { en: 'Temperature in °C', tr: '°C cinsinden sıcaklık' }, answer: 2,
+    explain: { en: 'Equal distances, but 0 °C does not mean “no heat”, so 20 °C is not twice as hot as 10 °C (p. 90).', tr: 'Aralıklar eşit ama 0 °C “hiç ısı yok” demek değil; bu yüzden 20 °C, 10 °C’nin iki katı sıcak değildir (s. 90).' } },
+  { q: { en: 'Reaction time in the Stroop task (milliseconds)', tr: 'Stroop görevindeki tepki süresi (milisaniye)' }, short: { en: 'Reaction time', tr: 'Tepki süresi' }, answer: 3,
+    explain: { en: 'Time has a true zero, so 600 ms really is twice as long as 300 ms (p. 91).', tr: 'Sürenin gerçek bir sıfırı var; 600 ms gerçekten 300 ms’nin iki katıdır (s. 91).' } },
+  { q: { en: 'Your answer to one item: 1 = Strongly disagree … 5 = Strongly agree', tr: 'Tek bir maddeye yanıtın: 1 = Kesinlikle katılmıyorum … 5 = Kesinlikle katılıyorum' }, short: { en: 'One agree–disagree item', tr: 'Tek bir katılıyorum–katılmıyorum maddesi' }, answer: 1,
+    explain: { en: 'The options are ordered, but is the step from “Disagree” to “Neutral” the same size as the step from “Agree” to “Strongly agree”? We cannot know. Rating scales give ordinal data (p. 259).', tr: 'Seçenekler sıralı; ama “Katılmıyorum”dan “Kararsızım”a geçiş, “Katılıyorum”dan “Kesinlikle katılıyorum”a geçişle aynı büyüklükte mi? Bunu bilemeyiz. Dereceleme ölçekleri sıralama düzeyinde veri verir (s. 259).' } },
+  { q: { en: 'Number of siblings', tr: 'Kardeş sayısı' }, short: { en: 'Number of siblings', tr: 'Kardeş sayısı' }, answer: 3,
+    explain: { en: 'Zero siblings means none, and 4 siblings is twice as many as 2 (p. 91).', tr: 'Sıfır kardeş “hiç yok” demektir; 4 kardeş, 2 kardeşin iki katıdır (s. 91).' } },
+  { q: { en: 'Your department (psychology, law, engineering …)', tr: 'Bölümün (psikoloji, hukuk, mühendislik …)' }, short: { en: 'Department', tr: 'Bölüm' }, answer: 0,
+    explain: { en: 'Categories with no order. Listing them alphabetically does not make one “higher” than another (p. 88).', tr: 'Sırası olmayan kategoriler. Alfabetik sıralamak birini ötekinden “yüksek” yapmaz (s. 88).' } },
+  { q: { en: 'The total score on your project questionnaire (the sum of 12 items)', tr: 'Proje ölçeğinizdeki toplam puan (12 maddenin toplamı)' }, short: { en: 'Total score of 12 items', tr: '12 maddenin toplam puanı' }, answer: 2,
+    explain: { en: 'Strictly speaking, it is built from ordinal items. But a total of many items behaves like an interval scale, and psychologists usually treat it as one, as with IQ scores. There is no true zero: with a 1–5 scale the lowest possible total is 12 (pp. 90–91).', tr: 'Aslında sıralama düzeyindeki maddelerden oluşuyor. Ama çok sayıda maddenin toplamı eşit aralıklı bir ölçek gibi davranır ve psikologlar onu genellikle öyle kabul eder; IQ puanlarında da böyledir. Gerçek sıfır yok: 1–5 ölçekte en düşük toplam 12’dir (s. 90–91).' } }
+];
+
+/* ---------- 2. bad item clinic ---------- */
+const R = {
+  two:     { en: 'Two ideas in one item', tr: 'Bir maddede iki fikir' },
+  long:    { en: 'Too long', tr: 'Fazla uzun' },
+  quest:   { en: 'A question, not a statement', tr: 'İfade değil, soru' },
+  fact:    { en: 'A fact, not an attitude', tr: 'Tutum değil, olgu' },
+  not:     { en: 'Reverse item made by adding “not”', tr: 'Ters madde olumsuzluk ekiyle yapılmış' },
+  absol:   { en: 'Absolute word or vague quantifier', tr: 'Mutlak ya da belirsiz nicelik sözcüğü' },
+  lead:    { en: 'Leading or loaded wording', tr: 'Yönlendirici ya da duygu yüklü ifade' },
+  jargon:  { en: 'Jargon or abbreviation', tr: 'Uzmanlık terimi ya da kısaltma' },
+  extreme: { en: 'Too extreme: almost everyone gives the same answer', tr: 'Fazla uç: neredeyse herkes aynı yanıtı verir' }
+};
+const FIX = { en: 'One way to fix it', tr: 'Bir düzeltme önerisi' };
+const cl = [
+  { q: { en: '“The shuttle is comfortable and reliable.”', tr: '“Servis rahat ve güvenilirdir.”' }, opts: ['fact', 'two', 'absol', 'jargon'], answer: 1,
+    explain: { en: 'Someone may find the shuttle comfortable but not reliable. How should they answer? Split it into two items.', tr: 'Servisi rahat bulup güvenilir bulmayan biri nasıl yanıtlasın? İki maddeye bölün.' },
+    fix: { en: '“The shuttle is comfortable.” and “I can rely on the shuttle.”', tr: '“Servis rahattır.” ve “Servise güvenebilirim.”' } },
+  { q: { en: '“Do you like taking the shuttle?”', tr: '“Servisle gitmeyi seviyor musunuz?”' }, opts: ['two', 'lead', 'quest', 'extreme'], answer: 2,
+    explain: { en: '“Strongly agree” is not an answer to a question. Items are statements that fit the agree–disagree scale.', tr: '“Kesinlikle katılıyorum” bir sorunun yanıtı olamaz. Maddeler, katılıyorum–katılmıyorum ölçeğine uyan ifadelerdir.' },
+    fix: { en: '“I like taking the shuttle.”', tr: '“Servisle gitmeyi severim.”' } },
+  { q: { en: '“The shuttle leaves campus at 17:30.”', tr: '“Servis kampüsten 17.30’da kalkar.”' }, opts: ['long', 'fact', 'absol', 'jargon'], answer: 1,
+    explain: { en: 'This can be checked against the timetable; it says nothing about how the person feels. Ask for an evaluation instead.', tr: 'Bu, servis çizelgesinden kontrol edilebilir; kişinin nasıl değerlendirdiği hakkında bir şey söylemez. Bir değerlendirme sorun.' },
+    fix: { en: '“The shuttle times suit my schedule.”', tr: '“Servis saatleri programıma uyar.”' } },
+  { q: { en: '“I do not like taking the shuttle.”', tr: '“Servisle gitmeyi sevmem.”' }, opts: ['two', 'quest', 'not', 'extreme'], answer: 2,
+    explain: { en: 'A reverse item made by adding “not” to a positive item. People who read quickly miss the “not”, and disagreeing turns into a double negative. Write the opposite idea instead.', tr: 'Olumlu bir maddeye olumsuzluk eki eklenerek yapılmış ters madde. Hızlı okuyan eki kaçırır; “katılmıyorum” demek de çift olumsuzluğa döner. Karşıt bir fikir yazın.' },
+    fix: { en: '“Taking the shuttle tires me out.” (reverse-keyed)', tr: '“Servisle yolculuk beni yorar.” (ters madde)' } },
+  { q: { en: '“Taking the shuttle always makes my day easier.”', tr: '“Servis her zaman günümü kolaylaştırır.”' }, opts: ['fact', 'lead', 'absol', 'jargon'], answer: 2,
+    explain: { en: '“Always” forces a hard choice: one bad day is enough to disagree. Drop absolute words (always, never) and vague quantifiers (often, sometimes).', tr: '“Her zaman” zor bir seçim dayatıyor: tek bir kötü gün “katılmıyorum” demeye yeter. Mutlak sözcükleri (her zaman, asla) ve belirsiz nicelik sözcüklerini (sık sık, bazen) çıkarın.' },
+    fix: { en: '“Taking the shuttle makes my day easier.”', tr: '“Servis günümü kolaylaştırır.”' } },
+  { q: { en: '“Any sensible student knows that the shuttle is a great service.”', tr: '“Aklı başında her öğrenci servisin harika bir hizmet olduğunu bilir.”' }, opts: ['long', 'quest', 'not', 'lead'], answer: 3,
+    explain: { en: 'Disagreeing would mean calling yourself not sensible. The wording pushes people toward one answer.', tr: 'Katılmamak, kendini “aklı başında değil” saymak olur. İfade insanları tek bir yanıta itiyor.' },
+    fix: { en: '“The shuttle is a good service.”', tr: '“Servis iyi bir hizmettir.”' } },
+  { q: { en: '“The shuttle’s last-mile connectivity meets my needs.”', tr: '“Servisin son kilometre bağlantısı ihtiyaçlarımı karşılar.”' }, opts: ['two', 'fact', 'jargon', 'extreme'], answer: 2,
+    explain: { en: '“Last-mile connectivity” is a transport-planning term. Respondents may not know it, so their answers will differ for the wrong reason.', tr: '“Son kilometre bağlantısı” ulaşım planlamasında kullanılan bir terim. Yanıtlayanlar bilmeyebilir; yanıtlar yanlış nedenle farklılaşır.' },
+    fix: { en: '“The shuttle takes me close to where I need to go.”', tr: '“Servis beni gitmem gereken yere yakın bırakır.”' } },
+  { q: { en: '“I would rather walk for three hours than take the shuttle.”', tr: '“Servise binmektense üç saat yürümeyi tercih ederim.”' }, opts: ['quest', 'not', 'absol', 'extreme'], answer: 3,
+    explain: { en: 'Almost nobody agrees, even people who dislike the shuttle. An item that everyone answers the same way tells people apart poorly.', tr: 'Servisi sevmeyenler bile buna neredeyse hiç katılmaz. Herkesin aynı yanıtı verdiği bir madde insanları birbirinden ayırt etmez.' },
+    fix: { en: '“I would rather use other transport than the shuttle.” (reverse-keyed)', tr: '“Servis yerine başka bir ulaşım aracını tercih ederim.” (ters madde)' } }
+];
+const clItems = cl.map(it => ({
+  q: it.q, answer: it.answer, options: it.opts.map(k => R[k]),
+  explain: { en: it.explain.en + ' ' + FIX.en + ': ' + it.fix.en, tr: it.explain.tr + ' ' + FIX.tr + ': ' + it.fix.tr }
+}));
+
+/* ---------- 3. items written by AI (verbatim tool output; see slide notes) ---------- */
+const PROMPT = {
+  en: 'Write 15 items for an attitude scale that measures university students’ attitudes toward online learning. Items are answered on a 5-point Likert scale (1 = Strongly disagree, 5 = Strongly agree). At least one third of the items should be reverse-keyed.',
+  tr: 'Üniversite öğrencilerinin çevrim içi öğrenmeye yönelik tutumunu ölçen bir tutum ölçeği için 15 madde yaz. Maddeler 5’li Likert ölçeğiyle yanıtlanacak (1 = Kesinlikle katılmıyorum, 5 = Kesinlikle katılıyorum). Maddelerin en az üçte biri ters madde olsun.'
+};
+const OK = { en: 'Follows the rules', tr: 'Kurallara uyuyor' }, BAD = { en: 'Breaks a rule', tr: 'Bir kuralı çiğniyor' };
+// EN: tool A items 1, 3, 6, 8, 9, 10, 13, 15 (of 15). TR: tool A items 1, 2, 5, 7, 8, 9, 12, 13 (of 15). Item text unchanged.
+const AI = {
+  en: [
+    { n: 1, q: 'Online learning gives me flexibility in organizing my study time.', answer: 0, explain: 'One idea, an evaluation, written in the favorable direction.' },
+    { n: 3, q: 'Online learning saves me time that I would otherwise spend commuting to campus.', answer: 1, explain: 'Closer to a fact than an attitude, and it only fits students who commute. A student living on campus cannot answer it in a meaningful way.' },
+    { n: 6, q: 'I find it difficult to stay motivated in online courses.', answer: 0, explain: 'A well-written reverse-keyed item: the opposite direction, without “not”.' },
+    { n: 8, q: 'Online lessons are less engaging than in-class lessons.', answer: 0, explain: 'Reverse-keyed by its meaning. A comparison is fine as long as the item states one idea.' },
+    { n: 9, q: 'I am satisfied with my learning experience in online courses.', answer: 0, explain: 'A clear, general evaluation.' },
+    { n: 10, q: 'Technical problems often prevent me from participating fully in online lessons.', answer: 1, explain: '“Often” is a vague quantifier, and the item assumes you have technical problems. Someone with a good connection disagrees without liking online learning any more.' },
+    { n: 13, q: 'I find it hard to concentrate during long online lectures.', answer: 1, explain: 'The word “long” builds the answer in: almost everyone finds long lectures hard, online or not. Nearly everyone will give the same answer.' },
+    { n: 15, q: 'I would rather take a course in a traditional classroom than online.', answer: 0, explain: 'One idea, reverse-keyed by its meaning.' }
+  ],
+  tr: [
+    { n: 1, q: 'Çevrim içi öğrenme, derslere ayırdığım zamanı daha verimli kullanmama olanak tanır.', answer: 0, explain: 'Tek fikir, bir değerlendirme; olumlu yönde yazılmış.' },
+    { n: 2, q: 'Çevrim içi ders materyallerine istediğim zaman ulaşabilmek öğrenmemi destekler.', answer: 0, explain: 'Tek fikir ve bir değerlendirme.' },
+    { n: 5, q: 'Çevrim içi derslere katılmaktan keyif alırım.', answer: 0, explain: 'Kısa ve açık; bir duyguyu dile getiriyor.' },
+    { n: 7, q: 'Çevrim içi derslerde derse odaklanmakta zorlanırım.', answer: 0, explain: 'İyi yazılmış bir ters madde: olumsuzluk eki yok, karşıt yönde bir fikir.' },
+    { n: 8, q: 'Çevrim içi sınavlar beni gereğinden fazla kaygılandırır.', answer: 1, explain: '“Gereğinden fazla” yönlendirici bir ifade. Ayrıca madde çevrim içi öğrenmeyi değil, sınav kaygısını soruyor.' },
+    { n: 9, q: 'Çevrim içi öğrenme sürecinden genel olarak memnunum.', answer: 0, explain: 'Açık, genel bir değerlendirme.' },
+    { n: 12, q: 'Teknik sorunlar, çevrim içi derslerden yararlanmamı engeller.', answer: 1, explain: 'Teknik sorun yaşadığınızı varsayıyor. İnternet bağlantısı iyi olan biri, çevrim içi öğrenmeyi daha çok sevdiği için değil, sorun yaşamadığı için katılmaz.' },
+    { n: 13, q: 'Çevrim içi derslere düzenli olarak katılmaya özen gösteririm.', answer: 1, explain: 'Neredeyse herkes “katılıyorum” der: düzenli katılmak beklenen bir davranış. Madde tutumdan çok sorumluluğu ölçebilir.' }
+  ]
+};
+// Matching themes: tool A item vs tool B item (both verbatim)
+const PAIRS = {
+  en: [
+    ['Flexible study time', 'Online learning gives me flexibility in organizing my study time.', 'Online learning allows me to manage my study time more effectively.'],
+    ['Motivation', 'I find it difficult to stay motivated in online courses.', 'I find it hard to stay motivated when a course is entirely online.'],
+    ['As good as face to face', 'The quality of learning in online courses is comparable to that of face-to-face courses.', 'I learn course material just as well online as I do in a physical classroom.'],
+    ['Concentration', 'I find it hard to concentrate during long online lectures.', 'I pay less attention during online lectures than I do in person.'],
+    ['Instructors', 'I feel disconnected from my instructors in online courses.', 'I feel comfortable asking my instructors questions in online courses.'],
+    ['Classmates', 'I can communicate effectively with my classmates in online courses.', 'I feel isolated from my classmates when I study online.'],
+    ['Technical problems', 'Technical problems often prevent me from participating fully in online lessons.', 'Technical problems often make online learning frustrating for me.'],
+    ['Preference', 'I would rather take a course in a traditional classroom than online.', 'Given the choice, I would pick an online course over a face-to-face course.'],
+    ['Engagement', 'Online lessons are less engaging than in-class lessons.', 'I find online course materials engaging.'],
+    ['Independent learning', 'Online courses help me develop independent learning skills.', 'Online learning helps me take more responsibility for my own learning.']
+  ],
+  tr: [
+    ['Zamanı verimli kullanmak', 'Çevrim içi öğrenme, derslere ayırdığım zamanı daha verimli kullanmama olanak tanır.', 'Çevrim içi dersler zamanımı daha verimli kullanmamı sağlar.'],
+    ['İstenen zamanda erişim', 'Çevrim içi ders materyallerine istediğim zaman ulaşabilmek öğrenmemi destekler.', 'Çevrim içi dersleri gerektiğinde tekrar izleyebilmek öğrenmemi kolaylaştırır.'],
+    ['Yüz yüze eğitimle karşılaştırma', 'Çevrim içi eğitimin, uzun vadede yüz yüze eğitim kadar değerli olacağını düşünüyorum.', 'Çevrim içi öğrenme, yüz yüze eğitimin yerini tutamaz.'],
+    ['Hatırlamak', 'Çevrim içi öğrenme ile kazandığım bilgiler kısa sürede unutulur.', 'Çevrim içi derslerde öğrendiğim konuları daha kolay hatırlarım.'],
+    ['Keyif ve ilgi', 'Çevrim içi derslere katılmaktan keyif alırım.', 'Çevrim içi öğrenme, derslere olan ilgimi artırır.'],
+    ['Yalnızlık', 'Çevrim içi derslerde kendimi yalnız hissederim.', 'Çevrim içi derslerde kendimi diğer öğrencilerden kopuk hissederim.'],
+    ['Odaklanmak', 'Çevrim içi derslerde derse odaklanmakta zorlanırım.', 'Çevrim içi derslerde dikkatim kolayca dağılır.'],
+    ['Tercih', 'Gelecekte fırsat olduğunda çevrim içi dersleri tercih ederim.', 'Mümkün olsaydı daha fazla dersi çevrim içi almak isterdim.'],
+    ['Dijital araçlar', 'Çevrim içi derslerde kullanılan dijital araçları rahatlıkla kullanabilirim.', 'Çevrim içi öğrenme platformlarını kullanmak bana kolay gelir.'],
+    ['Öğretim elemanıyla iletişim', 'Çevrim içi derslerde öğretim elemanıyla iletişim kurmak kolaydır.', 'Çevrim içi derslerde öğretim elemanıyla iletişim kurmakta zorlanırım.']
+  ]
+};
+// One bilingual list: the TR items are ordered so that both languages share the same answer pattern.
+const TR_ORDER = [1, 8, 2, 5, 7, 12, 13, 9];
+const EN_ORDER = [1, 3, 6, 8, 9, 10, 13, 15];
+const aiItems = EN_ORDER.map((en, k) => {
+  const e = AI.en.find(x => x.n === en), r = AI.tr.find(x => x.n === TR_ORDER[k]);
+  if (e.answer !== r.answer) throw new Error('answer pattern mismatch at ' + k);
+  return { q: { en: '“' + e.q + '”', tr: '“' + r.q + '”' }, pre: { en: 'Item ' + e.n + ' of 15', tr: '15 maddeden ' + r.n + '. madde' },
+    short: { en: e.q, tr: r.q }, answer: e.answer, options: [OK, BAD], explain: { en: e.explain, tr: r.explain } };
+});
+function renderAiStatic() {
+  const L = Kit.lang;
+  $('#aiPrompt').textContent = PROMPT[L];
+  $('#cmpCount').textContent = String(PAIRS[L].length);
+  $('#pairs').innerHTML = PAIRS[L].map(([th, a, b]) => `<li><span class="theme">${esc(th)}</span><span class="ab"><span class="tag">A</span><span>${esc(a)}</span></span><span class="ab"><span class="tag">B</span><span>${esc(b)}</span></span></li>`).join('');
+}
+function mountAiQuiz() {
+  Kit.quiz($('#quizAi'), { items: aiItems, labels: Kit.QUIZ_LABELS,
+    summaryNote: { en: 'The items look polished, and most follow the rules. The bigger problem is below: open the second card.', tr: 'Maddeler derli toplu görünüyor ve çoğu kurallara uyuyor. Asıl sorun aşağıda: ikinci kartı aç.' } });
+}
+
+/* ---------- 4. middle option ---------- */
+const MKEY = 'psyc3204.h04.mid';
+let grp = Kit.store.get(MKEY, null);
+if (grp !== 'A' && grp !== 'B') { grp = Math.random() < 0.5 ? 'A' : 'B'; Kit.store.set(MKEY, grp); }
+let midPick = null;
+const MID = {
+  en: { item: '“The food in the campus cafeteria is good.”', group: 'Group',
+        A: ['Strongly disagree', 'Disagree', 'Neither agree nor disagree', 'Agree', 'Strongly agree'],
+        B: ['Strongly disagree', 'Disagree', 'Agree', 'Strongly agree'],
+        sawA: 'You saw five options with a middle option. Group B saw four options and had to lean one way.',
+        sawB: 'You saw four options without a middle option. Group A also had “Neither agree nor disagree”.',
+        hands: 'When asked in class: Group A, raise your hand if you chose the middle. Group B, raise your hand if it was hard to choose. Where did the undecided people go?',
+        rule: 'The response format changes the answers. That is why every project group uses the same 5-point scale with a middle option, and nobody changes it.',
+        again: 'Change my answer' },
+  tr: { item: '“Kampüs yemekhanesinin yemekleri iyidir.”', group: 'Grup',
+        A: ['Kesinlikle katılmıyorum', 'Katılmıyorum', 'Ne katılıyorum ne katılmıyorum', 'Katılıyorum', 'Kesinlikle katılıyorum'],
+        B: ['Kesinlikle katılmıyorum', 'Katılmıyorum', 'Katılıyorum', 'Kesinlikle katılıyorum'],
+        sawA: 'Sen ortası olan beş seçenek gördün. B grubu dört seçenek gördü ve bir tarafa yaslanmak zorunda kaldı.',
+        sawB: 'Sen ortası olmayan dört seçenek gördün. A grubunda bir de “Ne katılıyorum ne katılmıyorum” vardı.',
+        hands: 'Sınıfta sorulunca: A grubu, ortayı seçtiysen elini kaldır. B grubu, seçmekte zorlandıysan elini kaldır. Kararsızlar nereye gitti?',
+        rule: 'Yanıt formatı yanıtları değiştirir. Bu yüzden bütün proje grupları ortası olan aynı 5’li ölçeği kullanıyor ve kimse onu değiştirmiyor.',
+        again: 'Yanıtımı değiştir' }
+};
+function renderMid() {
+  const S = MID[Kit.lang];
+  const opts = S[grp];
+  let h = `<span class="grp-badge">${esc(S.group)} ${grp}</span><p class="item-quote">${esc(S.item)}</p><div class="scale">`;
+  opts.forEach((o, k) => {
+    const on = midPick === k;
+    h += `<button type="button" class="choice${on ? ' correct' : (midPick !== null ? ' dim' : '')}" data-k="${k}"${midPick !== null ? ' disabled' : ''}><span class="mark" aria-hidden="true">${on ? '✓' : k + 1}</span><span>${esc(o)}</span></button>`;
+  });
+  h += `</div>`;
+  if (midPick !== null) {
+    h += `<div class="feedback info" role="status"><b>${esc(grp === 'A' ? S.sawA : S.sawB)}</b><span>${esc(S.hands)}</span></div><p class="note">${esc(S.rule)}</p>`;
+    h += `<div class="row"><button type="button" class="btn" data-again>${esc(S.again)}</button></div>`;
+  }
+  $('#mid').innerHTML = h;
+  $('#mid').querySelectorAll('.choice:not([disabled])').forEach(b => b.addEventListener('click', () => { midPick = +b.dataset.k; renderMid(); }));
+  const ag = $('#mid').querySelector('[data-again]');
+  if (ag) ag.addEventListener('click', () => { midPick = null; renderMid(); });
+}
+
+Kit.init();
+Kit.tabs($('.seg'));
+Kit.quiz($('#quizLv'), { items: lv, options: LV, labels: Kit.QUIZ_LABELS,
+  summaryNote: { en: 'The level decides which statistics make sense: a mean needs at least interval data. Item analysis in your project uses means and correlations of item scores, so it treats them as roughly interval.', tr: 'Düzey, hangi istatistiğin anlamlı olduğunu belirler: ortalama için en az eşit aralıklı veri gerekir. Projenizdeki madde analizi madde puanlarının ortalamalarını ve korelasyonlarını kullanır; yani onları yaklaşık eşit aralıklı kabul eder.' } });
+Kit.quiz($('#quizCl'), { items: clItems, labels: Kit.QUIZ_LABELS,
+  summaryNote: { en: 'Now pick one item with your partner and write your own fix on paper. All of these rules are in the item-writing list for Milestone 2.', tr: 'Şimdi eşinle bir madde seç ve kendi düzeltmenizi kâğıda yazın. Bu kuralların hepsi T2’deki madde yazım kuralları listesinde var.' } });
+renderAiStatic();
+mountAiQuiz();
+renderMid();
+Kit.onLang(() => { renderAiStatic(); renderMid(); });
+window.__h04 = { lv, cl, AI, PAIRS };
+})();
+</script>
+</body>
+</html>

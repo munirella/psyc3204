@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#4a3aa7">
+<title>Madde Kontrol Sayfası</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%234a3aa7%22%2F%3E%3Cpath%20d%3D%22M18%2044h28M22%2044V26M32%2044V18M42%2044V32%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f2f2f6;
+  --surface:#fdfdfe;
+  --surface-2:#ebebf1;
+  --surface-3:#dfdfe8;
+  --ink:#14131b;
+  --ink-2:#4a4957;
+  --muted:#65636f;
+  --line:#e0dfe7;
+  --line-strong:#c3c2ce;
+  --accent:#4a3aa7;
+  --accent-hover:#3c2f8e;
+  --accent-ink:#ffffff;
+  --accent-soft:#e9e6f8;
+  --good:#0ca30c;
+  --good-text:#006300;
+  --good-soft:#e1f3e1;
+  --crit:#d03b3b;
+  --crit-text:#a82626;
+  --crit-soft:#fbe5e5;
+  --warn:#fab219;
+  --warn-soft:#fdf0cc;
+  --series-1:#2a78d6;
+  --series-2:#eb6834;
+  --stage:#15141c;
+  --stage-ink:#f3f3f7;
+  --shadow:0 1px 2px rgba(20,19,27,.05),0 8px 24px rgba(20,19,27,.07);
+  --radius:16px;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Roboto Mono",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0f0f14;
+    --surface:#18181f;
+    --surface-2:#22222b;
+    --surface-3:#2e2e39;
+    --ink:#f3f3f7;
+    --ink-2:#c4c3cf;
+    --muted:#9896a6;
+    --line:#2b2b35;
+    --line-strong:#41414d;
+    --accent:#9d93ee;
+    --accent-hover:#b3abf3;
+    --accent-ink:#14131b;
+    --accent-soft:#2b2847;
+    --good-text:#5fd35f;
+    --good-soft:#17301a;
+    --crit-text:#ff8f8f;
+    --crit-soft:#3a1d20;
+    --warn-soft:#3b3119;
+    --series-1:#3987e5;
+    --series-2:#d95926;
+    --stage:#0b0b10;
+    --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0f0f14;
+  --surface:#18181f;
+  --surface-2:#22222b;
+  --surface-3:#2e2e39;
+  --ink:#f3f3f7;
+  --ink-2:#c4c3cf;
+  --muted:#9896a6;
+  --line:#2b2b35;
+  --line-strong:#41414d;
+  --accent:#9d93ee;
+  --accent-hover:#b3abf3;
+  --accent-ink:#14131b;
+  --accent-soft:#2b2847;
+  --good-text:#5fd35f;
+  --good-soft:#17301a;
+  --crit-text:#ff8f8f;
+  --crit-soft:#3a1d20;
+  --warn-soft:#3b3119;
+  --series-1:#3987e5;
+  --series-2:#d95926;
+  --stage:#0b0b10;
+  --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top,0px)}
+[hidden]{display:none!important}
+h1,h2,h3{margin:0;text-wrap:balance;line-height:1.2}
+p{margin:0}
+ul,ol{margin:0}
+button,input,select{font:inherit;color:inherit}
+button{touch-action:manipulation}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:680px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);text-decoration:none;font-weight:600;font-size:14px;min-height:40px;padding:0 4px;border-radius:8px}
+.back:hover{color:var(--ink)}
+.back svg{width:18px;height:18px}
+.lang{display:inline-flex;border:1px solid var(--line-strong);border-radius:999px;padding:2px;background:var(--surface)}
+.lang button{border:0;background:transparent;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.05em;cursor:pointer;color:var(--ink-2);min-height:34px;min-width:44px}
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+
+/* page */
+.app{max-width:680px;margin:0 auto;padding-inline:16px;padding-block:18px 48px;display:grid;gap:18px}
+.head{display:grid;gap:6px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(26px,7vw,34px);font-weight:750;letter-spacing:-.015em}
+.lead{color:var(--ink-2);font-size:16px}
+.card,[id^="quiz"]{scroll-margin-top:72px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:grid;gap:14px}
+.card h2{font-size:19px;font-weight:700}
+.card h3{font-size:16px;font-weight:700}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.note{font-size:14px;color:var(--ink-2);background:var(--surface-2);border-radius:12px;padding:10px 12px}
+.foot{max-width:680px;margin:0 auto;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 28px);font-size:13px;color:var(--muted)}
+.list{padding-left:20px;display:grid;gap:6px}
+
+/* buttons */
+.btn{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:12px;padding:10px 16px;min-height:48px;font-weight:650;font-size:16px;cursor:pointer;text-decoration:none;transition:background-color .15s,border-color .15s}
+.btn:hover{background:var(--surface-2)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--ink-2)}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.row.end{justify-content:flex-end}
+.row.between{justify-content:space-between}
+
+/* segmented tabs */
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;background:var(--surface-2);border-radius:14px;padding:4px}
+.seg button{border:0;background:transparent;border-radius:10px;padding:8px 6px;min-height:48px;font-size:14px;font-weight:650;color:var(--ink-2);cursor:pointer;line-height:1.2}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.seg .n{display:block;font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+/* quiz */
+.progress{display:grid;gap:6px}
+.progress-top{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);font-weight:600}
+.bar{height:6px;background:var(--surface-2);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .3s}
+.q-text{font-size:18px;font-weight:600;line-height:1.4}
+.q-sub{font-size:15px;color:var(--ink-2)}
+.choices{display:grid;gap:10px}
+.choice{appearance:none;text-align:left;width:100%;display:flex;align-items:center;gap:12px;border:1.5px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:14px;padding:12px 14px;min-height:56px;font-size:16px;font-weight:550;cursor:pointer;line-height:1.35}
+.choice:hover{border-color:var(--accent)}
+.choice .mark{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line-strong);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--muted)}
+.choice[disabled]{cursor:default}
+.choice.correct{border-color:var(--good);background:var(--good-soft)}
+.choice.correct .mark{background:var(--good);border-color:var(--good);color:#fff}
+.choice.wrong{border-color:var(--crit);background:var(--crit-soft)}
+.choice.wrong .mark{background:var(--crit);border-color:var(--crit);color:#fff}
+.choice.dim{opacity:.6}
+.feedback{border-radius:14px;padding:12px 14px;display:grid;gap:4px;font-size:15px}
+.feedback.ok{background:var(--good-soft)}
+.feedback.no{background:var(--crit-soft)}
+.feedback.info{background:var(--surface-2)}
+.feedback b{font-size:16px}
+.feedback.ok b{color:var(--good-text)}
+.feedback.no b{color:var(--crit-text)}
+.score{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.score .big{font-family:var(--mono);font-size:44px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.review{list-style:none;padding:0;display:grid;border-top:1px solid var(--line)}
+.review li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.review .ans{color:var(--ink-2);font-size:14px}
+.ico{width:20px;height:20px;flex:none}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
+
+.stack{display:grid;gap:18px}
+label.lbl{font-weight:650;font-size:15px}
+select.inp{appearance:auto;border:1.5px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:12px;padding:10px 12px;min-height:48px;font-size:16px;width:100%;max-width:220px}
+textarea.inp{width:100%;min-height:220px;border:1.5px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:12px;padding:12px;font:inherit;font-size:16px;line-height:1.45;resize:vertical}
+textarea.inp:focus,select.inp:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.sum{border-radius:var(--radius);padding:18px;display:grid;gap:8px;border:2px solid var(--line)}
+.sum.ok{background:var(--good-soft);border-color:var(--good)}
+.sum.no{background:var(--crit-soft);border-color:var(--crit)}
+.sum.empty{background:var(--surface-2)}
+.sum .big{font-family:var(--mono);font-size:40px;font-weight:700;line-height:1;letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
+.sum.ok .big{color:var(--good-text)}
+.sum.no .big{color:var(--crit-text)}
+.sum .meta{font-size:15px;font-weight:600}
+.sum .code{font-family:var(--mono);font-size:15px}
+.sum ul{margin:0;padding-left:20px;display:grid;gap:4px;font-size:15px}
+.items{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.it{border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;background:var(--surface)}
+.it.bad{border-color:var(--crit)}
+.it-top{display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:10px;align-items:start}
+.it-n{font-family:var(--mono);font-weight:700;color:var(--muted);font-size:14px;padding-top:3px}
+.it-t{font-size:16px;line-height:1.45;overflow-wrap:anywhere}
+.it-t mark{background:var(--warn-soft);color:inherit;border-radius:4px;padding:0 2px;box-shadow:inset 0 -2px 0 var(--warn)}
+.dir{display:inline-flex;border:1.5px solid var(--line-strong);border-radius:999px;overflow:hidden;flex:none}
+.dir button{border:0;background:transparent;min-width:44px;min-height:40px;font-weight:800;font-size:18px;cursor:pointer;color:var(--ink-2)}
+.dir button[aria-pressed="true"].plus{background:var(--good);color:#fff}
+.dir button[aria-pressed="true"].minus{background:var(--accent);color:var(--accent-ink)}
+.flags{list-style:none;margin:0;padding:0 0 0 42px;display:grid;gap:6px}
+.flags li{font-size:14px;display:grid;gap:2px}
+.flags b{color:var(--crit-text);font-weight:700}
+.flags .tip{color:var(--muted)}
+.flags .okd{color:var(--muted);text-decoration:line-through}
+.linkbtn{appearance:none;border:0;background:none;color:var(--accent);font-weight:650;font-size:14px;padding:6px 0;min-height:36px;text-align:left;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.clean{font-size:14px;color:var(--good-text);padding-left:42px}
+details.how{border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+details.how summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;min-height:48px;display:flex;align-items:center;justify-content:space-between}
+details.how summary::-webkit-details-marker{display:none}
+details.how summary::after{content:'+';font-family:var(--mono);font-size:20px;color:var(--accent)}
+details.how[open] summary::after{content:'–'}
+details.how .in{padding:0 16px 16px;display:grid;gap:10px;font-size:15px}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-in"><a class="back" href="index.html" data-keep-lang><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5L7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="back">Tüm haftalar</span></a><div class="lang" role="group" aria-label="Language / Dil"><button type="button" data-lang-btn="tr" lang="tr" aria-pressed="false">TR</button><button type="button" data-lang-btn="en" lang="en" aria-pressed="false">EN</button></div></div></div>
+<main class="app">
+  <header class="head">
+    <p class="eyebrow" data-t="eyebrow"></p>
+    <h1 data-t="h1"></h1>
+    <p class="lead" data-t="lead"></p>
+  </header>
+
+  <section class="card">
+    <div class="row between">
+      <label class="lbl" for="grp" data-t="grpLbl"></label>
+      <select id="grp" class="inp"></select>
+    </div>
+    <label class="lbl" for="txt" data-t="txtLbl"></label>
+    <p class="small muted" data-t="txtHelp"></p>
+    <textarea id="txt" class="inp" spellcheck="false" autocomplete="off" autocapitalize="sentences"></textarea>
+    <div class="row between">
+      <span class="small muted" id="parsed"></span>
+      <button type="button" class="btn ghost" id="clear"></button>
+    </div>
+  </section>
+
+  <section id="sum" class="sum empty" aria-live="polite"></section>
+
+  <ol class="items" id="items"></ol>
+
+  <details class="how">
+    <summary><span data-t="howT"></span></summary>
+    <div class="in" id="how"></div>
+  </details>
+</main>
+<footer class="foot"><p data-t="privacyX"></p></footer>
+
+<script>
+/* PSYC3204 phone-app kit: language, helpers, tabs, quiz */
+const Kit = (() => {
+  'use strict';
+  const KEY = 'psyc3204.lang';
+  const subs = [];
+  let lang = 'tr';
+  try {
+    const p = new URLSearchParams(location.search).get('lang');
+    if (p === 'tr' || p === 'en') lang = p;
+    else {
+      let s = null;
+      try { s = localStorage.getItem(KEY); } catch (e) { s = null; }
+      if (s === 'tr' || s === 'en') lang = s;
+      else lang = (navigator.language || '').toLowerCase().startsWith('tr') ? 'tr' : 'en';
+    }
+  } catch (e) { lang = 'tr'; }
+
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const t = v => (v == null ? '' : typeof v === 'string' ? v : (v[lang] != null ? v[lang] : (v.en || '')));
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+
+  function apply() {
+    document.documentElement.lang = lang;
+    const S = (window.STR && window.STR[lang]) || {};
+    $$('[data-t]').forEach(el => { const v = S[el.dataset.t]; if (typeof v === 'string') el.textContent = v; });
+    $$('[data-lang-btn]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.langBtn === lang)));
+    $$('a[data-keep-lang]').forEach(a => {
+      const href = a.getAttribute('href') || '';
+      const [base, hash] = href.split('#');
+      a.setAttribute('href', base.split('?')[0] + '?lang=' + lang + (hash ? '#' + hash : ''));
+    });
+    if (S.docTitle) document.title = S.docTitle;
+  }
+  function setLang(l) {
+    if (l === lang) return;
+    lang = l;
+    try { localStorage.setItem(KEY, l); } catch (e) { /* storage unavailable */ }
+    try { const u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u.toString()); } catch (e) { /* file:// or sandbox */ }
+    apply();
+    subs.forEach(f => { try { f(l); } catch (e) { console.error(e); } });
+  }
+  function onLang(f) { subs.push(f); }
+
+  function shuffle(a, rnd) {
+    const r = rnd || Math.random;
+    const b = a.slice();
+    for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; }
+    return b;
+  }
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      let q = Math.imul(a ^ a >>> 15, 1 | a);
+      q = q + Math.imul(q ^ q >>> 7, 61 | q) ^ q;
+      return ((q ^ q >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+  };
+
+  const ICON = {
+    ok: '<svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" style="fill:var(--good)"/><path d="M5.8 10.3l2.8 2.8 5.6-6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    no: '<svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" style="fill:var(--crit)"/><path d="M6.8 6.8l6.4 6.4M13.2 6.8l-6.4 6.4" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>',
+    info: '<svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2" fill="none" style="stroke:var(--muted)" stroke-width="1.6"/><path d="M10 9v5" style="stroke:var(--muted)" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="6.3" r="1.2" style="fill:var(--muted)"/></svg>'
+  };
+
+  /* Tabs: buttons [role=tab][data-panel]; remembers the part in the URL hash (#p1, #p2...) */
+  function tabs(nav, onChange) {
+    const btns = $$('[role="tab"]', nav);
+    function select(id, push) {
+      btns.forEach(b => {
+        const on = b.dataset.panel === id;
+        b.setAttribute('aria-selected', String(on));
+        b.tabIndex = on ? 0 : -1;
+        const p = document.getElementById(b.dataset.panel);
+        if (p) p.hidden = !on;
+      });
+      if (push) { try { history.replaceState(null, '', '#' + id); } catch (e) { /* ignore */ } }
+      if (onChange) onChange(id);
+    }
+    btns.forEach((b, k) => {
+      b.addEventListener('click', () => { select(b.dataset.panel, true); });
+      b.addEventListener('keydown', e => {
+        const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        const nb = btns[(k + d + btns.length) % btns.length];
+        nb.focus(); select(nb.dataset.panel, true);
+      });
+    });
+    const h = (location.hash || '').slice(1);
+    select(btns.some(b => b.dataset.panel === h) ? h : btns[0].dataset.panel, false);
+    return { select };
+  }
+
+  /* Quiz: one question at a time, instant feedback, summary with review */
+  function quiz(root, cfg) {
+    const items = cfg.items;
+    const L = cfg.labels;
+    const st = { i: 0, picks: new Array(items.length).fill(null) };
+    function score() { return st.picks.reduce((s, p, k) => s + (p === items[k].answer ? 1 : 0), 0); }
+    function render(focusFirst) {
+      if (st.i >= items.length) return renderSummary();
+      const it = items[st.i];
+      const pick = st.picks[st.i];
+      const answered = pick !== null;
+      const opts = it.options || cfg.options;
+      let h = `<div class="progress"><div class="progress-top"><span>${esc(t(L.question))} ${st.i + 1} / ${items.length}</span><span>${esc(t(L.correctSoFar))}: ${score()}</span></div><div class="bar"><i style="width:${(st.i / items.length) * 100}%"></i></div></div>`;
+      if (it.pre) h += `<p class="q-sub">${esc(t(it.pre))}</p>`;
+      h += `<p class="q-text" tabindex="-1">${esc(t(it.q))}</p>`;
+      if (cfg.prompt) h += `<p class="q-sub">${esc(t(cfg.prompt))}</p>`;
+      h += `<div class="choices">`;
+      opts.forEach((o, k) => {
+        let cls = 'choice', mark = String.fromCharCode(65 + k);
+        if (answered) {
+          if (k === it.answer) { cls += ' correct'; mark = '✓'; }
+          else if (k === pick) { cls += ' wrong'; mark = '✗'; }
+          else cls += ' dim';
+        }
+        h += `<button type="button" class="${cls}" data-k="${k}"${answered ? ' disabled' : ''}><span class="mark" aria-hidden="true">${mark}</span><span>${esc(t(o))}</span></button>`;
+      });
+      h += `</div>`;
+      if (answered) {
+        const ok = pick === it.answer;
+        const head = ok ? t(L.right) : t(L.notQuite) + ' ' + t(L.bestAnswer) + ': ' + t(opts[it.answer]) + '.';
+        h += `<div class="feedback ${ok ? 'ok' : 'no'}" role="status"><b>${esc(head)}</b><span>${esc(t(it.explain))}</span></div>`;
+        h += `<div class="row end"><button type="button" class="btn primary" data-next>${esc(t(st.i === items.length - 1 ? L.finish : L.next))}</button></div>`;
+      }
+      root.innerHTML = h;
+      root.querySelectorAll('.choice:not([disabled])').forEach(b => b.addEventListener('click', () => {
+        st.picks[st.i] = +b.dataset.k;
+        render();
+        const fb = root.querySelector('.feedback');
+        if (fb && fb.scrollIntoView) fb.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        if (cfg.onAnswer) cfg.onAnswer(st.i, st.picks[st.i] === it.answer);
+      }));
+      const nx = root.querySelector('[data-next]');
+      if (nx) nx.addEventListener('click', () => { st.i++; render(true); root.scrollIntoView({ block: 'start', behavior: 'smooth' }); });
+      if (focusFirst) { const q = root.querySelector('.q-text'); if (q) q.focus({ preventScroll: true }); }
+    }
+    function renderSummary() {
+      const s = score();
+      let h = `<div class="score"><span class="big">${s} / ${items.length}</span><span class="muted">${esc(t(L.correctTotal))}</span></div>`;
+      if (cfg.summaryNote) h += `<p class="note">${esc(t(cfg.summaryNote))}</p>`;
+      h += `<ul class="review">`;
+      items.forEach((it, k) => {
+        const opts = it.options || cfg.options;
+        const ok = st.picks[k] === it.answer;
+        h += `<li>${ok ? ICON.ok : ICON.no}<div><div>${esc(t(it.short || it.q))}</div><div class="ans">${esc(t(L.bestAnswer))}: ${esc(t(opts[it.answer]))}</div></div></li>`;
+      });
+      h += `</ul><div class="row"><button type="button" class="btn" data-restart>${esc(t(L.restart))}</button></div>`;
+      root.innerHTML = h;
+      root.querySelector('[data-restart]').addEventListener('click', () => { st.i = 0; st.picks.fill(null); render(true); });
+      if (cfg.onFinish) cfg.onFinish(s, items.length);
+    }
+    onLang(() => render());
+    render();
+    return { restart() { st.i = 0; st.picks.fill(null); render(); } };
+  }
+
+  const QUIZ_LABELS = {
+    question: { en: 'Question', tr: 'Soru' },
+    correctSoFar: { en: 'Correct', tr: 'Doğru' },
+    right: { en: 'Correct!', tr: 'Doğru!' },
+    notQuite: { en: 'Not quite.', tr: 'Tam değil.' },
+    bestAnswer: { en: 'Best answer', tr: 'En iyi yanıt' },
+    next: { en: 'Next', tr: 'Sonraki' },
+    finish: { en: 'See results', tr: 'Sonucu gör' },
+    correctTotal: { en: 'correct', tr: 'doğru' },
+    restart: { en: 'Start again', tr: 'Baştan başla' }
+  };
+
+  const COMMON = {
+    en: { back: 'All weeks', privacy: 'Your answers stay on this phone. Nothing is sent anywhere.' },
+    tr: { back: 'Tüm haftalar', privacy: 'Yanıtların bu telefonda kalır, hiçbir yere gönderilmez.' }
+  };
+  function withCommon(s) { return { en: Object.assign({}, COMMON.en, s.en), tr: Object.assign({}, COMMON.tr, s.tr) }; }
+
+  function init() {
+    $$('[data-lang-btn]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.langBtn)));
+    apply();
+  }
+  return { get lang() { return lang; }, withCommon, t, esc, $, $$, apply, setLang, onLang, shuffle, mulberry32, store, ICON, tabs, quiz, QUIZ_LABELS, init };
+})();
+
+</script>
+<script>
+(() => {
+'use strict';
+const { t, esc, $ } = Kit;
+window.STR = Kit.withCommon({
+  en: {
+    docTitle: 'Item Check · PSYC3204',
+    eyebrow: 'PSYC3204 · Milestone 2',
+    h1: 'Item check',
+    lead: 'Paste your draft items. The page checks the word-level item-writing rules and the size of your item pool. For M2 you need a screenshot with zero flags.',
+    grpLbl: 'Group number',
+    txtLbl: 'Your items',
+    txtHelp: 'One item per line. Numbers at the start of a line are removed. Mark each reverse-keyed item with the − button below, or write (−) at the end of the line.',
+    howT: 'What does the page check?',
+    privacyX: 'Your items stay on this phone. Nothing is sent anywhere.'
+  },
+  tr: {
+    docTitle: 'Madde Kontrolü · PSKO3204',
+    eyebrow: 'PSKO3204 · T2',
+    h1: 'Madde kontrol sayfası',
+    lead: 'Taslak maddelerinizi yapıştırın. Sayfa, sözcük düzeyindeki madde yazım kurallarını ve madde havuzunuzun büyüklüğünü kontrol eder. T2 için sıfır uyarılı bir ekran görüntüsü gerekiyor.',
+    grpLbl: 'Grup numarası',
+    txtLbl: 'Maddeleriniz',
+    txtHelp: 'Her satıra bir madde. Satır başındaki numaralar silinir. Her ters maddeyi aşağıdaki − düğmesiyle işaretleyin ya da satırın sonuna (−) yazın.',
+    howT: 'Sayfa neleri kontrol ediyor?',
+    privacyX: 'Maddeleriniz bu telefonda kalır, hiçbir yere gönderilmez.'
+  }
+});
+
+const UI = {
+  en: {
+    ph: '1. Group work gives me new perspectives.\n2. Group meetings waste my time. (−)\n3. …',
+    choose: '— choose —', group: 'Group', items: n => `${n} item${n === 1 ? '' : 's'} read`,
+    clear: 'Clear', sure: 'Tap again to clear',
+    empty: 'Paste your items above. The result appears here.',
+    zero: 'flags', okMeta: (g, n, r) => `Group ${g} · ${n} items · ${r} reverse-keyed`,
+    codeLbl: 'Check code', checked: 'Checked', exc: ws => `Exceptions confirmed by the group: ${ws.map(w => '“' + w + '”').join(', ')}`,
+    ovr: { negsuf: 'Not a negation', abbr: 'Respondents know this abbreviation' },
+    rules: L => (L === 'tr' ? 'Rules applied: Turkish items' : 'Rules applied: English items'),
+    flagsIn: (f, k) => `${f} flag${f === 1 ? '' : 's'}${k ? ` in ${k} item${k === 1 ? '' : 's'}` : ''}`,
+    clean: 'No flags', undo: 'Undo', confirmed: 'confirmed by your group',
+    plusLbl: 'favorable item', minusLbl: 'reverse-keyed item',
+    form: {
+      grp: () => 'Choose your group number.',
+      count: n => `${n} items: the item pool needs 15–20 items.`,
+      reverse: (r, n, need) => `${r} of ${n} items are reverse-keyed: you need at least ${need} (one third).`
+    },
+    lbl: {
+      long: (w, n) => `Too long: ${n} words (20 at most)`,
+      question: () => 'Written as a question',
+      two: w => `Two ideas? “${w}”`,
+      absolute: w => `Absolute word: “${w}”`,
+      vague: w => `Vague quantifier: “${w}”`,
+      neg: w => `Negation: “${w}”`,
+      negsuf: w => `Negation? “${w}”`,
+      lead: w => `Leading wording: “${w}”`,
+      abbr: w => `Abbreviation: “${w}”`,
+      excl: () => 'Exclamation mark',
+      dup: () => 'The same item appears twice'
+    },
+    tip: {
+      long: 'Shorten the item or split it in two.',
+      question: 'Turn it into a statement that fits agree–disagree.',
+      two: 'If it holds two ideas, split it into two items.',
+      absolute: 'Remove the absolute word.',
+      vague: 'Remove the vague quantifier.',
+      neg: 'Write a reverse-keyed item as the opposite idea, not with a negation.',
+      negsuf: 'Write a reverse-keyed item as the opposite idea, not with a negation.',
+      lead: 'Remove the wording that pushes toward one answer.',
+      abbr: 'Write it out in full, unless every respondent knows it (then tap the button below).',
+      excl: 'Remove the exclamation mark.',
+      dup: 'Delete the repeated item.'
+    },
+    how: [
+      '**The item pool:** 15–20 items, at least one third reverse-keyed, no item twice, and your group number chosen.',
+      '**Each item:** at most 20 words; not a question; no “and”, “or”, “both” or “as well as”; no absolute words (always, never, all, every, everyone, nothing …); no vague quantifiers (often, sometimes, usually, rarely …); no negation (not, no, “n’t”, cannot, neither, nor); no leading phrases (obviously, of course, everyone knows, any reasonable …); no abbreviations in capital letters; no exclamation marks.',
+      '**Abbreviations:** an abbreviation that every respondent knows is allowed. Tap “Respondents know this abbreviation”; confirmed exceptions are listed in the green box.',
+      '**What the page cannot check:** whether an item is a fact or an attitude, whether it contains jargon, whether it is too extreme, and whether it fits your definition. You, the group that checks your items on October 21, and the panel judge these.',
+      '**Screenshot for M2:** take it when the result box below the text box is green: it shows your group, the number of items, the check code, and the date. The check code changes whenever an item changes, so the screenshot must match the items you submit.'
+    ]
+  },
+  tr: {
+    ph: '1. Grup çalışması bana yeni bakış açıları kazandırır.\n2. Grup toplantıları zamanımı boşa harcar. (−)\n3. …',
+    choose: '— seçin —', group: 'Grup', items: n => `${n} madde okundu`,
+    clear: 'Temizle', sure: 'Silmek için tekrar dokunun',
+    empty: 'Maddelerinizi yukarıya yapıştırın. Sonuç burada görünür.',
+    zero: 'uyarı', okMeta: (g, n, r) => `Grup ${g} · ${n} madde · ${r} ters madde`,
+    codeLbl: 'Kontrol kodu', checked: 'Kontrol', exc: ws => `Grubun onayladığı istisnalar: ${ws.map(w => '“' + w + '”').join(', ')}`,
+    ovr: { negsuf: 'Olumsuzluk değil', abbr: 'Yanıtlayanlar bu kısaltmayı bilir' },
+    rules: L => (L === 'tr' ? 'Uygulanan kurallar: Türkçe maddeler' : 'Uygulanan kurallar: İngilizce maddeler'),
+    flagsIn: (f, k) => `${f} uyarı${k ? ` (${k} maddede)` : ''}`,
+    clean: 'Uyarı yok', undo: 'Geri al', confirmed: 'grubunuzun onayıyla',
+    plusLbl: 'olumlu madde', minusLbl: 'ters madde',
+    form: {
+      grp: () => 'Grup numaranızı seçin.',
+      count: n => `${n} madde: madde havuzunda 15–20 madde olmalı.`,
+      reverse: (r, n, need) => `${n} maddenin ${r} tanesi ters madde: en az ${need} olmalı (üçte bir).`
+    },
+    lbl: {
+      long: (w, n) => `Fazla uzun: ${n} kelime (en fazla 20)`,
+      question: () => 'Soru biçiminde',
+      two: w => `İki fikir olabilir: “${w}”`,
+      absolute: w => `Mutlak sözcük: “${w}”`,
+      vague: w => `Belirsiz nicelik: “${w}”`,
+      neg: w => `Olumsuzluk: “${w}”`,
+      negsuf: w => `Olumsuzluk eki olabilir: “${w}”`,
+      lead: w => `Yönlendirici ifade: “${w}”`,
+      abbr: w => `Kısaltma: “${w}”`,
+      excl: () => 'Ünlem işareti',
+      dup: () => 'Aynı madde iki kez var'
+    },
+    tip: {
+      long: 'Maddeyi kısaltın ya da ikiye bölün.',
+      question: 'Katılıyorum–katılmıyorum ölçeğine uyan bir ifadeye çevirin.',
+      two: 'İki fikir varsa iki maddeye bölün.',
+      absolute: 'Mutlak sözcüğü çıkarın.',
+      vague: 'Belirsiz nicelik sözcüğünü çıkarın.',
+      neg: 'Ters maddeyi olumsuzlukla değil, karşıt bir fikirle yazın.',
+      negsuf: 'Fiil olumsuzsa maddeyi karşıt bir fikirle yeniden yazın. Olumsuzluk değilse “Olumsuzluk değil”e dokunun.',
+      lead: 'Yanıtı yönlendiren ifadeyi çıkarın.',
+      abbr: 'Açık hâlini yazın; herkesin bildiği bir kısaltmaysa alttaki düğmeye dokunun.',
+      excl: 'Ünlem işaretini çıkarın.',
+      dup: 'Tekrarlanan maddeyi silin.'
+    },
+    how: [
+      '**Madde havuzu:** 15–20 madde, en az üçte biri ters madde, aynı madde iki kez yok, grup numarası seçilmiş.',
+      '**Her madde:** en fazla 20 kelime; soru değil; “ve”, “veya”, “ya da”, “hem”, “ayrıca” yok; mutlak sözcük yok (her, hep, hiç, asla, herkes, kimse, bütün, tamamen …); belirsiz nicelik yok (bazen, genellikle, sık sık, nadiren, zaman zaman …); olumsuzluk yok (“değil”, “yok”, “hayır” ve -mıyor, -maz, -mam, -madı gibi olumsuz fiil ekleri); yönlendirici ifade yok (elbette, şüphesiz, herkes bilir …); büyük harfli kısaltma yok; ünlem işareti yok.',
+      '**Olumsuzluk eki olabilir:** sayfa fiil eklerine bakarak tahmin eder ve bazen yanılabilir. Sözcük olumsuz bir fiil değilse “Olumsuzluk değil”e dokunun. Herkesin bildiği bir kısaltma da serbest: “Yanıtlayanlar bu kısaltmayı bilir”e dokunun. Onaylanan istisnalar yeşil kutuda yazılı olarak görünür.',
+      '**Sayfanın kontrol edemedikleri:** bir maddenin olgu mu tutum mu olduğu, uzmanlık terimi içerip içermediği, fazla uç olup olmadığı ve tanımınıza uyup uymadığı. Bunlara siz, 21 Ekim’de maddelerinizi kontrol eden grup ve panel karar verir.',
+      '**T2 için ekran görüntüsü:** yapıştırma kutusunun altındaki sonuç kutusu yeşilken alın: kutuda grubunuz, madde sayısı, kontrol kodu ve tarih var. Bir madde değişince kontrol kodu da değişir; ekran görüntüsü teslim ettiğiniz maddelerle aynı olmalı.'
+    ]
+  }
+};
+
+/* ---------- rules ---------- */
+const RULES = {
+  en: {
+    two: { exact: ['and', 'or', 'both'], phrases: [['as', 'well', 'as']] },
+    absolute: { exact: ['always', 'never', 'all', 'none', 'every', 'everyone', 'everybody', 'everything', 'everywhere', 'nobody', 'nothing', 'completely', 'totally', 'absolutely', 'entirely', 'constantly'], phrases: [['no', 'one']] },
+    vague: { exact: ['often', 'sometimes', 'usually', 'rarely', 'seldom', 'frequently', 'occasionally', 'mostly', 'generally', 'normally', 'typically', 'regularly', 'hardly'], phrases: [] },
+    neg: { exact: ['not', 'no', 'cannot', 'neither', 'nor'], phrases: [] },
+    lead: { exact: ['obviously', 'surely', 'undoubtedly'], phrases: [['of', 'course'], ['everyone', 'knows'], ['everybody', 'knows'], ['any', 'reasonable'], ['any', 'sensible'], ['needless', 'to', 'say']] },
+    aux: ['do', 'does', 'did', 'is', 'are', 'was', 'were', 'am', 'can', 'could', 'would', 'will', 'should', 'have', 'has']
+  },
+  tr: {
+    two: { exact: ['ve', 'veya', 'yahut', 'hem', 'ayrıca'], phrases: [['ya', 'da']] },
+    absolute: { exact: ['her', 'hep', 'hiç', 'asla', 'tüm', 'daima'], prefix: ['herkes', 'kimse', 'hepsi', 'hepimiz', 'hepiniz', 'hiçbir', 'bütün', 'tümü', 'tamamen', 'sürekli', 'kesinlikle'], phrases: [['hiç', 'kimse'], ['her', 'zaman'], ['hiçbir', 'zaman'], ['her', 'şey']] },
+    vague: { exact: ['bazen', 'genellikle', 'genelde', 'nadiren', 'sıklıkla', 'çoğunlukla', 'ekseriyetle', 'ekseriya'], phrases: [['sık', 'sık'], ['ara', 'sıra'], ['arada', 'bir'], ['zaman', 'zaman'], ['çoğu', 'zaman'], ['çoğu', 'kez'], ['bazı', 'zamanlar'], ['kimi', 'zaman']] },
+    neg: { exact: ['yok', 'yoktur', 'yoktu', 'yokmuş', 'yokum', 'yoksun', 'hayır'], prefix: ['değil'], phrases: [] },
+    lead: { exact: ['elbette', 'şüphesiz', 'kuşkusuz', 'apaçık', 'açıkça'], phrases: [['herkes', 'bilir'], ['aklı', 'başında'], ['doğal', 'olarak'], ['bilindiği', 'gibi'], ['tabii', 'ki']] },
+    // negative verb suffixes (heuristic; the student can confirm a false alarm)
+    // anywhere in the sentence
+    negsuf: [/m[ıiuü]yor/, /m[ae]m[ıi]ş/, /m[ae]y[ae]c[ae][kğ]/, /m[ae]y[ae]n(lar|ler)?$/, /m[ae]m[ae](l[ıi]|k)/],
+    // only on the final word (the main verb), because forms like "gitmem gerek" are not negative
+    negsufEnd: [/m[ae]z(dı|di|mış|miş|sın|sin|sınız|siniz|lar|ler)?$/, /m[ae]m(dir|ız|iz)?$/, /m[ae]y[ıi]z$/, /m[ae]d[ıi](m|n|k|nız|niz|lar|ler)?$/],
+    negsufSkip: ['tamam', 'imam', 'hamam', 'komedi', 'namaz', 'yılmaz', 'kumaz'],
+    qparticle: /^m[ıiuü](sın|sin|sun|sün|sınız|siniz|sunuz|sünüz|yım|yim|yum|yüm|yız|yiz|yuz|yüz|dır|dir|dur|dür)?$/
+  }
+};
+const lower = (s, L) => (L === 'tr' ? s.toLocaleLowerCase('tr-TR') : s.toLowerCase());
+const WORD = /[\p{L}\p{N}][\p{L}\p{N}’'\-]*/gu;
+function tokenize(text, L) {
+  const out = [];
+  for (const m of text.matchAll(WORD)) {
+    const w = m[0].replace(/[’'\-]+$/, '');
+    out.push({ w, lw: lower(w, L), base: lower(w.split(/[’']/)[0], L), s: m.index, e: m.index + w.length });
+  }
+  return out;
+}
+function checkItem(text, L) {
+  const R = RULES[L];
+  const tk = tokenize(text, L);
+  const used = new Array(tk.length).fill(false);
+  const flags = [];
+  const add = (code, i, j) => { flags.push({ code, w: text.slice(tk[i].s, tk[j].e), s: tk[i].s, e: tk[j].e }); for (let k = i; k <= j; k++) used[k] = true; };
+  // phrases first (lead before absolute so that "everyone knows" counts once)
+  ['lead', 'absolute', 'vague', 'two', 'neg'].forEach(code => {
+    (R[code].phrases || []).forEach(ph => {
+      for (let i = 0; i + ph.length <= tk.length; i++) {
+        if (used.slice(i, i + ph.length).some(Boolean)) continue;
+        if (ph.every((p, k) => tk[i + k].base === p)) add(code, i, i + ph.length - 1);
+      }
+    });
+  });
+  tk.forEach((x, i) => {
+    if (used[i]) return;
+    for (const code of ['lead', 'absolute', 'vague', 'two', 'neg']) {
+      const r = R[code];
+      if ((r.exact || []).includes(x.base) || (r.prefix || []).some(p => x.base.startsWith(p))) { add(code, i, i); return; }
+    }
+    if (L === 'en' && /n[’']t$/.test(x.lw)) { add('neg', i, i); return; }
+    if (L === 'tr' && !R.negsufSkip.some(p => x.base.startsWith(p)) && (R.negsuf.some(re => re.test(x.base)) || (i === tk.length - 1 && R.negsufEnd.some(re => re.test(x.base))))) { flags.push({ code: 'negsuf', w: x.w, s: x.s, e: x.e }); used[i] = true; return; }
+    const b = x.w.split(/[’']/)[0];
+    if (b.length >= 2 && /\p{Lu}/u.test(b) && b === b.toLocaleUpperCase(L === 'tr' ? 'tr-TR' : 'en-US') && !/\p{N}/u.test(b)) { flags.push({ code: 'abbr', w: x.w, s: x.s, e: x.e }); used[i] = true; }
+  });
+  // slash or ampersand joining two things
+  for (const m of text.matchAll(/(\p{L})\s*[\/&]\s*(\p{L})/gu)) flags.push({ code: 'two', w: m[0], s: m.index, e: m.index + m[0].length });
+  const trimmed = text.trim();
+  const isQ = trimmed.endsWith('?') || (L === 'en' && tk.length && R.aux.includes(tk[0].base)) || (L === 'tr' && tk.some(x => R.qparticle.test(x.lw)));
+  if (isQ) flags.push({ code: 'question' });
+  if (tk.length > 20) flags.push({ code: 'long', n: tk.length });
+  if (trimmed.includes('!')) flags.push({ code: 'excl' });
+  return { flags, words: tk.length };
+}
+
+/* ---------- parsing ---------- */
+const REV_END = /\s*[\(\[]\s*(?:-|−|–|r|t|ters|reverse|rev)\s*[\)\]]\s*$/i;
+const REV_START = /^\s*[\(\[]\s*(?:-|−|–|r|t|ters|reverse|rev)\s*[\)\]]\s*/i;
+const PLUS_MARK = /\s*[\(\[]\s*\+\s*[\)\]]\s*$|^\s*[\(\[]\s*\+\s*[\)\]]\s*/;
+const NUM = /^\s*(?:[-•*–·]\s+|\(?\d{1,3}\s*[.):]\s*|(?:m|madde|item)\s*\d{1,3}\s*[.):-]?\s*)/i;
+function parse(text, L) {
+  return text.split(/\r?\n/).map(raw => {
+    let s = raw.replace(/\t/g, ' ').trim();
+    if (!s) return null;
+    let mark = null;
+    if (REV_END.test(s) || REV_START.test(s)) { mark = true; s = s.replace(REV_END, '').replace(REV_START, ''); }
+    else if (PLUS_MARK.test(s)) { mark = false; s = s.replace(PLUS_MARK, ''); }
+    s = s.replace(NUM, '').trim();
+    s = s.replace(/^[“"”'‘]+|[“"”'’]+$/g, '').trim();
+    s = s.replace(/\s+/g, ' ');
+    if (!s) return null;
+    return { text: s, norm: lower(s, L), mark };
+  }).filter(Boolean);
+}
+
+/* ---------- which rule set: decided by the items, not by the interface language ---------- */
+function detect(text) {
+  if (!text || !text.trim()) return Kit.lang;
+  const trChars = (text.match(/[çğıöşüÇĞİÖŞÜ]/g) || []).length;
+  const words = (text.toLowerCase().match(/\p{L}+/gu) || []);
+  const TRW = new Set(['ve', 'bir', 'bu', 'için', 'ile', 'çok', 'beni', 'bana', 'daha', 'gibi', 'olarak', 'kendimi', 'benim', 'de', 'da']);
+  const ENW = new Set(['the', 'and', 'to', 'of', 'i', 'my', 'is', 'a', 'in', 'me', 'it', 'that', 'am', 'are']);
+  let tr = trChars, en = 0;
+  words.forEach(w => { if (TRW.has(w)) tr += 2; if (ENW.has(w)) en += 2; });
+  return tr > en ? 'tr' : 'en';
+}
+
+/* ---------- state ---------- */
+const KEY = 'psyc3204.h04.check';
+const st = Object.assign({ grp: '', text: '', rev: {}, ok: {} }, Kit.store.get(KEY, {}) || {});
+let saveT = null;
+const save = () => { clearTimeout(saveT); saveT = setTimeout(() => Kit.store.set(KEY, st), 250); };
+function fnv(str) {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
+  return h.toString(16).toUpperCase().padStart(8, '0');
+}
+
+/* ---------- render ---------- */
+function md(s) { return esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>'); }
+function highlight(text, flags) {
+  const spans = flags.filter(f => f.s != null).sort((a, b) => a.s - b.s);
+  let out = '', pos = 0;
+  spans.forEach(f => { if (f.s < pos) return; out += esc(text.slice(pos, f.s)) + '<mark>' + esc(text.slice(f.s, f.e)) + '</mark>'; pos = f.e; });
+  return out + esc(text.slice(pos));
+}
+function render() {
+  const L = Kit.lang, U = UI[L];
+  // group select
+  const sel = $('#grp');
+  const opts = ['<option value="">' + esc(U.choose) + '</option>'];
+  for (let g = 1; g <= 16; g++) { const v = String(g).padStart(2, '0'); opts.push(`<option value="${v}"${st.grp === v ? ' selected' : ''}>${esc(U.group)} ${v}</option>`); }
+  sel.innerHTML = opts.join('');
+  $('#clear').textContent = U.clear;
+  ta.placeholder = U.ph;
+  $('#how').innerHTML = U.how.map(p => `<p>${md(p)}</p>`).join('');
+  update();
+}
+function update() {
+  const U = UI[Kit.lang];
+  const L = detect(st.text);
+  const items = parse(st.text, L);
+  $('#parsed').textContent = items.length ? U.items(items.length) : '';
+  const seen = new Set();
+  let total = 0, badItems = 0, exceptions = 0; const excWords = [];
+  const rows = items.map((it, i) => {
+    const rev = st.rev[it.norm] != null ? st.rev[it.norm] : (it.mark === true);
+    it.rev = rev;
+    const res = checkItem(it.text, L);
+    if (seen.has(it.norm)) res.flags.push({ code: 'dup' });
+    seen.add(it.norm);
+    const okList = st.ok[it.norm] || [];
+    let live = 0;
+    const fl = res.flags.map(f => {
+      const key = f.code + ':' + lower(f.w || '', L);
+      const approved = !!U.ovr[f.code] && okList.includes(key);
+      if (approved) { exceptions++; excWords.push(f.w); } else live++;
+      return Object.assign({ approved }, f);
+    });
+    total += live; if (live) badItems++;
+    let h = `<li class="it${live ? ' bad' : ''}"><div class="it-top"><span class="it-n">${i + 1}</span><span class="it-t">${highlight(it.text, fl.filter(f => !f.approved))}</span>`;
+    h += `<span class="dir" role="group"><button type="button" class="plus" data-i="${i}" data-v="0" aria-pressed="${!rev}" aria-label="${esc(U.plusLbl)}">+</button><button type="button" class="minus" data-i="${i}" data-v="1" aria-pressed="${rev}" aria-label="${esc(U.minusLbl)}">−</button></span></div>`;
+    if (fl.length) {
+      h += '<ul class="flags">' + fl.map(f => {
+        const lab = U.lbl[f.code](f.w, f.n);
+        const key = f.code + ':' + lower(f.w || '', L);
+        if (f.approved) return `<li><span class="okd">${esc(lab)}</span> <span class="tip">(${esc(U.confirmed)})</span><button type="button" class="linkbtn" data-undo="${i}" data-w="${esc(key)}">${esc(U.undo)}</button></li>`;
+        let x = `<li><b>${esc(lab)}</b><span class="tip">${esc(U.tip[f.code])}</span>`;
+        if (U.ovr[f.code]) x += `<button type="button" class="linkbtn" data-ok="${i}" data-w="${esc(key)}">${esc(U.ovr[f.code])}</button>`;
+        return x + '</li>';
+      }).join('') + '</ul>';
+    } else h += `<p class="clean">${esc(U.clean)}</p>`;
+    return h + '</li>';
+  });
+  $('#items').innerHTML = rows.join('');
+  // form-level checks
+  const n = items.length, r = items.filter(x => x.rev).length, need = Math.ceil(n / 3);
+  const form = [];
+  if (n) {
+    if (!st.grp) form.push(U.form.grp());
+    if (n < 15 || n > 20) form.push(U.form.count(n));
+    if (r < need) form.push(U.form.reverse(r, n, need));
+  }
+  const sum = $('#sum');
+  if (!n) { sum.className = 'sum empty'; sum.innerHTML = `<p>${esc(U.empty)}</p>`; return; }
+  const all = total + form.length;
+  const code = fnv(L + '|' + st.grp + '|' + items.map(x => (x.rev ? '-' : '+') + x.norm).join('\n'));
+  const codeTxt = code.slice(0, 4) + '-' + code.slice(4);
+  const now = new Date().toLocaleString(Kit.lang === 'tr' ? 'tr-TR' : 'en-US', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  if (all === 0) {
+    sum.className = 'sum ok';
+    sum.innerHTML = `<div class="big">${Kit.ICON.ok.replace('class="ico"', 'class="ico" style="width:34px;height:34px"')}0 ${esc(U.zero)}</div>`
+      + `<p class="meta">${esc(U.okMeta(st.grp, n, r))}</p>`
+      + `<p class="code">${esc(U.codeLbl)}: ${codeTxt} · ${esc(U.checked)}: ${esc(now)}</p>`
+      + `<p class="small">${esc(U.rules(L))}</p>`
+      + (exceptions ? `<p class="small">${esc(U.exc(excWords))}</p>` : '');
+  } else {
+    sum.className = 'sum no';
+    let h = `<div class="big">${all} ${esc(U.zero)}</div>`;
+    if (form.length) h += '<ul>' + form.map(f => `<li>${esc(f)}</li>`).join('') + '</ul>';
+    if (exceptions) h += `<p class="small">${esc(U.exc(excWords))}</p>`;
+    if (total) h += `<p class="meta">${esc(U.flagsIn(total, badItems))}</p>`;
+    h += `<p class="code">${esc(U.codeLbl)}: ${codeTxt}</p>`;
+    sum.innerHTML = h;
+  }
+}
+
+/* ---------- events ---------- */
+const ta = $('#txt');
+ta.value = st.text || '';
+let inT = null;
+ta.addEventListener('input', () => { st.text = ta.value; save(); clearTimeout(inT); inT = setTimeout(update, 200); });
+$('#grp').addEventListener('change', e => { st.grp = e.target.value; save(); update(); });
+$('#items').addEventListener('click', e => {
+  const L = detect(st.text);
+  const items = parse(st.text, L);
+  const d = e.target.closest('.dir button');
+  if (d) { const it = items[+d.dataset.i]; if (it) { st.rev[it.norm] = d.dataset.v === '1'; save(); update(); } return; }
+  const ok = e.target.closest('[data-ok]');
+  if (ok) { const it = items[+ok.dataset.ok]; if (it) { const a = st.ok[it.norm] || []; if (!a.includes(ok.dataset.w)) a.push(ok.dataset.w); st.ok[it.norm] = a; save(); update(); } return; }
+  const un = e.target.closest('[data-undo]');
+  if (un) { const it = items[+un.dataset.undo]; if (it) { st.ok[it.norm] = (st.ok[it.norm] || []).filter(w => w !== un.dataset.w); save(); update(); } }
+});
+let armed = null;
+$('#clear').addEventListener('click', e => {
+  const U = UI[Kit.lang];
+  if (!armed) { e.currentTarget.textContent = U.sure; armed = setTimeout(() => { armed = null; $('#clear').textContent = UI[Kit.lang].clear; }, 4000); return; }
+  clearTimeout(armed); armed = null;
+  st.text = ''; st.rev = {}; st.ok = {}; ta.value = ''; save(); render();
+});
+
+Kit.init();
+render();
+Kit.onLang(render);
+window.__check = { checkItem, parse, fnv };
+})();
+</script>
+</body>
+</html>
