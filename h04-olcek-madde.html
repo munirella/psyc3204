@@ -203,6 +203,21 @@ details.cmp[open] summary::after{content:'–'}
 .count{font-family:var(--mono);font-size:40px;font-weight:700;line-height:1;letter-spacing:-.02em}
 .scale{display:grid;gap:8px}
 .scale .choice{min-height:52px}
+.lk{display:grid;gap:6px;margin:6px 0 14px}
+.lk-row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.lk-row button{appearance:none;border:1.5px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:12px;min-height:46px;font-size:17px;font-weight:700;cursor:pointer}
+.lk-row button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.lk-ends{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.res{display:grid;gap:12px}
+.res .card{margin:0}
+.bands{display:grid;grid-template-columns:6fr 5fr 6fr;gap:4px;margin:8px 0}
+.bands span{border-radius:10px;padding:8px 4px;text-align:center;font-size:13px;font-weight:600;background:var(--surface-2);color:var(--muted)}
+.bands span.on{background:var(--accent);color:#fff}
+.ips{display:grid;gap:8px;margin:8px 0}
+.ips-row{display:grid;grid-template-columns:110px 1fr 28px;align-items:center;gap:8px;font-size:15px}
+.ips-bar{height:14px;border-radius:7px;background:var(--surface-2);overflow:hidden}
+.ips-bar i{display:block;height:100%;background:var(--accent)}
+.pair{display:grid;gap:6px;margin:6px 0 14px}
 .grp-badge{display:inline-flex;align-items:center;gap:6px;font-weight:700;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:4px 12px;font-size:14px;width:max-content}
 </style>
 </head>
@@ -217,7 +232,8 @@ details.cmp[open] summary::after{content:'–'}
   <nav class="seg" role="tablist" aria-label="Parts">
     <button type="button" role="tab" id="tab-p1" data-panel="p1" aria-controls="p1"><span class="n">1</span><span data-t="tab1"></span></button>
     <button type="button" role="tab" id="tab-p2" data-panel="p2" aria-controls="p2"><span class="n">2</span><span data-t="tab2"></span></button>
-    <button type="button" role="tab" id="tab-p4" data-panel="p4" aria-controls="p4"><span class="n">3</span><span data-t="tab4"></span></button>
+    <button type="button" role="tab" id="tab-p3" data-panel="p3" aria-controls="p3"><span class="n">3</span><span data-t="tab3"></span></button>
+    <button type="button" role="tab" id="tab-p4" data-panel="p4" aria-controls="p4"><span class="n">4</span><span data-t="tab4"></span></button>
   </nav>
 
   <section id="p1" role="tabpanel" aria-labelledby="tab-p1" class="card">
@@ -230,6 +246,21 @@ details.cmp[open] summary::after{content:'–'}
     <h2 data-t="clTitle"></h2>
     <p data-t="clLead"></p>
     <div id="quizCl"></div>
+  </section>
+
+  <section id="p3" role="tabpanel" aria-labelledby="tab-p3">
+    <div class="stack">
+      <div class="card">
+        <h2 data-t="scTitle"></h2>
+        <p data-t="scLead"></p>
+        <div id="sc" aria-live="polite"></div>
+      </div>
+      <div class="card">
+        <h2 data-t="sqTitle"></h2>
+        <p data-t="sqLead"></p>
+        <div id="quizSc"></div>
+      </div>
+    </div>
   </section>
 
   <section id="p4" role="tabpanel" aria-labelledby="tab-p4" class="card">
@@ -439,12 +470,16 @@ window.STR = Kit.withCommon({
     docTitle: 'Levels and Items · PSYC3204',
     eyebrow: 'PSYC3204 · Week 4',
     h1: 'Levels and items',
-    lead: 'Three short parts: levels of measurement, a bad item clinic, and the middle option.',
-    tab1: 'Which level?', tab2: 'Bad item clinic', tab4: 'Middle option',
+    lead: 'Four short parts: levels of measurement, a bad item clinic, scoring models, and the middle option.',
+    tab1: 'Which level?', tab2: 'Bad item clinic', tab3: 'Scoring models', tab4: 'Middle option',
     lvTitle: 'Which level of measurement?',
     lvLead: 'Nominal: categories. Ordinal: order. Interval: equal distances. Ratio: a true zero (Cohen et al., 2022, Ch. 3). Choose the level for each measurement.',
     clTitle: 'Bad item clinic: the campus shuttle',
     clLead: 'Each item below was written for a questionnaire on attitudes toward the campus shuttle, and each one breaks one item-writing rule. With your partner, find the rule.',
+    scTitle: 'Your answers, three scoring models',
+    scLead: 'Step 1: answer four items. Step 2: in six pairs, pick the statement that fits you better. Then press “Score my answers”.',
+    sqTitle: 'Which scoring model?',
+    sqLead: 'Six examples. For each one, choose cumulative, class (category), or ipsative.',
     midTitle: 'Does the middle option matter?',
     midLead: 'Answer one item. Your phone has put you in group A or group B, and the two groups see different response scales.'
   },
@@ -452,12 +487,16 @@ window.STR = Kit.withCommon({
     docTitle: 'Ölçek Düzeyleri ve Maddeler · PSKO3204',
     eyebrow: 'PSKO3204 · 4. hafta',
     h1: 'Ölçek düzeyleri ve maddeler',
-    lead: 'Üç kısa bölüm: ölçek düzeyleri, kötü madde kliniği ve orta seçenek.',
-    tab1: 'Hangi düzey?', tab2: 'Kötü madde kliniği', tab4: 'Orta seçenek',
+    lead: 'Dört kısa bölüm: ölçek düzeyleri, kötü madde kliniği, puanlama modelleri ve orta seçenek.',
+    tab1: 'Hangi düzey?', tab2: 'Kötü madde kliniği', tab3: 'Puanlama modelleri', tab4: 'Orta seçenek',
     lvTitle: 'Hangi ölçek düzeyi?',
     lvLead: 'Sınıflama: kategoriler. Sıralama: sıra. Eşit aralıklı: eşit uzaklıklar. Oranlı: gerçek sıfır (Cohen vd., 2022, Böl. 3). Her ölçüm için düzeyi seç.',
     clTitle: 'Kötü madde kliniği: kampüs servisi',
     clLead: 'Aşağıdaki maddeler kampüs servisine yönelik tutumu ölçen bir anket için yazıldı ve her biri bir madde yazım kuralını çiğniyor. Eşinle birlikte hangi kural olduğunu bul.',
+    scTitle: 'Senin yanıtların, üç puanlama modeli',
+    scLead: '1. adım: dört maddeyi yanıtla. 2. adım: altı çiftin her birinde sana daha çok uyan ifadeyi seç. Sonra “Yanıtlarımı puanla”ya bas.',
+    sqTitle: 'Hangi puanlama modeli?',
+    sqLead: 'Altı örnek. Her biri için birikimli, sınıf (kategori) ya da ipsatif puanlamadan birini seç.',
     midTitle: 'Orta seçenek fark eder mi?',
     midLead: 'Tek bir maddeyi yanıtla. Telefonun seni A ya da B grubuna yerleştirdi; iki grup farklı yanıt ölçekleri görüyor.'
   }
@@ -533,7 +572,108 @@ const clItems = cl.map(it => ({
   explain: { en: it.explain.en + ' ' + FIX.en + ': ' + it.fix.en, tr: it.explain.tr + ' ' + FIX.tr + ': ' + it.fix.tr }
 }));
 
-/* ---------- 3. middle option ---------- */
+/* ---------- 3. scoring models ---------- */
+const SC = {
+  en: {
+    step1: 'Step 1 · Attitudes toward group work', step2: 'Step 2 · How do you study?',
+    ends: ['Strongly disagree', 'Strongly agree'],
+    pairAsk: 'Pick the one that fits you better. If both fit, you still have to pick one.',
+    items: ['Group work helps me learn.', 'I enjoy working on group projects.', 'Group work is a waste of time.', 'I prefer to do a project with a group.'],
+    scales: ['Planning', 'Together', 'Practice'],
+    st: [['I make a plan before I study.', 'I put the topics in order and finish them one by one.', 'I set my study hours in advance.', 'I track my progress on a list.'],
+         ['I learn by discussing a topic with friends.', 'I understand a topic better when I explain it to someone.', 'I study with friends before an exam.', 'I ask a friend when a part is unclear.'],
+         ['I learn by solving many questions.', 'I learn a rule by trying it on an example.', 'I write my own examples to reinforce a topic.', 'I study with past exam questions.']],
+    need: n => `Answer ${n} more to see your scores.`,
+    go: 'Score my answers', again: 'Start again',
+    cumT: 'Cumulative scoring', cumUnit: 'of 20',
+    cumX: 'Every answer is added to the total. Item 3 is reverse-keyed, so it counts as 6 − your answer. A higher score means a more favorable attitude toward group work. Your project questionnaire will be scored this way.',
+    clsT: 'Class (category) scoring', bands: ['Unfavorable 4–9', 'Undecided 10–14', 'Favorable 15–20'], clsName: ['Unfavorable', 'Undecided', 'Favorable'],
+    clsX: 'The same total is turned into a category. One point between 14 and 15 changes the class, but 15 and 20 end up in the same class. These cut-off scores are only an example; real tests set them from norms, as in screening tests (“at risk” or “not at risk”).',
+    ipsT: 'Ipsative scoring',
+    ipsX: 'Your three scores always add up to 6, for everyone: a point for one style is a point lost for another. So an ipsative score compares you with yourself (“you study mostly by …”). It cannot compare two people: a classmate’s higher Planning score does not mean that they plan more than you do.',
+    hands: 'In class: which of your three scores is highest? Raise your hand for Planning, Together, Practice.'
+  },
+  tr: {
+    step1: '1. adım · Grup çalışmasına yönelik tutum', step2: '2. adım · Nasıl çalışırsın?',
+    ends: ['Kesinlikle katılmıyorum', 'Kesinlikle katılıyorum'],
+    pairAsk: 'Sana daha çok uyanı seç. İkisi de uyuyorsa yine birini seçmek zorundasın.',
+    items: ['Grup çalışması öğrenmeme katkı sağlar.', 'Grup projelerinde çalışmaktan keyif alırım.', 'Grup çalışması zaman kaybıdır.', 'Bir projeyi grupla yapmayı tercih ederim.'],
+    scales: ['Planlayarak', 'Birlikte', 'Deneyerek'],
+    st: [['Ders çalışmadan önce bir plan yaparım.', 'Konuları sıraya koyup tek tek bitiririm.', 'Çalışma saatimi önceden belirlerim.', 'Ne kadar ilerlediğimi bir listeden takip ederim.'],
+         ['Bir konuyu arkadaşlarımla tartışarak öğrenirim.', 'Bir konuyu birine anlatınca daha iyi anlarım.', 'Sınavdan önce arkadaşlarımla birlikte çalışırım.', 'Takıldığım yeri bir arkadaşıma sorarım.'],
+         ['Bol soru çözerek öğrenirim.', 'Bir kuralı örnek üzerinde deneyerek öğrenirim.', 'Konuyu kendi örneklerimi yazarak pekiştiririm.', 'Çıkmış sınav sorularıyla çalışırım.']],
+    need: n => `Puanlarını görmek için ${n} yanıt daha.`,
+    go: 'Yanıtlarımı puanla', again: 'Baştan başla',
+    cumT: 'Birikimli puanlama', cumUnit: '/ 20',
+    cumX: 'Her yanıt toplama eklenir. 3. madde ters madde; 6 − yanıtın olarak sayılır. Yüksek puan, grup çalışmasına daha olumlu bir tutum demek. Proje ölçeğiniz de böyle puanlanacak.',
+    clsT: 'Sınıf (kategori) puanlama', bands: ['Olumsuz 4–9', 'Kararsız 10–14', 'Olumlu 15–20'], clsName: ['Olumsuz', 'Kararsız', 'Olumlu'],
+    clsX: 'Aynı toplam bir kategoriye çevrilir. 14 ile 15 arasındaki bir puanlık fark sınıfı değiştirir; 15 ile 20 ise aynı sınıfta. Buradaki kesme puanları örnek; gerçek testlerde normlardan belirlenir (ör. tarama testlerinde “risk var / risk yok”).',
+    ipsT: 'İpsatif puanlama',
+    ipsX: 'Üç puanının toplamı herkes için 6: bir stile verdiğin puan, ötekinden eksilir. Bu yüzden ipsatif puan seni kendinle karşılaştırır (“en çok … çalışıyorsun”). İki kişiyi karşılaştıramaz: bir arkadaşının Planlayarak puanının seninkinden yüksek olması, onun senden daha planlı olduğunu göstermez.',
+    hands: 'Sınıfta: üç puanından hangisi en yüksek? Planlayarak, Birlikte, Deneyerek için el kaldırın.'
+  }
+};
+// six forced-choice pairs: [scale, statement] vs [scale, statement]; each scale appears four times, total = 6
+const PAIRS6 = [[[0, 0], [1, 0]], [[1, 1], [2, 0]], [[2, 1], [0, 1]], [[0, 2], [1, 2]], [[1, 3], [2, 2]], [[2, 3], [0, 3]]];
+const REV = [false, false, true, false];
+const scState = { lk: [null, null, null, null], fc: new Array(6).fill(null), shown: false };
+function renderSc() {
+  const S = SC[Kit.lang], root = $('#sc');
+  let h = '';
+  if (!scState.shown) {
+    h += `<h3>${esc(S.step1)}</h3>`;
+    S.items.forEach((q, i) => {
+      h += `<div class="lk"><p class="item-quote">${i + 1}. ${esc(q)}</p><div class="lk-row" role="group" aria-label="${esc(q)}">`;
+      for (let v = 1; v <= 5; v++) h += `<button type="button" data-lk="${i}" data-v="${v}" aria-pressed="${scState.lk[i] === v}">${v}</button>`;
+      h += `</div><div class="lk-ends"><span>1 = ${esc(S.ends[0])}</span><span>5 = ${esc(S.ends[1])}</span></div></div>`;
+    });
+    h += `<h3>${esc(S.step2)}</h3><p class="q-sub">${esc(S.pairAsk)}</p>`;
+    PAIRS6.forEach((pr, k) => {
+      h += `<div class="pair"><span class="small muted">${k + 1} / 6</span>`;
+      pr.forEach((side, j) => {
+        const on = scState.fc[k] === j, other = scState.fc[k] !== null && !on;
+        h += `<button type="button" class="choice${on ? ' correct' : (other ? ' dim' : '')}" data-fc="${k}" data-j="${j}"><span class="mark" aria-hidden="true">${on ? '✓' : (j ? 'B' : 'A')}</span><span>${esc(S.st[side[0]][side[1]])}</span></button>`;
+      });
+      h += `</div>`;
+    });
+    const left = scState.lk.filter(v => v === null).length + scState.fc.filter(v => v === null).length;
+    h += left ? `<p class="note">${esc(S.need(left))}</p>` : `<div class="row end"><button type="button" class="btn primary" data-go>${esc(S.go)}</button></div>`;
+    root.innerHTML = h;
+    root.querySelectorAll('[data-lk]').forEach(b => b.addEventListener('click', () => { scState.lk[+b.dataset.lk] = +b.dataset.v; renderSc(); }));
+    root.querySelectorAll('[data-fc]').forEach(b => b.addEventListener('click', () => { scState.fc[+b.dataset.fc] = +b.dataset.j; renderSc(); }));
+    const go = root.querySelector('[data-go]');
+    if (go) go.addEventListener('click', () => { scState.shown = true; renderSc(); root.scrollIntoView({ block: 'start', behavior: 'smooth' }); });
+    return;
+  }
+  const total = scState.lk.reduce((s, v, i) => s + (REV[i] ? 6 - v : v), 0);
+  const cls = total <= 9 ? 0 : total <= 14 ? 1 : 2;
+  const ips = [0, 0, 0];
+  scState.fc.forEach((j, k) => { ips[PAIRS6[k][j][0]]++; });
+  h += `<div class="res">`;
+  h += `<div class="card"><h3>${esc(S.cumT)}</h3><div class="score"><span class="big">${total}</span><span class="muted">${esc(S.cumUnit)}</span></div><p>${esc(S.cumX)}</p></div>`;
+  h += `<div class="card"><h3>${esc(S.clsT)}</h3><p class="item-quote">${esc(S.clsName[cls])}</p><div class="bands">${S.bands.map((b, i) => `<span class="${i === cls ? 'on' : ''}">${esc(b)}</span>`).join('')}</div><p>${esc(S.clsX)}</p></div>`;
+  h += `<div class="card"><h3>${esc(S.ipsT)}</h3><div class="ips">${S.scales.map((n, i) => `<div class="ips-row"><span>${esc(n)}</span><span class="ips-bar"><i style="width:${(ips[i] / 4) * 100}%"></i></span><b class="mono">${ips[i]}</b></div>`).join('')}</div><p>${esc(S.ipsX)}</p><p class="note">${esc(S.hands)}</p></div>`;
+  h += `</div><div class="row"><button type="button" class="btn" data-again>${esc(S.again)}</button></div>`;
+  root.innerHTML = h;
+  root.querySelector('[data-again]').addEventListener('click', () => { scState.lk.fill(null); scState.fc.fill(null); scState.shown = false; renderSc(); });
+}
+const SCM = [{ en: 'Cumulative', tr: 'Birikimli' }, { en: 'Class (category)', tr: 'Sınıf (kategori)' }, { en: 'Ipsative', tr: 'İpsatif' }];
+const sq = [
+  { q: { en: 'On a depression screening scale, a total of 20 or more is reported as “clinical range”.', tr: 'Bir depresyon tarama ölçeğinde 20 ve üzeri toplam puan “klinik düzey” olarak raporlanıyor.' }, short: { en: 'Screening cut-off', tr: 'Tarama kesme puanı' }, answer: 1,
+    explain: { en: 'A cut-off score turns the total into a category: clinical range or not.', tr: 'Kesme puanı toplamı bir kategoriye çeviriyor: klinik düzey ya da değil.' } },
+  { q: { en: 'The total of the 12 items on your project questionnaire: a higher score means a more favorable attitude.', tr: 'Proje ölçeğinizdeki 12 maddenin toplamı: yüksek puan daha olumlu tutum demek.' }, short: { en: 'Project questionnaire total', tr: 'Proje ölçeğinin toplamı' }, answer: 0,
+    explain: { en: 'Answers are added up, and more points mean more of the attitude.', tr: 'Yanıtlar toplanıyor; daha çok puan, tutumun daha fazlası demek.' } },
+  { q: { en: 'In each question you choose one of two work activities; the result shows the field you are most interested in.', tr: 'Her soruda iki iş etkinliğinden birini seçiyorsunuz; sonuç en çok ilgilendiğiniz alanı gösteriyor.' }, short: { en: 'Choosing between two activities', tr: 'İki etkinlik arasında seçim' }, answer: 2,
+    explain: { en: 'Each choice gives a point to one field and none to the other, so the result ranks fields within one person.', tr: 'Her seçim bir alana puan verip ötekine vermiyor; sonuç alanları kişinin kendi içinde sıralıyor.' } },
+  { q: { en: 'In a spelling test, each correct word earns 1 point, and the number correct is reported.', tr: 'Bir yazım testinde her doğru sözcük 1 puan; doğru sayısı raporlanıyor.' }, short: { en: 'Spelling test', tr: 'Yazım testi' }, answer: 0,
+    explain: { en: 'Points are added up: more correct answers, a higher score.', tr: 'Puanlar toplanıyor: daha çok doğru, daha yüksek puan.' } },
+  { q: { en: 'A personality inventory places you in one of four types based on your pattern of answers.', tr: 'Bir kişilik envanteri yanıt örüntünüze göre sizi dört tipten birine yerleştiriyor.' }, short: { en: 'Four personality types', tr: 'Dört kişilik tipi' }, answer: 1,
+    explain: { en: 'Your answers place you in a group with others who answered in a similar way.', tr: 'Yanıtlarınız sizi benzer yanıt veren kişilerle aynı gruba yerleştiriyor.' } },
+  { q: { en: 'You must choose between two equally positive statements, such as “I am hardworking” and “I am honest”.', tr: '“Çalışkanım” ve “Dürüstüm” gibi eşit derecede olumlu iki ifadeden birini seçmek zorundasınız.' }, short: { en: 'Two equally positive statements', tr: 'Eşit derecede olumlu iki ifade' }, answer: 2,
+    explain: { en: 'A forced choice between equally desirable statements; the Edwards Personal Preference Schedule (EPPS) is scored this way.', tr: 'Eşit derecede istenir iki ifade arasında zorunlu seçim; Edwards Kişisel Tercih Envanteri (EPPS) böyle puanlanır.' } }
+];
+
+/* ---------- 4. middle option ---------- */
 const MKEY = 'psyc3204.h04.mid';
 let grp = Kit.store.get(MKEY, null);
 if (grp !== 'A' && grp !== 'B') { grp = Math.random() < 0.5 ? 'A' : 'B'; Kit.store.set(MKEY, grp); }
@@ -581,9 +721,12 @@ Kit.quiz($('#quizLv'), { items: lv, options: LV, labels: Kit.QUIZ_LABELS,
   summaryNote: { en: 'The level decides which statistics make sense: a mean needs at least interval data. Item analysis in your project uses means and correlations of item scores, so it treats them as roughly interval.', tr: 'Düzey, hangi istatistiğin anlamlı olduğunu belirler: ortalama için en az eşit aralıklı veri gerekir. Projenizdeki madde analizi madde puanlarının ortalamalarını ve korelasyonlarını kullanır; yani onları yaklaşık eşit aralıklı kabul eder.' } });
 Kit.quiz($('#quizCl'), { items: clItems, labels: Kit.QUIZ_LABELS,
   summaryNote: { en: 'Now pick one item with your partner and write your own fix on paper. All of these rules are in the item-writing list for Milestone 2.', tr: 'Şimdi eşinle bir madde seç ve kendi düzeltmenizi kâğıda yazın. Bu kuralların hepsi T2’deki madde yazım kuralları listesinde var.' } });
+Kit.quiz($('#quizSc'), { items: sq, options: SCM, labels: Kit.QUIZ_LABELS,
+  summaryNote: { en: 'Your project questionnaire uses cumulative scoring: the 12 items are added up.', tr: 'Proje ölçeğiniz birikimli puanlanıyor: 12 madde toplanıyor.' } });
+renderSc();
 renderMid();
-Kit.onLang(() => { renderMid(); });
-window.__h04 = { lv, cl };
+Kit.onLang(() => { renderSc(); renderMid(); });
+window.__h04 = { lv, cl, sq };
 })();
 </script>
 </body>
