@@ -217,8 +217,7 @@ details.cmp[open] summary::after{content:'–'}
   <nav class="seg" role="tablist" aria-label="Parts">
     <button type="button" role="tab" id="tab-p1" data-panel="p1" aria-controls="p1"><span class="n">1</span><span data-t="tab1"></span></button>
     <button type="button" role="tab" id="tab-p2" data-panel="p2" aria-controls="p2"><span class="n">2</span><span data-t="tab2"></span></button>
-    <button type="button" role="tab" id="tab-p3" data-panel="p3" aria-controls="p3"><span class="n">3</span><span data-t="tab3"></span></button>
-    <button type="button" role="tab" id="tab-p4" data-panel="p4" aria-controls="p4"><span class="n">4</span><span data-t="tab4"></span></button>
+    <button type="button" role="tab" id="tab-p4" data-panel="p4" aria-controls="p4"><span class="n">3</span><span data-t="tab4"></span></button>
   </nav>
 
   <section id="p1" role="tabpanel" aria-labelledby="tab-p1" class="card">
@@ -231,28 +230,6 @@ details.cmp[open] summary::after{content:'–'}
     <h2 data-t="clTitle"></h2>
     <p data-t="clLead"></p>
     <div id="quizCl"></div>
-  </section>
-
-  <section id="p3" role="tabpanel" aria-labelledby="tab-p3">
-    <div class="stack">
-      <div class="card">
-        <h2 data-t="aiTitle"></h2>
-        <p data-t="aiLead"></p>
-        <p class="prompt" id="aiPrompt"></p>
-        <p class="small muted" data-t="aiNote"></p>
-        <div id="quizAi"></div>
-      </div>
-      <div class="card">
-        <h2 data-t="cmpTitle"></h2>
-        <p data-t="cmpLead"></p>
-        <details class="cmp" id="cmpBox">
-          <summary><span data-t="cmpShow"></span></summary>
-          <div style="padding:0 16px 8px" class="row"><span class="count" id="cmpCount"></span><span class="muted small" data-t="cmpCountLbl"></span></div>
-          <ul class="pairs" id="pairs"></ul>
-        </details>
-        <p class="note" data-t="cmpAsk"></p>
-      </div>
-    </div>
   </section>
 
   <section id="p4" role="tabpanel" aria-labelledby="tab-p4" class="card">
@@ -462,20 +439,12 @@ window.STR = Kit.withCommon({
     docTitle: 'Levels and Items · PSYC3204',
     eyebrow: 'PSYC3204 · Week 4',
     h1: 'Levels and items',
-    lead: 'Four short parts: levels of measurement, a bad item clinic, items written by AI, and the middle option.',
-    tab1: 'Which level?', tab2: 'Bad item clinic', tab3: 'Written by AI', tab4: 'Middle option',
+    lead: 'Three short parts: levels of measurement, a bad item clinic, and the middle option.',
+    tab1: 'Which level?', tab2: 'Bad item clinic', tab4: 'Middle option',
     lvTitle: 'Which level of measurement?',
     lvLead: 'Nominal: categories. Ordinal: order. Interval: equal distances. Ratio: a true zero (Cohen et al., 2022, Ch. 3). Choose the level for each measurement.',
     clTitle: 'Bad item clinic: the campus shuttle',
     clLead: 'Each item below was written for a questionnaire on attitudes toward the campus shuttle, and each one breaks one item-writing rule. With your partner, find the rule.',
-    aiTitle: 'These items were written by AI',
-    aiLead: 'We gave an AI tool the same task you have for Milestone 2. This was the whole prompt:',
-    aiNote: 'The tool wrote 15 items. Below are 8 of them, word for word. Does each one follow the item-writing rules?',
-    cmpTitle: 'Same task, a second AI tool',
-    cmpLead: 'We gave the identical prompt to a second AI tool. Before you open the list: how many of its 15 items cover the same theme as an item from the first tool?',
-    cmpShow: 'Show the matching themes',
-    cmpCountLbl: 'of 15 themes appear in both lists',
-    cmpAsk: 'Discuss: if two groups used AI for Milestone 2, what would the panel see on November 4? And where is your group’s definition in these items?',
     midTitle: 'Does the middle option matter?',
     midLead: 'Answer one item. Your phone has put you in group A or group B, and the two groups see different response scales.'
   },
@@ -483,20 +452,12 @@ window.STR = Kit.withCommon({
     docTitle: 'Ölçek Düzeyleri ve Maddeler · PSKO3204',
     eyebrow: 'PSKO3204 · 4. hafta',
     h1: 'Ölçek düzeyleri ve maddeler',
-    lead: 'Dört kısa bölüm: ölçek düzeyleri, kötü madde kliniği, yapay zekânın yazdığı maddeler ve orta seçenek.',
-    tab1: 'Hangi düzey?', tab2: 'Kötü madde kliniği', tab3: 'Yapay zekâ yazdı', tab4: 'Orta seçenek',
+    lead: 'Üç kısa bölüm: ölçek düzeyleri, kötü madde kliniği ve orta seçenek.',
+    tab1: 'Hangi düzey?', tab2: 'Kötü madde kliniği', tab4: 'Orta seçenek',
     lvTitle: 'Hangi ölçek düzeyi?',
     lvLead: 'Sınıflama: kategoriler. Sıralama: sıra. Eşit aralıklı: eşit uzaklıklar. Oranlı: gerçek sıfır (Cohen vd., 2022, Böl. 3). Her ölçüm için düzeyi seç.',
     clTitle: 'Kötü madde kliniği: kampüs servisi',
     clLead: 'Aşağıdaki maddeler kampüs servisine yönelik tutumu ölçen bir anket için yazıldı ve her biri bir madde yazım kuralını çiğniyor. Eşinle birlikte hangi kural olduğunu bul.',
-    aiTitle: 'Bu maddeleri yapay zekâ yazdı',
-    aiLead: 'Bir yapay zekâ aracına T2’de sizin yapacağınız işin aynısını verdik. Komutun tamamı şuydu:',
-    aiNote: 'Araç 15 madde yazdı. Aşağıda bunların 8’i, hiç değiştirilmeden. Her biri madde yazım kurallarına uyuyor mu?',
-    cmpTitle: 'Aynı görev, ikinci bir yapay zekâ aracı',
-    cmpLead: 'Aynı komutu ikinci bir yapay zekâ aracına verdik. Listeyi açmadan önce tahmin et: 15 maddesinden kaçı, ilk aracın maddelerinden biriyle aynı temayı işliyor?',
-    cmpShow: 'Ortak temaları göster',
-    cmpCountLbl: 'tema iki listede de var (15 temadan)',
-    cmpAsk: 'Tartışın: İki grup T2’de yapay zekâ kullansaydı, 4 Kasım’daki panelde ne görülürdü? Grubunuzun tanımı bu maddelerin neresinde?',
     midTitle: 'Orta seçenek fark eder mi?',
     midLead: 'Tek bir maddeyi yanıtla. Telefonun seni A ya da B grubuna yerleştirdi; iki grup farklı yanıt ölçekleri görüyor.'
   }
@@ -572,83 +533,7 @@ const clItems = cl.map(it => ({
   explain: { en: it.explain.en + ' ' + FIX.en + ': ' + it.fix.en, tr: it.explain.tr + ' ' + FIX.tr + ': ' + it.fix.tr }
 }));
 
-/* ---------- 3. items written by AI (verbatim tool output; see slide notes) ---------- */
-const PROMPT = {
-  en: 'Write 15 items for an attitude scale that measures university students’ attitudes toward online learning. Items are answered on a 5-point Likert scale (1 = Strongly disagree, 5 = Strongly agree). At least one third of the items should be reverse-keyed.',
-  tr: 'Üniversite öğrencilerinin çevrim içi öğrenmeye yönelik tutumunu ölçen bir tutum ölçeği için 15 madde yaz. Maddeler 5’li Likert ölçeğiyle yanıtlanacak (1 = Kesinlikle katılmıyorum, 5 = Kesinlikle katılıyorum). Maddelerin en az üçte biri ters madde olsun.'
-};
-const OK = { en: 'Follows the rules', tr: 'Kurallara uyuyor' }, BAD = { en: 'Breaks a rule', tr: 'Bir kuralı çiğniyor' };
-// EN: tool A items 1, 3, 6, 8, 9, 10, 13, 15 (of 15). TR: tool A items 1, 2, 5, 7, 8, 9, 12, 13 (of 15). Item text unchanged.
-const AI = {
-  en: [
-    { n: 1, q: 'Online learning gives me flexibility in organizing my study time.', answer: 0, explain: 'One idea, an evaluation, written in the favorable direction.' },
-    { n: 3, q: 'Online learning saves me time that I would otherwise spend commuting to campus.', answer: 1, explain: 'Closer to a fact than an attitude, and it only fits students who commute. A student living on campus cannot answer it in a meaningful way.' },
-    { n: 6, q: 'I find it difficult to stay motivated in online courses.', answer: 0, explain: 'A well-written reverse-keyed item: the opposite direction, without “not”.' },
-    { n: 8, q: 'Online lessons are less engaging than in-class lessons.', answer: 0, explain: 'Reverse-keyed by its meaning. A comparison is fine as long as the item states one idea.' },
-    { n: 9, q: 'I am satisfied with my learning experience in online courses.', answer: 0, explain: 'A clear, general evaluation.' },
-    { n: 10, q: 'Technical problems often prevent me from participating fully in online lessons.', answer: 1, explain: '“Often” is a vague quantifier, and the item assumes you have technical problems. Someone with a good connection disagrees without liking online learning any more.' },
-    { n: 13, q: 'I find it hard to concentrate during long online lectures.', answer: 1, explain: 'The word “long” builds the answer in: almost everyone finds long lectures hard, online or not. Nearly everyone will give the same answer.' },
-    { n: 15, q: 'I would rather take a course in a traditional classroom than online.', answer: 0, explain: 'One idea, reverse-keyed by its meaning.' }
-  ],
-  tr: [
-    { n: 1, q: 'Çevrim içi öğrenme, derslere ayırdığım zamanı daha verimli kullanmama olanak tanır.', answer: 0, explain: 'Tek fikir, bir değerlendirme; olumlu yönde yazılmış.' },
-    { n: 2, q: 'Çevrim içi ders materyallerine istediğim zaman ulaşabilmek öğrenmemi destekler.', answer: 0, explain: 'Tek fikir ve bir değerlendirme.' },
-    { n: 5, q: 'Çevrim içi derslere katılmaktan keyif alırım.', answer: 0, explain: 'Kısa ve açık; bir duyguyu dile getiriyor.' },
-    { n: 7, q: 'Çevrim içi derslerde derse odaklanmakta zorlanırım.', answer: 0, explain: 'İyi yazılmış bir ters madde: olumsuzluk eki yok, karşıt yönde bir fikir.' },
-    { n: 8, q: 'Çevrim içi sınavlar beni gereğinden fazla kaygılandırır.', answer: 1, explain: '“Gereğinden fazla” yönlendirici bir ifade. Ayrıca madde çevrim içi öğrenmeyi değil, sınav kaygısını soruyor.' },
-    { n: 9, q: 'Çevrim içi öğrenme sürecinden genel olarak memnunum.', answer: 0, explain: 'Açık, genel bir değerlendirme.' },
-    { n: 12, q: 'Teknik sorunlar, çevrim içi derslerden yararlanmamı engeller.', answer: 1, explain: 'Teknik sorun yaşadığınızı varsayıyor. İnternet bağlantısı iyi olan biri, çevrim içi öğrenmeyi daha çok sevdiği için değil, sorun yaşamadığı için katılmaz.' },
-    { n: 13, q: 'Çevrim içi derslere düzenli olarak katılmaya özen gösteririm.', answer: 1, explain: 'Neredeyse herkes “katılıyorum” der: düzenli katılmak beklenen bir davranış. Madde tutumdan çok sorumluluğu ölçebilir.' }
-  ]
-};
-// Matching themes: tool A item vs tool B item (both verbatim)
-const PAIRS = {
-  en: [
-    ['Flexible study time', 'Online learning gives me flexibility in organizing my study time.', 'Online learning allows me to manage my study time more effectively.'],
-    ['Motivation', 'I find it difficult to stay motivated in online courses.', 'I find it hard to stay motivated when a course is entirely online.'],
-    ['As good as face to face', 'The quality of learning in online courses is comparable to that of face-to-face courses.', 'I learn course material just as well online as I do in a physical classroom.'],
-    ['Concentration', 'I find it hard to concentrate during long online lectures.', 'I pay less attention during online lectures than I do in person.'],
-    ['Instructors', 'I feel disconnected from my instructors in online courses.', 'I feel comfortable asking my instructors questions in online courses.'],
-    ['Classmates', 'I can communicate effectively with my classmates in online courses.', 'I feel isolated from my classmates when I study online.'],
-    ['Technical problems', 'Technical problems often prevent me from participating fully in online lessons.', 'Technical problems often make online learning frustrating for me.'],
-    ['Preference', 'I would rather take a course in a traditional classroom than online.', 'Given the choice, I would pick an online course over a face-to-face course.'],
-    ['Engagement', 'Online lessons are less engaging than in-class lessons.', 'I find online course materials engaging.'],
-    ['Independent learning', 'Online courses help me develop independent learning skills.', 'Online learning helps me take more responsibility for my own learning.']
-  ],
-  tr: [
-    ['Zamanı verimli kullanmak', 'Çevrim içi öğrenme, derslere ayırdığım zamanı daha verimli kullanmama olanak tanır.', 'Çevrim içi dersler zamanımı daha verimli kullanmamı sağlar.'],
-    ['İstenen zamanda erişim', 'Çevrim içi ders materyallerine istediğim zaman ulaşabilmek öğrenmemi destekler.', 'Çevrim içi dersleri gerektiğinde tekrar izleyebilmek öğrenmemi kolaylaştırır.'],
-    ['Yüz yüze eğitimle karşılaştırma', 'Çevrim içi eğitimin, uzun vadede yüz yüze eğitim kadar değerli olacağını düşünüyorum.', 'Çevrim içi öğrenme, yüz yüze eğitimin yerini tutamaz.'],
-    ['Hatırlamak', 'Çevrim içi öğrenme ile kazandığım bilgiler kısa sürede unutulur.', 'Çevrim içi derslerde öğrendiğim konuları daha kolay hatırlarım.'],
-    ['Keyif ve ilgi', 'Çevrim içi derslere katılmaktan keyif alırım.', 'Çevrim içi öğrenme, derslere olan ilgimi artırır.'],
-    ['Yalnızlık', 'Çevrim içi derslerde kendimi yalnız hissederim.', 'Çevrim içi derslerde kendimi diğer öğrencilerden kopuk hissederim.'],
-    ['Odaklanmak', 'Çevrim içi derslerde derse odaklanmakta zorlanırım.', 'Çevrim içi derslerde dikkatim kolayca dağılır.'],
-    ['Tercih', 'Gelecekte fırsat olduğunda çevrim içi dersleri tercih ederim.', 'Mümkün olsaydı daha fazla dersi çevrim içi almak isterdim.'],
-    ['Dijital araçlar', 'Çevrim içi derslerde kullanılan dijital araçları rahatlıkla kullanabilirim.', 'Çevrim içi öğrenme platformlarını kullanmak bana kolay gelir.'],
-    ['Öğretim elemanıyla iletişim', 'Çevrim içi derslerde öğretim elemanıyla iletişim kurmak kolaydır.', 'Çevrim içi derslerde öğretim elemanıyla iletişim kurmakta zorlanırım.']
-  ]
-};
-// One bilingual list: the TR items are ordered so that both languages share the same answer pattern.
-const TR_ORDER = [1, 8, 2, 5, 7, 12, 13, 9];
-const EN_ORDER = [1, 3, 6, 8, 9, 10, 13, 15];
-const aiItems = EN_ORDER.map((en, k) => {
-  const e = AI.en.find(x => x.n === en), r = AI.tr.find(x => x.n === TR_ORDER[k]);
-  if (e.answer !== r.answer) throw new Error('answer pattern mismatch at ' + k);
-  return { q: { en: '“' + e.q + '”', tr: '“' + r.q + '”' }, pre: { en: 'Item ' + e.n + ' of 15', tr: '15 maddeden ' + r.n + '. madde' },
-    short: { en: e.q, tr: r.q }, answer: e.answer, options: [OK, BAD], explain: { en: e.explain, tr: r.explain } };
-});
-function renderAiStatic() {
-  const L = Kit.lang;
-  $('#aiPrompt').textContent = PROMPT[L];
-  $('#cmpCount').textContent = String(PAIRS[L].length);
-  $('#pairs').innerHTML = PAIRS[L].map(([th, a, b]) => `<li><span class="theme">${esc(th)}</span><span class="ab"><span class="tag">A</span><span>${esc(a)}</span></span><span class="ab"><span class="tag">B</span><span>${esc(b)}</span></span></li>`).join('');
-}
-function mountAiQuiz() {
-  Kit.quiz($('#quizAi'), { items: aiItems, labels: Kit.QUIZ_LABELS,
-    summaryNote: { en: 'The items look polished, and most follow the rules. The bigger problem is below: open the second card.', tr: 'Maddeler derli toplu görünüyor ve çoğu kurallara uyuyor. Asıl sorun aşağıda: ikinci kartı aç.' } });
-}
-
-/* ---------- 4. middle option ---------- */
+/* ---------- 3. middle option ---------- */
 const MKEY = 'psyc3204.h04.mid';
 let grp = Kit.store.get(MKEY, null);
 if (grp !== 'A' && grp !== 'B') { grp = Math.random() < 0.5 ? 'A' : 'B'; Kit.store.set(MKEY, grp); }
@@ -696,11 +581,9 @@ Kit.quiz($('#quizLv'), { items: lv, options: LV, labels: Kit.QUIZ_LABELS,
   summaryNote: { en: 'The level decides which statistics make sense: a mean needs at least interval data. Item analysis in your project uses means and correlations of item scores, so it treats them as roughly interval.', tr: 'Düzey, hangi istatistiğin anlamlı olduğunu belirler: ortalama için en az eşit aralıklı veri gerekir. Projenizdeki madde analizi madde puanlarının ortalamalarını ve korelasyonlarını kullanır; yani onları yaklaşık eşit aralıklı kabul eder.' } });
 Kit.quiz($('#quizCl'), { items: clItems, labels: Kit.QUIZ_LABELS,
   summaryNote: { en: 'Now pick one item with your partner and write your own fix on paper. All of these rules are in the item-writing list for Milestone 2.', tr: 'Şimdi eşinle bir madde seç ve kendi düzeltmenizi kâğıda yazın. Bu kuralların hepsi T2’deki madde yazım kuralları listesinde var.' } });
-renderAiStatic();
-mountAiQuiz();
 renderMid();
-Kit.onLang(() => { renderAiStatic(); renderMid(); });
-window.__h04 = { lv, cl, AI, PAIRS };
+Kit.onLang(() => { renderMid(); });
+window.__h04 = { lv, cl };
 })();
 </script>
 </body>
