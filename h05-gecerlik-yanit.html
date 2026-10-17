@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#4a3aa7">
+<title>Geçerlik ve Yanıt Stilleri</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%234a3aa7%22%2F%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%2216%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22%2F%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%225%22%20fill%3D%22%23fff%22%2F%3E%3C%2Fsvg%3E">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f2f2f6;
+  --surface:#fdfdfe;
+  --surface-2:#ebebf1;
+  --surface-3:#dfdfe8;
+  --ink:#14131b;
+  --ink-2:#4a4957;
+  --muted:#65636f;
+  --line:#e0dfe7;
+  --line-strong:#c3c2ce;
+  --accent:#4a3aa7;
+  --accent-hover:#3c2f8e;
+  --accent-ink:#ffffff;
+  --accent-soft:#e9e6f8;
+  --good:#0ca30c;
+  --good-text:#006300;
+  --good-soft:#e1f3e1;
+  --crit:#d03b3b;
+  --crit-text:#a82626;
+  --crit-soft:#fbe5e5;
+  --warn:#fab219;
+  --warn-soft:#fdf0cc;
+  --series-1:#2a78d6;
+  --series-2:#eb6834;
+  --stage:#15141c;
+  --stage-ink:#f3f3f7;
+  --shadow:0 1px 2px rgba(20,19,27,.05),0 8px 24px rgba(20,19,27,.07);
+  --radius:16px;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Roboto Mono",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0f0f14;
+    --surface:#18181f;
+    --surface-2:#22222b;
+    --surface-3:#2e2e39;
+    --ink:#f3f3f7;
+    --ink-2:#c4c3cf;
+    --muted:#9896a6;
+    --line:#2b2b35;
+    --line-strong:#41414d;
+    --accent:#9d93ee;
+    --accent-hover:#b3abf3;
+    --accent-ink:#14131b;
+    --accent-soft:#2b2847;
+    --good-text:#5fd35f;
+    --good-soft:#17301a;
+    --crit-text:#ff8f8f;
+    --crit-soft:#3a1d20;
+    --warn-soft:#3b3119;
+    --series-1:#3987e5;
+    --series-2:#d95926;
+    --stage:#0b0b10;
+    --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0f0f14;
+  --surface:#18181f;
+  --surface-2:#22222b;
+  --surface-3:#2e2e39;
+  --ink:#f3f3f7;
+  --ink-2:#c4c3cf;
+  --muted:#9896a6;
+  --line:#2b2b35;
+  --line-strong:#41414d;
+  --accent:#9d93ee;
+  --accent-hover:#b3abf3;
+  --accent-ink:#14131b;
+  --accent-soft:#2b2847;
+  --good-text:#5fd35f;
+  --good-soft:#17301a;
+  --crit-text:#ff8f8f;
+  --crit-soft:#3a1d20;
+  --warn-soft:#3b3119;
+  --series-1:#3987e5;
+  --series-2:#d95926;
+  --stage:#0b0b10;
+  --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top,0px)}
+[hidden]{display:none!important}
+h1,h2,h3{margin:0;text-wrap:balance;line-height:1.2}
+p{margin:0}
+ul,ol{margin:0}
+button,input,select{font:inherit;color:inherit}
+button{touch-action:manipulation}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:680px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);text-decoration:none;font-weight:600;font-size:14px;min-height:40px;padding:0 4px;border-radius:8px}
+.back:hover{color:var(--ink)}
+.back svg{width:18px;height:18px}
+.lang{display:inline-flex;border:1px solid var(--line-strong);border-radius:999px;padding:2px;background:var(--surface)}
+.lang button{border:0;background:transparent;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.05em;cursor:pointer;color:var(--ink-2);min-height:34px;min-width:44px}
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+
+/* page */
+.app{max-width:680px;margin:0 auto;padding-inline:16px;padding-block:18px 48px;display:grid;gap:18px}
+.head{display:grid;gap:6px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(26px,7vw,34px);font-weight:750;letter-spacing:-.015em}
+.lead{color:var(--ink-2);font-size:16px}
+.card,[id^="quiz"]{scroll-margin-top:72px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:grid;gap:14px}
+.card h2{font-size:19px;font-weight:700}
+.card h3{font-size:16px;font-weight:700}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.note{font-size:14px;color:var(--ink-2);background:var(--surface-2);border-radius:12px;padding:10px 12px}
+.foot{max-width:680px;margin:0 auto;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 28px);font-size:13px;color:var(--muted)}
+.list{padding-left:20px;display:grid;gap:6px}
+
+/* buttons */
+.btn{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:12px;padding:10px 16px;min-height:48px;font-weight:650;font-size:16px;cursor:pointer;text-decoration:none;transition:background-color .15s,border-color .15s}
+.btn:hover{background:var(--surface-2)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--ink-2)}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.row.end{justify-content:flex-end}
+.row.between{justify-content:space-between}
+
+/* segmented tabs */
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;background:var(--surface-2);border-radius:14px;padding:4px}
+.seg button{border:0;background:transparent;border-radius:10px;padding:8px 6px;min-height:48px;font-size:14px;font-weight:650;color:var(--ink-2);cursor:pointer;line-height:1.2}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.seg .n{display:block;font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+/* quiz */
+.progress{display:grid;gap:6px}
+.progress-top{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);font-weight:600}
+.bar{height:6px;background:var(--surface-2);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .3s}
+.q-text{font-size:18px;font-weight:600;line-height:1.4}
+.q-sub{font-size:15px;color:var(--ink-2)}
+.choices{display:grid;gap:10px}
+.choice{appearance:none;text-align:left;width:100%;display:flex;align-items:center;gap:12px;border:1.5px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:14px;padding:12px 14px;min-height:56px;font-size:16px;font-weight:550;cursor:pointer;line-height:1.35}
+.choice:hover{border-color:var(--accent)}
+.choice .mark{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line-strong);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--muted)}
+.choice[disabled]{cursor:default}
+.choice.correct{border-color:var(--good);background:var(--good-soft)}
+.choice.correct .mark{background:var(--good);border-color:var(--good);color:#fff}
+.choice.wrong{border-color:var(--crit);background:var(--crit-soft)}
+.choice.wrong .mark{background:var(--crit);border-color:var(--crit);color:#fff}
+.choice.dim{opacity:.6}
+.feedback{border-radius:14px;padding:12px 14px;display:grid;gap:4px;font-size:15px}
+.feedback.ok{background:var(--good-soft)}
+.feedback.no{background:var(--crit-soft)}
+.feedback.info{background:var(--surface-2)}
+.feedback b{font-size:16px}
+.feedback.ok b{color:var(--good-text)}
+.feedback.no b{color:var(--crit-text)}
+.score{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.score .big{font-family:var(--mono);font-size:44px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.review{list-style:none;padding:0;display:grid;border-top:1px solid var(--line)}
+.review li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.review .ans{color:var(--ink-2);font-size:14px}
+.ico{width:20px;height:20px;flex:none}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
+
+.stack{display:grid;gap:18px}
+.item-quote{font-size:18px;font-weight:600;line-height:1.4;border-left:4px solid var(--accent);padding:4px 0 4px 12px}
+.fix{display:grid;gap:4px;border-radius:12px;background:var(--good-soft);padding:10px 12px;font-size:15px}
+.fix b{color:var(--good-text)}
+.prompt{font-family:var(--mono);font-size:13.5px;line-height:1.45;background:var(--surface-2);border-radius:12px;padding:10px 12px;color:var(--ink-2)}
+details.cmp{border:1px solid var(--line);border-radius:14px;padding:0}
+details.cmp summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+details.cmp summary::-webkit-details-marker{display:none}
+details.cmp summary::after{content:'+';font-family:var(--mono);font-size:20px;color:var(--accent)}
+details.cmp[open] summary::after{content:'–'}
+.pairs{list-style:none;margin:0;padding:0 16px 14px;display:grid;gap:10px}
+.pairs li{border-top:1px solid var(--line);padding-top:10px;display:grid;gap:4px;font-size:14.5px}
+.pairs .theme{font-weight:700;font-size:15px}
+.pairs .ab{display:grid;grid-template-columns:22px minmax(0,1fr);gap:6px;color:var(--ink-2)}
+.pairs .tag{font-family:var(--mono);font-weight:700;color:var(--accent)}
+.count{font-family:var(--mono);font-size:40px;font-weight:700;line-height:1;letter-spacing:-.02em}
+.scale{display:grid;gap:8px}
+.scale .choice{min-height:52px}
+.lk{display:grid;gap:6px;margin:6px 0 14px}
+.lk-row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.lk-row button{appearance:none;border:1.5px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:12px;min-height:46px;font-size:17px;font-weight:700;cursor:pointer}
+.lk-row button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.lk-ends{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.res{display:grid;gap:12px}
+.res .card{margin:0}
+.bands{display:grid;grid-template-columns:6fr 5fr 6fr;gap:4px;margin:8px 0}
+.bands span{border-radius:10px;padding:8px 4px;text-align:center;font-size:13px;font-weight:600;background:var(--surface-2);color:var(--muted)}
+.bands span.on{background:var(--accent);color:#fff}
+.ips{display:grid;gap:8px;margin:8px 0}
+.ips-row{display:grid;grid-template-columns:110px 1fr 28px;align-items:center;gap:8px;font-size:15px}
+.ips-bar{height:14px;border-radius:7px;background:var(--surface-2);overflow:hidden}
+.ips-bar i{display:block;height:100%;background:var(--accent)}
+.pair{display:grid;gap:6px;margin:6px 0 14px}
+.grp-badge{display:inline-flex;align-items:center;gap:6px;font-weight:700;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:4px 12px;font-size:14px;width:max-content}
+.stack{display:grid;gap:18px}
+.defbox{background:var(--surface-2);border-radius:12px;padding:12px 14px;display:grid;gap:8px;font-size:15px;line-height:1.45}
+.defbox .lbl{font-weight:700;color:var(--accent)}
+.itempick{display:flex;gap:8px;flex-wrap:wrap}
+.itempick button{appearance:none;border:1.5px solid var(--line-strong);background:var(--surface);color:var(--ink-2);border-radius:999px;padding:6px 16px;min-height:44px;font-size:15px;font-weight:700;cursor:pointer}
+.itempick button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.item-quote{font-size:18px;font-weight:600;line-height:1.4;border-left:4px solid var(--accent);padding:4px 0 4px 12px}
+.choice.picked{border-color:var(--accent);background:var(--accent-soft)}
+.choice.picked .mark{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.prows{display:grid;gap:10px}
+.prow{border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:10px}
+.prow-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.prow-name{font-weight:700}
+.del{appearance:none;border:0;background:transparent;color:var(--muted);font-size:14px;font-weight:600;cursor:pointer;min-height:40px;padding:0 8px;border-radius:8px}
+.del:hover{color:var(--crit-text)}
+.inputs{display:flex;flex-wrap:wrap;gap:14px}
+.field{display:grid;gap:4px}
+.field span{font-size:13px;font-weight:600;color:var(--ink-2)}
+.num{display:inline-flex;align-items:stretch;border:1.5px solid var(--line-strong);border-radius:12px;overflow:hidden;background:var(--surface)}
+.num button{appearance:none;width:46px;min-height:46px;border:0;background:var(--surface-2);color:var(--ink);font-size:22px;font-weight:700;cursor:pointer;line-height:1}
+.num button:active{background:var(--surface-3)}
+.num input{width:56px;text-align:center;border:0;background:var(--surface);color:var(--ink);font-family:var(--mono);font-size:20px;font-weight:700;min-height:46px;-moz-appearance:textfield;appearance:textfield}
+.num input::-webkit-outer-spin-button,.num input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.out{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;align-items:center}
+.out .big{font-family:var(--mono);font-size:34px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.out .work{font-family:var(--mono);font-size:14px;color:var(--ink-2)}
+.badge{display:inline-block;border-radius:10px;padding:6px 10px;font-size:14px;font-weight:650;line-height:1.35}
+.badge.keep{background:var(--good-soft);color:var(--good-text)}
+.badge.mid{background:var(--warn-soft);color:var(--ink)}
+.badge.drop{background:var(--crit-soft);color:var(--crit-text)}
+.badge.err{background:var(--surface-2);color:var(--ink-2)}
+.nl{width:100%;height:46px;display:block}
+.nl .axis{stroke:var(--line-strong);stroke-width:2}
+.nl .tick{stroke:var(--muted);stroke-width:1.5}
+.nl .min{stroke:var(--good);stroke-width:2;stroke-dasharray:4 3}
+.nl text{fill:var(--muted);font-size:11px;font-family:var(--font)}
+.nl .dot{stroke:var(--surface);stroke-width:2}
+.compare{font-size:15px;background:var(--surface-2);border-radius:12px;padding:10px 12px;display:grid;gap:4px}
+.rules{padding:0 16px 14px;display:grid;gap:8px;font-size:15px}
+.rules div{border-radius:10px;padding:8px 10px}
+.rules .r1{background:var(--crit-soft)} .rules .r2{background:var(--warn-soft)} .rules .r3{background:var(--good-soft)}
+.lawshe{width:100%;border-collapse:collapse;font-size:14px;font-family:var(--mono)}
+.lawshe th,.lawshe td{border:1px solid var(--line);padding:4px 6px;text-align:center}
+.lawshe th{background:var(--surface-2);font-family:var(--font)}
+/* response grid */
+.rgrid{width:100%;border-collapse:collapse;font-size:13.5px;margin:4px 0 2px}
+.rgrid th{font-size:12px;color:var(--muted);font-weight:600;padding:4px 2px;text-align:center}
+.rgrid th.it{text-align:left}
+.rgrid td{border-top:1px solid var(--line);padding:6px 2px;vertical-align:middle}
+.rgrid td.it{line-height:1.3;padding-right:6px}
+.rgrid td.sg{width:22px;text-align:center;font-weight:800;font-family:var(--mono)}
+.rgrid td.sg.p{color:var(--good-text)} .rgrid td.sg.m{color:var(--crit-text)}
+.rgrid td.c{width:26px;text-align:center}
+.rgrid .b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line-strong);font-family:var(--mono);font-size:11px;color:var(--muted)}
+.rgrid .b.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
+.keyline{font-size:13px;color:var(--muted)}
+.totals{display:grid;gap:2px;font-family:var(--mono);font-size:14px}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-in"><a class="back" href="index.html" data-keep-lang><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5L7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="back">Tüm haftalar</span></a><div class="lang" role="group" aria-label="Language / Dil"><button type="button" data-lang-btn="tr" lang="tr" aria-pressed="false">TR</button><button type="button" data-lang-btn="en" lang="en" aria-pressed="false">EN</button></div></div></div>
+<main class="app">
+  <header class="head">
+    <p class="eyebrow" data-t="eyebrow"></p>
+    <h1 data-t="h1"></h1>
+    <p class="lead" data-t="lead"></p>
+  </header>
+  <nav class="seg" role="tablist" aria-label="Parts">
+    <button type="button" role="tab" id="tab-p1" data-panel="p1" aria-controls="p1"><span class="n">1</span><span data-t="tab1"></span></button>
+    <button type="button" role="tab" id="tab-p2" data-panel="p2" aria-controls="p2"><span class="n">2</span><span data-t="tab2"></span></button>
+  </nav>
+
+  <section id="p1" role="tabpanel" aria-labelledby="tab-p1">
+    <div class="stack">
+      <div class="card">
+        <h2 data-t="prTitle"></h2>
+        <p data-t="prLead"></p>
+        <div class="defbox">
+          <div><span class="lbl" data-t="popL"></span> <span data-t="pop"></span></div>
+          <div><span class="lbl" data-t="defL"></span> <span data-t="def"></span></div>
+        </div>
+        <div class="itempick" id="itemPick" role="group"></div>
+        <div id="vote" aria-live="polite"></div>
+      </div>
+      <div class="card">
+        <h2 data-t="calcTitle"></h2>
+        <p data-t="calcLead"></p>
+        <div id="calc" aria-live="polite"></div>
+        <details class="cmp">
+          <summary data-t="rulesT"></summary>
+          <div class="rules" id="rules"></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="p2" role="tabpanel" aria-labelledby="tab-p2" class="card">
+    <h2 data-t="rsTitle"></h2>
+    <p data-t="rsLead"></p>
+    <div id="quizRs"></div>
+  </section>
+</main>
+<footer class="foot"><p data-t="privacy"></p><p data-t="sources"></p></footer>
+
+<script>
+/* PSYC3204 phone-app kit: language, helpers, tabs, quiz */
+const Kit = (() => {
+  'use strict';
+  const KEY = 'psyc3204.lang';
+  const subs = [];
+  let lang = 'tr';
+  try {
+    const p = new URLSearchParams(location.search).get('lang');
+    if (p === 'tr' || p === 'en') lang = p;
+    else {
+      let s = null;
+      try { s = localStorage.getItem(KEY); } catch (e) { s = null; }
+      if (s === 'tr' || s === 'en') lang = s;
+      else lang = (navigator.language || '').toLowerCase().startsWith('tr') ? 'tr' : 'en';
+    }
+  } catch (e) { lang = 'tr'; }
+
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const t = v => (v == null ? '' : typeof v === 'string' ? v : (v[lang] != null ? v[lang] : (v.en || '')));
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+
+  function apply() {
+    document.documentElement.lang = lang;
+    const S = (window.STR && window.STR[lang]) || {};
+    $$('[data-t]').forEach(el => { const v = S[el.dataset.t]; if (typeof v === 'string') el.textContent = v; });
+    $$('[data-lang-btn]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.langBtn === lang)));
+    $$('a[data-keep-lang]').forEach(a => {
+      const href = a.getAttribute('href') || '';
+      const [base, hash] = href.split('#');
+      a.setAttribute('href', base.split('?')[0] + '?lang=' + lang + (hash ? '#' + hash : ''));
+    });
+    if (S.docTitle) document.title = S.docTitle;
+  }
+  function setLang(l) {
+    if (l === lang) return;
+    lang = l;
+    try { localStorage.setItem(KEY, l); } catch (e) { /* storage unavailable */ }
+    try { const u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u.toString()); } catch (e) { /* file:// or sandbox */ }
+    apply();
+    subs.forEach(f => { try { f(l); } catch (e) { console.error(e); } });
+  }
+  function onLang(f) { subs.push(f); }
+
+  function shuffle(a, rnd) {
+    const r = rnd || Math.random;
+    const b = a.slice();
+    for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; }
+    return b;
+  }
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      let q = Math.imul(a ^ a >>> 15, 1 | a);
+      q = q + Math.imul(q ^ q >>> 7, 61 | q) ^ q;
+      return ((q ^ q >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+  };
+
+  const ICON = {
+    ok: '<svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" style="fill:var(--good)"/><path d="M5.8 10.3l2.8 2.8 5.6-6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    no: '<svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" style="fill:var(--crit)"/><path d="M6.8 6.8l6.4 6.4M13.2 6.8l-6.4 6.4" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>',
+    info: '<svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2" fill="none" style="stroke:var(--muted)" stroke-width="1.6"/><path d="M10 9v5" style="stroke:var(--muted)" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="6.3" r="1.2" style="fill:var(--muted)"/></svg>'
+  };
+
+  /* Tabs: buttons [role=tab][data-panel]; remembers the part in the URL hash (#p1, #p2...) */
+  function tabs(nav, onChange) {
+    const btns = $$('[role="tab"]', nav);
+    function select(id, push) {
+      btns.forEach(b => {
+        const on = b.dataset.panel === id;
+        b.setAttribute('aria-selected', String(on));
+        b.tabIndex = on ? 0 : -1;
+        const p = document.getElementById(b.dataset.panel);
+        if (p) p.hidden = !on;
+      });
+      if (push) { try { history.replaceState(null, '', '#' + id); } catch (e) { /* ignore */ } }
+      if (onChange) onChange(id);
+    }
+    btns.forEach((b, k) => {
+      b.addEventListener('click', () => { select(b.dataset.panel, true); });
+      b.addEventListener('keydown', e => {
+        const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        const nb = btns[(k + d + btns.length) % btns.length];
+        nb.focus(); select(nb.dataset.panel, true);
+      });
+    });
+    const h = (location.hash || '').slice(1);
+    select(btns.some(b => b.dataset.panel === h) ? h : btns[0].dataset.panel, false);
+    return { select };
+  }
+
+  /* Quiz: one question at a time, instant feedback, summary with review */
+  function quiz(root, cfg) {
+    const items = cfg.items;
+    const L = cfg.labels;
+    const st = { i: 0, picks: new Array(items.length).fill(null) };
+    function score() { return st.picks.reduce((s, p, k) => s + (p === items[k].answer ? 1 : 0), 0); }
+    function render(focusFirst) {
+      if (st.i >= items.length) return renderSummary();
+      const it = items[st.i];
+      const pick = st.picks[st.i];
+      const answered = pick !== null;
+      const opts = it.options || cfg.options;
+      let h = `<div class="progress"><div class="progress-top"><span>${esc(t(L.question))} ${st.i + 1} / ${items.length}</span><span>${esc(t(L.correctSoFar))}: ${score()}</span></div><div class="bar"><i style="width:${(st.i / items.length) * 100}%"></i></div></div>`;
+      if (it.pre) h += `<p class="q-sub">${esc(t(it.pre))}</p>`;
+      h += `<p class="q-text" tabindex="-1">${esc(t(it.q))}</p>`;
+      if (it.html) h += it.html();
+      if (cfg.prompt) h += `<p class="q-sub">${esc(t(cfg.prompt))}</p>`;
+      h += `<div class="choices">`;
+      opts.forEach((o, k) => {
+        let cls = 'choice', mark = String.fromCharCode(65 + k);
+        if (answered) {
+          if (k === it.answer) { cls += ' correct'; mark = '✓'; }
+          else if (k === pick) { cls += ' wrong'; mark = '✗'; }
+          else cls += ' dim';
+        }
+        h += `<button type="button" class="${cls}" data-k="${k}"${answered ? ' disabled' : ''}><span class="mark" aria-hidden="true">${mark}</span><span>${esc(t(o))}</span></button>`;
+      });
+      h += `</div>`;
+      if (answered) {
+        const ok = pick === it.answer;
+        const head = ok ? t(L.right) : t(L.notQuite) + ' ' + t(L.bestAnswer) + ': ' + t(opts[it.answer]) + '.';
+        h += `<div class="feedback ${ok ? 'ok' : 'no'}" role="status"><b>${esc(head)}</b><span>${esc(t(it.explain))}</span></div>`;
+        h += `<div class="row end"><button type="button" class="btn primary" data-next>${esc(t(st.i === items.length - 1 ? L.finish : L.next))}</button></div>`;
+      }
+      root.innerHTML = h;
+      root.querySelectorAll('.choice:not([disabled])').forEach(b => b.addEventListener('click', () => {
+        st.picks[st.i] = +b.dataset.k;
+        render();
+        const fb = root.querySelector('.feedback');
+        if (fb && fb.scrollIntoView) fb.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        if (cfg.onAnswer) cfg.onAnswer(st.i, st.picks[st.i] === it.answer);
+      }));
+      const nx = root.querySelector('[data-next]');
+      if (nx) nx.addEventListener('click', () => { st.i++; render(true); root.scrollIntoView({ block: 'start', behavior: 'smooth' }); });
+      if (focusFirst) { const q = root.querySelector('.q-text'); if (q) q.focus({ preventScroll: true }); }
+    }
+    function renderSummary() {
+      const s = score();
+      let h = `<div class="score"><span class="big">${s} / ${items.length}</span><span class="muted">${esc(t(L.correctTotal))}</span></div>`;
+      if (cfg.summaryNote) h += `<p class="note">${esc(t(cfg.summaryNote))}</p>`;
+      h += `<ul class="review">`;
+      items.forEach((it, k) => {
+        const opts = it.options || cfg.options;
+        const ok = st.picks[k] === it.answer;
+        h += `<li>${ok ? ICON.ok : ICON.no}<div><div>${esc(t(it.short || it.q))}</div><div class="ans">${esc(t(L.bestAnswer))}: ${esc(t(opts[it.answer]))}</div></div></li>`;
+      });
+      h += `</ul><div class="row"><button type="button" class="btn" data-restart>${esc(t(L.restart))}</button></div>`;
+      root.innerHTML = h;
+      root.querySelector('[data-restart]').addEventListener('click', () => { st.i = 0; st.picks.fill(null); render(true); });
+      if (cfg.onFinish) cfg.onFinish(s, items.length);
+    }
+    onLang(() => render());
+    render();
+    return { restart() { st.i = 0; st.picks.fill(null); render(); } };
+  }
+
+  const QUIZ_LABELS = {
+    question: { en: 'Question', tr: 'Soru' },
+    correctSoFar: { en: 'Correct', tr: 'Doğru' },
+    right: { en: 'Correct!', tr: 'Doğru!' },
+    notQuite: { en: 'Not quite.', tr: 'Tam değil.' },
+    bestAnswer: { en: 'Best answer', tr: 'En iyi yanıt' },
+    next: { en: 'Next', tr: 'Sonraki' },
+    finish: { en: 'See results', tr: 'Sonucu gör' },
+    correctTotal: { en: 'correct', tr: 'doğru' },
+    restart: { en: 'Start again', tr: 'Baştan başla' }
+  };
+
+  const COMMON = {
+    en: { back: 'All weeks', privacy: 'Your answers stay on this phone. Nothing is sent anywhere.' },
+    tr: { back: 'Tüm haftalar', privacy: 'Yanıtların bu telefonda kalır, hiçbir yere gönderilmez.' }
+  };
+  function withCommon(s) { return { en: Object.assign({}, COMMON.en, s.en), tr: Object.assign({}, COMMON.tr, s.tr) }; }
+
+  function init() {
+    $$('[data-lang-btn]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.langBtn)));
+    apply();
+  }
+  return { get lang() { return lang; }, withCommon, t, esc, $, $$, apply, setLang, onLang, shuffle, mulberry32, store, ICON, tabs, quiz, QUIZ_LABELS, init };
+})();
+
+</script>
+<script>
+(() => {
+'use strict';
+const { t, esc, $ } = Kit;
+window.STR = Kit.withCommon({
+  en: {
+    docTitle: 'Validity and Response Styles · PSYC3204',
+    eyebrow: 'PSYC3204 · Week 5',
+    h1: 'Validity and response styles',
+    lead: 'Two parts: a rehearsal of the November 4 peer panel with a CVR calculator, and a hunt for response styles.',
+    tab1: 'Panel rehearsal', tab2: 'Response style hunter',
+    prTitle: 'Panel rehearsal',
+    prLead: 'You are a panelist. Read the construct definition, then rate the item: is it essential for measuring the construct as this group defines it? Use your rating when your row votes by raising hands.',
+    popL: 'Target population:', pop: 'University students',
+    defL: 'Construct definition:', def: 'University students’ favorable or unfavorable evaluations of group work in their courses. It has three aspects: thoughts about how group work contributes to learning, feelings during group work, and the tendency to take part in or avoid group work.',
+    calcTitle: 'CVR calculator',
+    calcLead: 'One row per panel. Enter E (the number of panelists who said “Essential”) and N (the number of panelists in the panel). Panels have 5 to 12 people.',
+    rulesT: 'Decision rules and Lawshe’s minimum values',
+    rsTitle: 'Response style hunter',
+    rsLead: 'Six items on attitudes toward group work, answered from 1 (strongly disagree) to 5 (strongly agree). Items marked − are reverse-keyed. Look at each respondent’s pattern: which response style do you see?',
+    sources: 'Sources: Lawshe, C. H. (1975). A quantitative approach to content validity. Personnel Psychology, 28, 563–575. Cohen, R. J., Schneider, W. J., & Tobin, R. M. (2022). Psychological testing and assessment (10th ed.). McGraw Hill.'
+  },
+  tr: {
+    docTitle: 'Geçerlik ve Yanıt Stilleri · PSKO3204',
+    eyebrow: 'PSKO3204 · 5. hafta',
+    h1: 'Geçerlik ve yanıt stilleri',
+    lead: 'İki bölüm: 4 Kasım’daki akran panelinin provası ve KGO hesaplayıcı; yanıt stili avı.',
+    tab1: 'Panel provası', tab2: 'Yanıt stili avcısı',
+    prTitle: 'Panel provası',
+    prLead: 'Sen bir panelistsin. Yapı tanımını oku, sonra maddeyi değerlendir: bu madde, yapıyı bu grubun tanımladığı biçimiyle ölçmek için gerekli mi? Sıran el kaldırarak oy verirken bu seçimini kullan.',
+    popL: 'Hedef kitle:', pop: 'Üniversite öğrencileri',
+    defL: 'Yapı tanımı:', def: 'Üniversite öğrencilerinin derslerdeki grup çalışmalarına yönelik olumlu ya da olumsuz değerlendirmeleri. Üç yönü var: grup çalışmasının öğrenmeye katkısına ilişkin düşünceler, grup çalışması sırasında hissedilenler ve grup çalışmasına katılma ya da ondan kaçınma eğilimi.',
+    calcTitle: 'KGO hesaplayıcı',
+    calcLead: 'Her panel için bir satır. G’yi (“Gerekli” diyen panelist sayısı) ve N’yi (paneldeki panelist sayısı) gir. Paneller 5–12 kişiliktir.',
+    rulesT: 'Karar kuralları ve Lawshe’nin en düşük değerleri',
+    rsTitle: 'Yanıt stili avcısı',
+    rsLead: 'Grup çalışmasına yönelik tutumla ilgili altı madde; yanıtlar 1 (kesinlikle katılmıyorum) ile 5 (kesinlikle katılıyorum) arasında. − işaretli maddeler ters madde. Her yanıtlayıcının örüntüsüne bak: hangi yanıt stilini görüyorsun?',
+    sources: 'Kaynaklar: Lawshe, C. H. (1975). A quantitative approach to content validity. Personnel Psychology, 28, 563–575. Cohen, R. J., Schneider, W. J. ve Tobin, R. M. (2022). Psychological testing and assessment (10. baskı). McGraw Hill.'
+  }
+});
+
+const L = (en, tr) => ({ en, tr });
+const dec = v => (Kit.lang === 'tr' ? String(v).replace('.', ',') : String(v));
+const fmt2 = v => {
+  const s = (Math.round(v * 100) / 100).toFixed(2);
+  return dec(s);
+};
+
+/* ---------- 1. panel rehearsal ---------- */
+const ITEMS = [
+  { id: 'A', text: L('Hearing other people’s ideas in group work gives me new perspectives.', 'Grup çalışmasında başkalarının fikirlerini duymak bana yeni bakış açıları kazandırır.') },
+  { id: 'B', text: L('The study rooms on campus are adequate for group work.', 'Kampüsteki çalışma odaları grup çalışması için yeterlidir.') },
+  { id: 'C', text: L('I enjoy working with my group members.', 'Grup arkadaşlarımla birlikte çalışmayı severim.'), extra: true }
+];
+const OPTS = [L('Essential', 'Gerekli'), L('Useful but not essential', 'Yararlı ama gerekli değil'), L('Not necessary', 'Gerekli değil')];
+const LAWSHE = { 5: 0.99, 6: 0.99, 7: 0.99, 8: 0.75, 9: 0.78, 10: 0.62, 11: 0.59, 12: 0.56 };
+const KEY = 'psyc3204.h05.panel';
+const st = Kit.store.get(KEY, null) || {};
+if (!st.item || !ITEMS.some(i => i.id === st.item)) st.item = 'A';
+if (!st.votes) st.votes = {};
+if (!st.rows) st.rows = {};
+ITEMS.forEach(i => { if (!Array.isArray(st.rows[i.id]) || !st.rows[i.id].length) st.rows[i.id] = [{ e: '', n: '' }]; });
+const save = () => Kit.store.set(KEY, st);
+
+const S1 = {
+  item: L('Item', 'Madde'), extra: L('(extra)', '(ek)'),
+  yourRating: L('Your rating', 'Senin oyun'),
+  useIt: L('When your row votes, raise your hand only if you chose “Essential”.', 'Sıran oy verirken yalnızca “Gerekli” dediysen elini kaldır.'),
+  panel: L('Panel', 'Panel'), row: L('row', 'sıra'),
+  eLbl: L('E · “Essential”', 'G · “Gerekli”'), nLbl: L('N · panelists', 'N · panelist'),
+  minus: L('Decrease', 'Azalt'), plus: L('Increase', 'Artır'),
+  add: L('+ Add a panel', '+ Panel ekle'), reset: L('Clear this item', 'Bu maddeyi temizle'), del: L('Remove', 'Sil'),
+  minLbl: L('minimum', 'en düşük'),
+  waiting: L('Enter E and N.', 'G’yi ve N’yi gir.'),
+  errN: L('A panel needs 5 to 12 people. Split a larger row in two; join a smaller row to the next one.', 'Panel 5–12 kişi olmalı. Daha kalabalık bir sıra ikiye ayrılır; daha küçük bir sıra bir sonrakine katılır.'),
+  errE: L('E cannot be larger than N.', 'G, N’den büyük olamaz.'),
+  keep: L('Keep (check the comments)', 'Tut (yorumlara bakın)'),
+  mid: L('In between: keep and revise only if needed to cover an aspect', 'Arada: yalnızca bir yönü kapsamak için gerekiyorsa tut ve düzelt'),
+  drop: L('Drop or rewrite substantially', 'Çıkar ya da büyük ölçüde yeniden yaz'),
+  cmpT: L('Same item, different panels:', 'Aynı madde, farklı paneller:'),
+  cmpB: L('Panels differ. This is why a panel needs 8–12 people and why the comments matter.', 'Paneller farklıdır. Bu yüzden panelde 8–12 kişi olmalı ve yorumlar önemlidir.'),
+  r1: L('CVR ≤ 0: drop the item or rewrite it substantially.', 'KGO ≤ 0: maddeyi çıkar ya da büyük ölçüde yeniden yaz.'),
+  r2: L('Between 0 and the minimum: keep and revise the item only if you need it to cover an aspect of your construct.', '0 ile en düşük değer arasında: madde yalnızca yapının bir yönünü kapsamak için gerekiyorsa tut ve düzelt.'),
+  r3: L('At or above the minimum: keep the item, unless the comments point to a wording problem.', 'En düşük değere eşit ya da üstünde: maddeyi tut (yorumlar bir ifade sorununa işaret etmiyorsa).'),
+  rFoot: L('The final decision is the group’s: it also uses the panel comments and the interview notes.', 'Son kararı grup verir: panel yorumlarına ve görüşme notlarına da bakar.'),
+  formula: L('CVR = (E − N/2) / (N/2)', 'KGO = (G − N/2) / (N/2)'),
+  cvr: L('CVR', 'KGO'), example: L('Example: 9 of 10 say “Essential” → (9 − 5) / 5 = 0.80; minimum .62 → keep.', 'Örnek: 10 kişiden 9’u “Gerekli” → (9 − 5) / 5 = 0,80; en düşük .62 → tut.')
+};
+
+function renderPick() {
+  const root = $('#itemPick');
+  root.setAttribute('aria-label', t(S1.item));
+  root.innerHTML = ITEMS.map(i => `<button type="button" data-id="${i.id}" aria-pressed="${st.item === i.id}">${esc(t(S1.item))} ${i.id}${i.extra ? ' ' + esc(t(S1.extra)) : ''}</button>`).join('');
+  root.querySelectorAll('button').forEach(b => b.addEventListener('click', () => { st.item = b.dataset.id; save(); renderAll(); }));
+}
+
+function renderVote() {
+  const it = ITEMS.find(i => i.id === st.item);
+  const pick = st.votes[it.id];
+  let h = `<p class="item-quote">${esc(t(it.text))}</p><p class="small muted">${esc(t(S1.yourRating))}</p><div class="choices">`;
+  OPTS.forEach((o, k) => {
+    const on = pick === k;
+    h += `<button type="button" class="choice${on ? ' picked' : ''}" data-k="${k}" aria-pressed="${on}"><span class="mark" aria-hidden="true">${on ? '✓' : String.fromCharCode(65 + k)}</span><span>${esc(t(o))}</span></button>`;
+  });
+  h += `</div><p class="note">${esc(t(S1.useIt))}</p>`;
+  $('#vote').innerHTML = h;
+  $('#vote').querySelectorAll('.choice').forEach(b => b.addEventListener('click', () => { st.votes[it.id] = +b.dataset.k; save(); renderVote(); }));
+}
+
+function evalRow(r) {
+  const e = r.e === '' ? null : +r.e, n = r.n === '' ? null : +r.n;
+  if (e === null || n === null || !isFinite(e) || !isFinite(n)) return { state: 'wait' };
+  if (n < 5 || n > 12) return { state: 'errN' };
+  if (e > n || e < 0) return { state: 'errE' };
+  const cvr = Math.round(((e - n / 2) / (n / 2)) * 100) / 100;
+  const min = LAWSHE[n];
+  const cls = cvr <= 0 ? 'drop' : (cvr >= min ? 'keep' : 'mid');
+  return { state: 'ok', e, n, cvr, min, cls };
+}
+
+function numberLine(res) {
+  const W = 300, x = v => 12 + (v + 1) / 2 * (W - 24);
+  let s = `<svg class="nl" viewBox="0 0 ${W} 46" role="img" aria-label="${esc(t(S1.cvr))} ${res ? fmt2(res.cvr) : ''}">`;
+  s += `<line class="axis" x1="${x(-1)}" y1="20" x2="${x(1)}" y2="20"/>`;
+  [-1, 0, 1].forEach(v => { s += `<line class="tick" x1="${x(v)}" y1="14" x2="${x(v)}" y2="26"/><text x="${x(v)}" y="40" text-anchor="middle">${v > 0 ? '+1' : (v < 0 ? '−1' : '0')}</text>`; });
+  if (res) {
+    s += `<line class="min" x1="${x(res.min)}" y1="8" x2="${x(res.min)}" y2="32"/>`;
+    const col = res.cls === 'keep' ? 'var(--good)' : (res.cls === 'mid' ? 'var(--warn)' : 'var(--crit)');
+    s += `<circle class="dot" cx="${x(res.cvr)}" cy="20" r="8" style="fill:${col}"/>`;
+  }
+  return s + '</svg>';
+}
+
+function renderCalc() {
+  const rows = st.rows[st.item];
+  let h = `<p class="small mono">${esc(t(S1.formula))}</p><div class="prows">`;
+  rows.forEach((r, k) => {
+    const res = evalRow(r);
+    h += `<div class="prow" data-k="${k}"><div class="prow-top"><span class="prow-name">${esc(t(S1.panel))} ${k + 1}</span>${rows.length > 1 ? `<button type="button" class="del" data-del="${k}">${esc(t(S1.del))}</button>` : ''}</div>`;
+    h += `<div class="inputs">`;
+    [['e', S1.eLbl], ['n', S1.nLbl]].forEach(([f, lbl]) => {
+      h += `<label class="field"><span>${esc(t(lbl))}</span><span class="num"><button type="button" data-step="-1" data-f="${f}" aria-label="${esc(t(S1.minus))}">−</button><input type="number" inputmode="numeric" min="0" max="${f === 'n' ? 12 : 12}" data-f="${f}" value="${esc(r[f])}"><button type="button" data-step="1" data-f="${f}" aria-label="${esc(t(S1.plus))}">+</button></span></label>`;
+    });
+    h += `</div><div class="res">`;
+    if (res.state === 'ok') {
+      const half = res.n / 2;
+      h += `<div class="out"><span class="big">${fmt2(res.cvr)}</span><span class="work">(${res.e} − ${dec(half)}) / ${dec(half)} · ${esc(t(S1.minLbl))} .${String(Math.round(res.min * 100)).padStart(2, '0')}</span></div>`;
+      h += numberLine(res);
+      h += `<span class="badge ${res.cls}">${esc(t(S1[res.cls]))}</span>`;
+    } else if (res.state === 'wait') {
+      h += `<p class="small muted">${esc(t(S1.waiting))}</p>`;
+    } else {
+      h += `<span class="badge err">${esc(t(res.state === 'errN' ? S1.errN : S1.errE))}</span>`;
+    }
+    h += `</div></div>`;
+  });
+  h += `</div><div class="row"><button type="button" class="btn" data-add>${esc(t(S1.add))}</button><button type="button" class="btn ghost" data-reset>${esc(t(S1.reset))}</button></div>`;
+  const ok = rows.map(evalRow).filter(r => r.state === 'ok');
+  if (ok.length > 1) {
+    h += `<div class="compare"><b>${esc(t(S1.cmpT))}</b><span class="mono">${ok.map(r => fmt2(r.cvr)).join(' · ')}</span><span>${esc(t(S1.cmpB))}</span></div>`;
+  }
+  const root = $('#calc');
+  root.innerHTML = h;
+  root.querySelectorAll('.prow').forEach(row => {
+    const k = +row.dataset.k;
+    row.querySelectorAll('input').forEach(inp => inp.addEventListener('change', () => {
+      const v = inp.value.trim();
+      rows[k][inp.dataset.f] = v === '' ? '' : String(Math.max(0, Math.min(99, Math.round(+v) || 0)));
+      save(); renderCalc();
+    }));
+    row.querySelectorAll('[data-step]').forEach(b => b.addEventListener('click', () => {
+      const f = b.dataset.f;
+      const cur = rows[k][f] === '' ? (f === 'n' ? 10 : 0) - (+b.dataset.step) : +rows[k][f];
+      const nv = Math.max(0, Math.min(f === 'n' ? 12 : 12, cur + (+b.dataset.step)));
+      rows[k][f] = String(nv);
+      save(); renderCalc();
+      const again = $('#calc').querySelector(`.prow[data-k="${k}"] [data-step="${b.dataset.step}"][data-f="${f}"]`);
+      if (again) again.focus({ preventScroll: true });
+    }));
+  });
+  root.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => { rows.splice(+b.dataset.del, 1); save(); renderCalc(); }));
+  root.querySelector('[data-add]').addEventListener('click', () => { if (rows.length < 8) rows.push({ e: '', n: '' }); save(); renderCalc(); });
+  root.querySelector('[data-reset]').addEventListener('click', () => { st.rows[st.item] = [{ e: '', n: '' }]; save(); renderCalc(); });
+}
+
+function renderRules() {
+  let h = `<div class="r1">${esc(t(S1.r1))}</div><div class="r2">${esc(t(S1.r2))}</div><div class="r3">${esc(t(S1.r3))}</div><p class="small muted">${esc(t(S1.rFoot))}</p><p class="small">${esc(t(S1.example))}</p>`;
+  h += `<table class="lawshe"><thead><tr><th>N</th>${Object.keys(LAWSHE).map(n => `<td>${n}</td>`).join('')}</tr></thead><tbody><tr><th>${esc(t(S1.minLbl))}</th>${Object.values(LAWSHE).map(v => `<td>.${String(Math.round(v * 100)).padStart(2, '0')}</td>`).join('')}</tr></tbody></table><p class="small muted">Lawshe (1975)</p>`;
+  $('#rules').innerHTML = h;
+}
+
+function renderAll() { renderPick(); renderVote(); renderCalc(); renderRules(); }
+
+/* ---------- 2. response style hunter ---------- */
+const RS_ITEMS = [
+  { k: '+', text: L('Group work helps me understand the course material better.', 'Grup çalışması dersteki konuları daha iyi anlamamı sağlar.') },
+  { k: '−', text: L('I learn less from group assignments than from individual assignments.', 'Grup ödevlerinde öğrendiklerim bireysel ödevlerden azdır.') },
+  { k: '+', text: L('I enjoy working with my group members.', 'Grup arkadaşlarımla birlikte çalışmayı severim.') },
+  { k: '−', text: L('Group assignments feel like a waste of time to me.', 'Grup ödevleri bana zaman kaybı gibi gelir.') },
+  { k: '+', text: L('I am pleased when I find out that a course includes group work.', 'Bir derste grup çalışması olduğunu öğrenince sevinirim.') },
+  { k: '−', text: L('I avoid group assignments whenever I can.', 'Grup ödevlerinden mümkün olduğunca kaçınırım.') }
+];
+const STYLES = [L('Consistent responding (no clear style)', 'Tutarlı yanıt (belirgin bir stil yok)'), L('Acquiescence', 'Onaylama eğilimi'), L('Middle responding', 'Orta yanıt'), L('Careless responding', 'Dikkatsiz yanıt'), L('Extreme responding', 'Uç yanıt')];
+const scoreOf = ans => ans.reduce((s, a, i) => s + (RS_ITEMS[i].k === '−' ? 6 - a : a), 0);
+const rawOf = ans => ans.reduce((s, a) => s + a, 0);
+const TOT = {
+  raw: L('Raw total (nothing reversed)', 'Ham toplam (hiçbir madde çevrilmeden)'),
+  scored: L('Score (reverse-keyed items reversed)', 'Puan (ters maddeler çevrilince)'),
+  hdrItem: L('Item', 'Madde'), key: L('+ positive item · − reverse-keyed item: scored as 6 minus the answer', '+ düz madde · − ters madde: puanı 6 eksi yanıt')
+};
+function grid(ans) {
+  let h = `<table class="rgrid"><thead><tr><th class="it">${esc(t(TOT.hdrItem))}</th><th></th>${[1, 2, 3, 4, 5].map(v => `<th>${v}</th>`).join('')}</tr></thead><tbody>`;
+  RS_ITEMS.forEach((it, i) => {
+    h += `<tr><td class="it">${i + 1}. ${esc(t(it.text))}</td><td class="sg ${it.k === '+' ? 'p' : 'm'}">${it.k}</td>`;
+    for (let v = 1; v <= 5; v++) h += `<td class="c"><span class="b${ans[i] === v ? ' on' : ''}">${ans[i] === v ? v : ''}</span></td>`;
+    h += '</tr>';
+  });
+  h += `</tbody></table><p class="keyline">${esc(t(TOT.key))}</p>`;
+  return h;
+}
+function totals(ans) {
+  return ` ${t(TOT.raw)}: ${rawOf(ans)} / 30 · ${t(TOT.scored)}: ${scoreOf(ans)} / 30.`;
+}
+const RESP = [
+  { name: 'A', ans: [5, 4, 5, 5, 4, 5], answer: 1,
+    ex: L('A agrees with everything, including the reverse-keyed items: agreeing that group work helps learning and also that it is a waste of time is a contradiction. Without reverse-keyed items, A would look very favorable; once they are reversed, the total falls to the middle and the inconsistency shows.',
+          'A her şeye katılıyor, ters maddelere de: grup çalışmasının öğrenmeye yardım ettiğine ve aynı zamanda zaman kaybı olduğuna katılmak çelişki. Ters maddeler olmasaydı A çok olumlu görünürdü; ters maddeler çevrilince toplam ortaya iner ve tutarsızlık görünür.') },
+  { name: 'B', ans: [5, 2, 4, 1, 4, 2], answer: 0,
+    ex: L('B agrees with the positive items and disagrees with the reverse-keyed ones: a consistent, favorable attitude. The raw total (18) looks neutral; only after reverse scoring does the real attitude show.',
+          'B düz maddelere katılıyor, ters maddelere katılmıyor: tutarlı ve olumlu bir tutum. Ham toplam (18) nötr görünüyor; gerçek tutum ancak ters maddeler çevrilince ortaya çıkıyor.') },
+  { name: 'C', ans: [3, 3, 3, 3, 3, 3], answer: 2,
+    ex: L('C chooses the middle option for every item. This may be a real “no opinion”, but the same answer to opposite statements points to a middle response style: the score says nothing about C’s attitude.',
+          'C her maddede ortadaki seçeneği seçiyor. Bu gerçek bir “fikrim yok” olabilir; ama karşıt ifadelere hep aynı yanıt orta yanıt stiline işaret eder: puan C’nin tutumu hakkında bir şey söylemez.') },
+  { name: 'D', ans: [2, 5, 4, 1, 1, 5], answer: 3,
+    ex: L('D’s answers jump around with no pattern: D enjoys working with the group (4) but avoids group assignments (5) and is not pleased by group work (1). This looks like answering without reading.',
+          'D’nin yanıtları örüntüsüz biçimde zıplıyor: grupla çalışmayı seviyor (4) ama grup ödevlerinden kaçınıyor (5) ve grup çalışmasına sevinmiyor (1). Okumadan yanıt verilmiş gibi görünüyor.') },
+  { name: 'E', ans: [5, 1, 5, 1, 5, 1], answer: 4,
+    ex: L('E uses only the end points, but consistently. From one scale alone, you cannot tell an extreme response style from a very strong attitude; if E answers every questionnaire with only 1s and 5s, it is a style.',
+          'E yalnızca uç seçenekleri kullanıyor, ama tutarlı biçimde. Tek bir ölçekten uç yanıt stilini çok güçlü bir tutumdan ayıramazsınız; E her ankete yalnızca 1 ve 5 ile yanıt veriyorsa bu bir stildir.') }
+];
+const rsItems = RESP.map(r => ({
+  q: L(`Respondent ${r.name}: which response style?`, `${r.name} yanıtlayıcısı: hangi yanıt stili?`),
+  short: L(`Respondent ${r.name}`, `${r.name} yanıtlayıcısı`),
+  html: () => grid(r.ans),
+  answer: r.answer,
+  get explain() { return { en: r.ex.en + totals(r.ans), tr: r.ex.tr + totals(r.ans) }; }
+}));
+rsItems.push({
+  q: L('Which response style do reverse-keyed items help you detect most?', 'Ters maddeler en çok hangi yanıt stilini yakalamaya yardım eder?'),
+  short: L('What reverse-keyed items detect', 'Ters maddelerin yakaladığı'),
+  options: [L('Acquiescence', 'Onaylama eğilimi'), L('Social desirability', 'Sosyal istenirlik'), L('Middle responding', 'Orta yanıt')],
+  answer: 0,
+  explain: L('Someone who agrees with everything also agrees with the reverse-keyed items, so the contradiction shows (the MMPI-2 TRIN scale uses pairs of opposite items in the same way; Cohen et al., 2022, p. 425). Social desirability needs separate validity scales, and the middle answer is the same for both kinds of item.',
+             'Her şeye katılan biri ters maddelere de katılır; çelişki böylece görünür (MMPI-2’deki TRIN ölçeği karşıt madde çiftlerini aynı mantıkla kullanır; Cohen vd., 2022, s. 425). Sosyal istenirlik için ayrı geçerlik ölçekleri gerekir; orta yanıt ise iki tür maddede de aynıdır.')
+});
+
+Kit.init();
+Kit.tabs($('.seg'));
+renderAll();
+Kit.onLang(() => renderAll());
+Kit.quiz($('#quizRs'), { items: rsItems, options: STYLES, labels: Kit.QUIZ_LABELS,
+  summaryNote: L('One third of your project items are reverse-keyed for this reason, and the item analysis template reverses them before adding them up.', 'Proje ölçeğinizdeki maddelerin üçte biri bu yüzden ters; madde analizi şablonu da toplamadan önce onları çeviriyor.') });
+window.__h05 = { evalRow, scoreOf, rawOf, RESP };
+})();
+</script>
+</body>
+</html>
