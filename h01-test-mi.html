@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#4a3aa7">
-<title>Test mi, Değerlendirme mi?</title>
+<title>Test mi, Değerleme mi?</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%234a3aa7%22%2F%3E%3Cpath%20d%3D%22M18%2044h28M22%2044V26M32%2044V18M42%2044V32%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 <style>
 :root{
@@ -429,23 +429,23 @@ window.STR = Kit.withCommon({
     defSource: 'Paraphrased from Cohen, Schneider, & Tobin (2022), Chapter 1.'
   },
   tr: {
-    docTitle: 'Test mi, Değerlendirme mi? · PSKO3204',
+    docTitle: 'Test mi, Değerleme mi? · PSKO3204',
     eyebrow: 'PSKO3204 · 1. hafta',
-    h1: 'Test mi, değerlendirme mi?',
+    h1: 'Test mi, değerleme mi?',
     lead: 'İki kısa tur. Bir yanıt seç ve devam etmeden önce geri bildirimi oku.',
-    tab1: 'Test mi, değerlendirme mi?',
+    tab1: 'Test mi, değerleme mi?',
     tab2: 'Neyi ölçüyor?',
     defsShow: 'Tanımları göster (önce soruları dene)',
     defTestName: 'Psikolojik test (testing):',
     defTest: 'psikolojiyle ilgili değişkenlerin, bir davranış örneği almak için tasarlanmış araç ya da işlemlerle ölçülmesi.',
-    defAssessName: 'Psikolojik değerlendirme (assessment):',
+    defAssessName: 'Psikolojik değerleme (assessment):',
     defAssess: 'psikolojik bir değerlendirme yapmak için test, görüşme, vaka çalışması ve davranış gözlemi gibi araçlarla psikolojiyle ilgili verilerin toplanması ve bütünleştirilmesi.',
     defSource: 'Cohen, Schneider ve Tobin (2022), 1. bölümden özetlenmiştir.'
   }
 });
 
 const TEST = { en: 'Testing', tr: 'Test' };
-const ASSESS = { en: 'Assessment', tr: 'Değerlendirme' };
+const ASSESS = { en: 'Assessment', tr: 'Değerleme' };
 const EXPL_TEST = {
   en: 'A standard procedure samples behavior and produces a score. No one is yet combining several sources to answer a question about the person.',
   tr: 'Standart bir işlemle davranış örneği alınıp puana dönüştürülüyor. Kişiyle ilgili bir soruyu yanıtlamak için henüz birden çok kaynak birleştirilmiyor.'
@@ -505,13 +505,13 @@ Kit.quiz(Kit.$('#quiz1'), {
   items: part1,
   options: [TEST, ASSESS],
   labels: Kit.QUIZ_LABELS,
-  summaryNote: { en: 'A test gives a score. An assessment uses scores and other information to answer a question about a person.', tr: 'Test bir puan verir. Değerlendirme ise kişiyle ilgili bir soruyu yanıtlamak için puanları ve başka bilgileri birlikte kullanır.' }
+  summaryNote: { en: 'A test gives a score. An assessment uses scores and other information to answer a question about a person.', tr: 'Test bir puan verir. Değerleme ise kişiyle ilgili bir soruyu yanıtlamak için puanları ve başka bilgileri birlikte kullanır.' }
 });
 Kit.quiz(Kit.$('#quiz2'), {
   items: part2,
   labels: Kit.QUIZ_LABELS,
   prompt: { en: 'What does this task mainly measure?', tr: 'Bu görev esas olarak neyi ölçüyor?' },
-  summaryNote: { en: 'A clinician can combine several of these tasks with an interview and observation. That combination is an assessment.', tr: 'Bir klinisyen bu görevlerin birkaçını görüşme ve gözlemle birlikte kullanabilir. Bu bütünleştirme bir değerlendirmedir.' }
+  summaryNote: { en: 'A clinician can combine several of these tasks with an interview and observation. That combination is an assessment.', tr: 'Bir klinisyen bu görevlerin birkaçını görüşme ve gözlemle birlikte kullanabilir. Bu bütünleştirme bir değerlemedir.' }
 });
 })();
 
