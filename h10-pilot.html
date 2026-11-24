@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#4a3aa7">
+<meta name="robots" content="noindex">
+<title>Pilot · Grupların formları</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%234a3aa7%22%2F%3E%3Cpath%20d%3D%22M20%2033l8%208%2016-18%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f2f2f6; --surface:#fdfdfe; --surface-2:#ebebf1; --ink:#14131b; --ink-2:#4a4957; --muted:#65636f;
+  --line:#e0dfe7; --line-strong:#c3c2ce; --accent:#4a3aa7; --accent-hover:#3c2f8e; --accent-ink:#ffffff;
+  --accent-soft:#e9e6f8; --good-text:#006300; --good-soft:#e1f3e1;
+  --radius:16px;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    color-scheme:dark;
+    --bg:#0f0f14; --surface:#18181f; --surface-2:#22222b; --ink:#f3f3f7; --ink-2:#c4c3cf; --muted:#9896a6;
+    --line:#2b2b35; --line-strong:#41414d; --accent:#9d93ee; --accent-hover:#b3abf3; --accent-ink:#14131b;
+    --accent-soft:#2b2847; --good-text:#5fd35f; --good-soft:#17301a;
+  }
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top,0px)}
+[hidden]{display:none!important}
+h1,h2{margin:0;line-height:1.2}
+p{margin:0}
+button{font:inherit;color:inherit;touch-action:manipulation}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.app{max-width:680px;margin:0 auto;padding:18px 16px 40px;display:grid;gap:18px}
+.head{display:grid;gap:6px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(26px,7vw,34px);font-weight:750;letter-spacing:-.015em}
+.lead{color:var(--ink-2)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:grid;gap:14px}
+.card h2{font-size:19px;font-weight:700}
+.note{font-size:14px;color:var(--ink-2);background:var(--surface-2);border-radius:12px;padding:10px 12px}
+.groups{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.gbtn{appearance:none;border:1px solid var(--line-strong);background:var(--surface);border-radius:12px;min-height:56px;font-size:22px;font-weight:750;cursor:pointer}
+.gbtn:hover{background:var(--surface-2)}
+.gbtn.wide{grid-column:span 4;font-size:16px;font-weight:650;min-height:48px;color:var(--ink-2)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.progress{font-size:14px;font-weight:650;color:var(--ink-2)}
+.change{appearance:none;border:0;background:transparent;color:var(--accent);font-weight:650;font-size:14px;padding:6px 4px;cursor:pointer;min-height:40px}
+.items{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.item{display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line-strong);border-radius:14px;background:var(--surface);color:var(--ink);text-decoration:none;min-height:64px}
+.item:hover{background:var(--surface-2)}
+.num{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-weight:750}
+.txt{display:grid;gap:2px;min-width:0}
+.txt strong{font-size:18px}
+.txt small{font-size:14px;color:var(--muted);overflow-wrap:anywhere}
+.st{font-size:14px;font-weight:700;padding:6px 12px;border-radius:999px;background:var(--accent);color:var(--accent-ink);white-space:nowrap}
+.item.done{border-color:transparent;background:var(--good-soft)}
+.item.done .st{background:transparent;color:var(--good-text)}
+.item.off{opacity:.6;border-style:dashed}
+.item.off .st{background:transparent;color:var(--muted)}
+.foot{max-width:680px;margin:0 auto;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 28px);font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="head">
+    <div class="eyebrow" id="eyebrow"></div>
+    <h1 id="title"></h1>
+    <p class="lead" id="lead"></p>
+  </header>
+
+  <section class="card" id="pick" hidden>
+    <h2 id="pickTitle"></h2>
+    <div class="groups" id="groups"></div>
+  </section>
+
+  <section class="card" id="list" hidden>
+    <div class="row">
+      <h2 id="listTitle"></h2>
+      <button type="button" class="change" id="change"></button>
+    </div>
+    <p class="note" id="hint"></p>
+    <ol class="items" id="items"></ol>
+    <div class="row">
+      <span class="progress" id="progress"></span>
+    </div>
+    <p class="note" id="end"></p>
+  </section>
+</main>
+<p class="foot" id="foot"></p>
+
+<script>
+/* Pilot link page: pick your group, then open the other groups' forms in order (next group first). */
+(function () {
+  'use strict';
+  var DATA = {"tr": [{"g": 1, "url": "https://docs.google.com/forms/d/e/1FAIpQLSfRlXKONW5vd2EgUDPtW3eygOtv4Kyv_EqJzFQZn4Ad89S7vQ/viewform", "topic": "Ders çalışırken yapay zekâ araçlarını kullanma"}, {"g": 2, "url": "https://docs.google.com/forms/d/e/1FAIpQLSfzd3iu6S8n75ke9p_-Q2hDzve7fhR2NP3CR0iIR7sF6VgqLw/viewform", "topic": "Psikolojik yardım alan kişiler"}, {"g": 3, "url": "https://docs.google.com/forms/d/e/1FAIpQLSeDo3b-O200li3WYFNET95mNaIjTB4juAVR45TAANL7yfT3rQ/viewform", "topic": "Sosyal medyadaki psikoloji içerikleri"}, {"g": 4, "url": "https://docs.google.com/forms/d/e/1FAIpQLSfb454WvWSF2zhfMxXYnbaO0SAhDd03a9qkCgXmz27VKErd-Q/viewform", "topic": "Kampüsün şehir merkezine uzaklığı"}, {"g": 5, "url": "https://docs.google.com/forms/d/e/1FAIpQLSdM7HKQDl_3z5RioRXnM7aa8uG5QCtEJjdPi7nH-sIlGj1Ctw/viewform", "topic": "Sosyal medyadan kişilik çıkarımı"}, {"g": 6, "url": "https://docs.google.com/forms/d/e/1FAIpQLSeasCqXPUPMjdCoyK7lRGYJWGf3QMamcFTILJ1-0WwwWKT_gQ/viewform", "topic": "Sabah erken başlayan dersler"}, {"g": 7, "url": "https://docs.google.com/forms/d/e/1FAIpQLSfbSE0GO2rAw0jW08osGAl8pwhTRr_S-nHYp7thISUqdGw15A/viewform", "topic": "Çevrim içi terapi"}, {"g": 8, "url": "https://docs.google.com/forms/d/e/1FAIpQLSdM5rau_9KhgIWOQ2L8OBcNnu84l3g7hhO6RkjTyokc76g09g/viewform", "topic": "Çevrim içi derslerde kamerayı açma"}, {"g": 9, "url": "https://docs.google.com/forms/d/e/1FAIpQLSe_vO_-G7BFwtAclNAMQNfdRjjZq68YkZoqHn_0CE388i9eIw/viewform", "topic": "Derslerde dijital not tutma"}, {"g": 10, "url": "https://docs.google.com/forms/d/e/1FAIpQLSca9z81DCFR_9CqRN9RwF-LxPJ3GwTE29PZaep7EmFiPOH30g/viewform", "topic": "Yeni insanlarla tanışma"}, {"g": 11, "url": "https://docs.google.com/forms/d/e/1FAIpQLScHt5qf1DCyotkJ55XvCkv30Mzv7LshAhk8x9cmEMNB4WEnUA/viewform", "topic": "Yalnız vakit geçirme"}], "en": [{"g": 1, "url": "https://docs.google.com/forms/d/e/1FAIpQLSf_O_VfhT6S8FmMB7HLLSCHLcy0lMyxit81Ccdx4szz5XF82A/viewform", "topic": "Studying at night"}, {"g": 2, "url": "https://docs.google.com/forms/d/e/1FAIpQLSfqLbhmaNeMjW-UFvaqiD0wSZd2tKfM2iod6zngLp1oGqcZ-w/viewform", "topic": "Digital note-taking in lectures"}, {"g": 3, "url": "https://docs.google.com/forms/d/e/1FAIpQLScsZPPwk2Tj-ur6VjDi1Jx488APHzkcnZtCbMijQmXCbUqRRw/viewform", "topic": "Fast fashion"}, {"g": 4, "url": "https://docs.google.com/forms/d/e/1FAIpQLScdO_JE6GQ4YcBvvhqPIUHR2Cz2LXUD_LmAsATwG30u9ZkL4w/viewform", "topic": "Psychologists' social media content"}, {"g": 5, "url": "https://docs.google.com/forms/d/e/1FAIpQLSfPTdQQZng6HVm_aejNq2TU57694oTcH6W8okm3XvUMbs3agw/viewform", "topic": "Subscription-based software"}, {"g": 6, "url": "https://docs.google.com/forms/d/e/1FAIpQLSdCHXOQM0Bh26nql6BqjlnRfkhBYLyXBz6SVeziMwaYMGAM_Q/viewform", "topic": "Do Not Disturb mode in social settings"}, {"g": 7, "url": "https://docs.google.com/forms/d/e/1FAIpQLSfCw3NfxuTA1-U51AXfdA7Qe6x2eEfkhDDCaSXUsfQ0VCectg/viewform", "topic": "AI study assistance"}, {"g": 8, "url": "https://docs.google.com/forms/d/e/1FAIpQLScozc-P72oYSaXlH8dGhhcp0kk_sImJThpoMvS5TZE9FJk7hQ/viewform", "topic": "Part-time work while studying"}, {"g": 9, "url": "https://forms.gle/GHqAAkBpT3wrSqYk7", "topic": "Traveling alone"}, {"g": 10, "url": "https://docs.google.com/forms/d/e/1FAIpQLScmOLb2TAc5lyUYTtCmoKfPxNmF0mqpiaoQL7Se12cq5Hf0RA/viewform", "topic": "Regular communication in close friendships"}, {"g": 11, "url": null, "topic": "Campus dining services"}]};
+  var STR = {
+    tr: {
+      eyebrow: 'PSKO3204 · Pilot',
+      title: 'Grupların formları',
+      lead: 'Grubunuzu seçin. Sayfa, dolduracağınız formları sırasıyla gösterecek.',
+      pickTitle: 'Grubunuz hangisi?',
+      noGroup: 'Grubum yok',
+      group: 'Grup',
+      listTitleGroup: 'Grup {g} · doldurma sırası',
+      listTitleNone: 'Doldurma sırası',
+      change: 'Grubu değiştir',
+      hint: 'Formu açın, doldurup gönderin, sonra bu sayfaya dönüp sıradakini açın. Kendi grubunuzun formu listede yok.',
+      open: 'Aç',
+      opened: 'Açıldı ✓',
+      off: 'Hazır değil',
+      offTopic: 'Form henüz hazır değil; atlayın.',
+      progress: '{n} / {t} form açıldı',
+      end: 'Her formu bir kez gönderin. Süre bitince kaldığınız yerde bırakın.',
+      foot: 'Bu sayfa hiçbir bilgi göndermez; açtığınız formların işareti yalnızca telefonunuzda kalır.'
+    },
+    en: {
+      eyebrow: 'PSYC3204 · Pilot',
+      title: 'Group forms',
+      lead: 'Choose your group. The page will list the forms you fill in, in order.',
+      pickTitle: 'Which group are you in?',
+      noGroup: 'I am not in a group',
+      group: 'Group',
+      listTitleGroup: 'Group {g} · your order',
+      listTitleNone: 'Your order',
+      change: 'Change group',
+      hint: 'Open a form, fill it in and submit it, then come back to this page and open the next one. Your own group’s form is not on the list.',
+      open: 'Open',
+      opened: 'Opened ✓',
+      off: 'Not ready',
+      offTopic: 'This form is not ready yet; skip it.',
+      progress: '{n} of {t} forms opened',
+      end: 'Submit each form once. When time is up, stop where you are.',
+      foot: 'This page sends no data; the marks for the forms you opened stay on your phone only.'
+    }
+  };
+
+  var lang = 'tr';
+  try {
+    var p = new URLSearchParams(location.search).get('lang');
+    if (p === 'tr' || p === 'en') { lang = p; }
+    else {
+      var s = null;
+      try { s = localStorage.getItem('psyc3204.lang'); } catch (e) { s = null; }
+      if (s === 'tr' || s === 'en') { lang = s; }
+      else { lang = (navigator.language || '').toLowerCase().indexOf('tr') === 0 ? 'tr' : 'en'; }
+    }
+  } catch (e) { lang = 'tr'; }
+
+  var T = STR[lang];
+  var forms = DATA[lang];
+  var N = forms.length;
+  var KEY = 'pilot2611.' + lang + '.';
+
+  function get(k, d) { try { var v = localStorage.getItem(KEY + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }
+  function set(k, v) { try { localStorage.setItem(KEY + k, JSON.stringify(v)); } catch (e) { /* storage unavailable */ } }
+
+  var state = { group: get('group', null), start: get('start', null), opened: get('opened', []) };
+  if (!Array.isArray(state.opened)) { state.opened = []; }
+
+  function $(id) { return document.getElementById(id); }
+  function fmt(s, o) { return s.replace(/\{(\w+)\}/g, function (m, k) { return o[k]; }); }
+
+  function order() {
+    var g = state.group;
+    var seq = [];
+    if (g === 0) {
+      var st = state.start || 1;
+      for (var i = 0; i < N; i++) { seq.push(((st - 1 + i) % N) + 1); }
+    } else {
+      for (var j = 1; j < N; j++) { seq.push(((g - 1 + j) % N) + 1); }
+    }
+    return seq;
+  }
+
+  function renderPick() {
+    var box = $('groups');
+    box.innerHTML = '';
+    for (var g = 1; g <= N; g++) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'gbtn';
+      b.textContent = String(g);
+      b.setAttribute('aria-label', T.group + ' ' + g);
+      b.addEventListener('click', choose.bind(null, g));
+      box.appendChild(b);
+    }
+    var nb = document.createElement('button');
+    nb.type = 'button';
+    nb.className = 'gbtn wide';
+    nb.textContent = T.noGroup;
+    nb.addEventListener('click', choose.bind(null, 0));
+    box.appendChild(nb);
+  }
+
+  function choose(g) {
+    state.group = g;
+    set('group', g);
+    if (g === 0 && !state.start) {
+      state.start = 1 + Math.floor(Math.random() * N);
+      set('start', state.start);
+    }
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  function renderList() {
+    var seq = order();
+    var ul = $('items');
+    ul.innerHTML = '';
+    var available = 0, opened = 0;
+    seq.forEach(function (g, i) {
+      var f = forms[g - 1];
+      var li = document.createElement('li');
+      var el;
+      var isOpened = state.opened.indexOf(g) !== -1;
+      if (f.url) {
+        available++;
+        if (isOpened) { opened++; }
+        el = document.createElement('a');
+        el.href = f.url;
+        el.target = '_blank';
+        el.rel = 'noopener';
+        el.className = 'item' + (isOpened ? ' done' : '');
+        el.addEventListener('click', function () {
+          if (state.opened.indexOf(g) === -1) { state.opened.push(g); set('opened', state.opened); }
+          setTimeout(renderList, 300);
+        });
+      } else {
+        el = document.createElement('div');
+        el.className = 'item off';
+        el.setAttribute('aria-disabled', 'true');
+      }
+      var num = document.createElement('span');
+      num.className = 'num';
+      num.textContent = String(i + 1);
+      var txt = document.createElement('span');
+      txt.className = 'txt';
+      var strong = document.createElement('strong');
+      strong.textContent = T.group + ' ' + g;
+      var small = document.createElement('small');
+      small.textContent = f.url ? f.topic : T.offTopic;
+      txt.appendChild(strong);
+      txt.appendChild(small);
+      var st = document.createElement('span');
+      st.className = 'st';
+      st.textContent = f.url ? (isOpened ? T.opened : T.open) : T.off;
+      el.appendChild(num);
+      el.appendChild(txt);
+      el.appendChild(st);
+      li.appendChild(el);
+      ul.appendChild(li);
+    });
+    $('progress').textContent = fmt(T.progress, { n: opened, t: available });
+  }
+
+  function render() {
+    document.documentElement.lang = lang;
+    document.title = T.eyebrow + ' · ' + T.title;
+    $('eyebrow').textContent = T.eyebrow;
+    $('title').textContent = T.title;
+    $('foot').textContent = T.foot;
+    var picked = state.group !== null && state.group !== undefined && state.group >= 0 && state.group <= N;
+    $('lead').textContent = picked ? '' : T.lead;
+    $('lead').hidden = picked;
+    $('pick').hidden = picked;
+    $('list').hidden = !picked;
+    if (!picked) {
+      $('pickTitle').textContent = T.pickTitle;
+      renderPick();
+      return;
+    }
+    $('listTitle').textContent = state.group === 0 ? T.listTitleNone : fmt(T.listTitleGroup, { g: state.group });
+    $('change').textContent = T.change;
+    $('hint').textContent = T.hint;
+    $('end').textContent = T.end;
+    renderList();
+  }
+
+  $('change').addEventListener('click', function () {
+    state.group = null;
+    set('group', null);
+    render();
+  });
+  window.addEventListener('pageshow', render);
+  render();
+})();
+</script>
+</body>
+</html>
